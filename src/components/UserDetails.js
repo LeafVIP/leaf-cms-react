@@ -84,7 +84,7 @@ class UserDetails extends Component {
         <Typography 
       variant="caption"
         color="textPrimary">
-         total number of users: {totalUsers()}
+         total: {totalUsers()}
          <br />
          approved: {approvedUsers()}
          <br />

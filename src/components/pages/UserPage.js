@@ -2,18 +2,13 @@ import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import User from '../User';
+import SearchField from "react-search-field";
+
 import UserDetails from '../UserDetails';
 import { connect } from 'react-redux';
 import { getUsers, setUser } from '../../redux/actions/dataActions';
 
-const styles = {
-    container: {
-        width: '100%',
-        flex: 1,
-        padding: 25
-    },
-   
-};
+
 
 class UserPage extends Component {
   state = { user: '' }
@@ -38,14 +33,10 @@ class UserPage extends Component {
         )
 
         let recentUsersMarkup = !loading && users !== null ? 
-       
         users.map((user) =>
-     
             <User 
-              className={styles.card}
               key={user.authId}
               item={user} />
-       
         )  
            : (
            <div>
@@ -54,12 +45,13 @@ class UserPage extends Component {
           );
 
           return (
+           
             <Grid container spacing={10}>
 
-            <Grid item sm={6} xs={8}>  
+            <Grid item sm={8} xs={8}>  
               {recentUsersMarkup}
             </Grid>
-            <Grid item sm={6} xs={4}>
+            <Grid item sm={4} xs={4}>
               {userDetailsMarkup}
             </Grid>
           </Grid>
