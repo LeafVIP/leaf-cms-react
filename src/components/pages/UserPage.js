@@ -6,14 +6,17 @@ import PropTypes from 'prop-types';
 import User from '../User';
 
 import UserDetails from '../UserDetails';
+import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
 import { getUsers, setUser } from '../../redux/actions/dataActions';
 
 
 const styles = {
   search: {
-    flex: 1,
-    width: '100%'
+    margin: 'auto'
+    // flex: 1,
+    // marginTop: '0',
+    // width: '100%'
   }
 
 };
@@ -47,22 +50,22 @@ class UserPage extends Component {
               item={user} />
         )  
            : (
-           <div>
-             Loading...
-           </div>
+           <UserSkeleteon />
           );
 
           return (
-           
+           <div>
+             <Search />
+             <br />
             <Grid container spacing={10}>
             <Grid item sm={8} xs={8}> 
-            <Search className={styles.search} />
               {recentUsersMarkup}
             </Grid>
             <Grid item sm={4} xs={4}>
               {userDetailsMarkup}
             </Grid>
             </Grid>
+            </div>
       
           );
     }

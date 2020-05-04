@@ -24,19 +24,9 @@ const styles = {
 };
 
 class UserDetails extends Component {
-  // handleImageChange = (event) => {
-  //   const image = event.target.files[0];
-  //   const formData = new FormData();
-  //   formData.append('image', image, image.name);
-  //   this.props.uploadImage(formData);
-  // };
-  // handleEditPicture = () => {
-  //   const fileInput = document.getElementById('imageInput');
-  //   fileInput.click();
-  // };
-  // handleLogout = () => {
-  //   this.props.logoutUser();
-  // };
+  filter = (type) => {
+
+  }
 
   
 
@@ -84,7 +74,7 @@ class UserDetails extends Component {
         <Typography 
       variant="caption"
         color="textPrimary">
-         total: {totalUsers()}
+       total: {totalUsers()}
          <br />
          approved: {approvedUsers()}
          <br />

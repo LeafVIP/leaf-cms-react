@@ -5,6 +5,7 @@ import { getDispensaries, selectDispensary } from '../../redux/actions/dataActio
 import Dispensary from '../Dispensary';
 import Grid from '@material-ui/core/Grid';
 import DispensaryNav from '../../util/DispensaryNav';
+import DispensarySkeleton from '../../util/DispensarySkeleteon';
 
 const styles = {
     container: {
@@ -36,9 +37,7 @@ class DispensaryPage extends Component {
        </div>
        )  
           : (
-          <div>
-            Loading...
-          </div>
+          <DispensarySkeleton />
          );
 
           return (

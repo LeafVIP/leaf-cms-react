@@ -24,8 +24,8 @@ const styles = (theme) => ({
       objectFit: 'cover'
     },
     handle: {
-      width: 60,
-      height: 18,
+      width: '100%',
+      height: 26,
       backgroundColor: theme.palette.primary.main,
       marginBottom: 7
     },
@@ -49,18 +49,13 @@ const styles = (theme) => ({
     }
   });
   
-  const UserSkeleton = (props) => {
+  const DispensarySkeleton = (props) => {
     const { classes } = props;
   
     const content = Array.from({ length: 5 }).map((item, index) => (
       <Card className={classes.card} key={index}>
-        <CardMedia className={classes.cover} image={NoImg} />
         <CardContent className={classes.cardContent}>
           <div className={classes.handle} />
-          <div className={classes.date} />
-          <div className={classes.fullLine} />
-          <div className={classes.fullLine} />
-          <div className={classes.halfLine} />
         </CardContent>
       </Card>
     ));
@@ -68,9 +63,9 @@ const styles = (theme) => ({
     return <Fragment>{content}</Fragment>;
   };
   
-  UserSkeleton.propTypes = {
+  DispensarySkeleton.propTypes = {
     classes: PropTypes.object.isRequired
   };
   
-  export default withStyles(styles)(UserSkeleton);
+  export default withStyles(styles)(DispensarySkeleton);
   
