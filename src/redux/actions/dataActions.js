@@ -5,7 +5,7 @@ import {
     CLEAR_ERRORS,
     SET_DISPENSARIES,
     SELECT_DISPENSARY,
-    LOADING_USER
+    CREATE_DISPENSARY
 } from '../types';
 
 

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { getDispensaries, selectDispensary } from '../../redux/actions/dataActions';
 import Dispensary from '../Dispensary';
 import Grid from '@material-ui/core/Grid';
+import DispensaryNav from '../../util/DispensaryNav';
 
 const styles = {
     container: {
@@ -40,39 +41,9 @@ class DispensaryPage extends Component {
           </div>
          );
 
-      //  let dispensariesMarkup = !loading && dispensaries !== null ?
-      //  (
-      //     dispensaries.map((dispensary) => {
-      //       <div>
-      //       <Dispensary key={dispensary.dispensaryId} item={dispensary} />
-      //       </div>
-
-      //     })
-      //  ) 
-      //  : 
-      //  (
-      //    <div>
-      //      Loading...
-      //   </div>
-      //  )
-
-        // let dispensariesMarkup = !loading && dispensaries !== null ? 
-       
-        // dispensaries.map((dispensary) =>
-        // <div onClick={selectDispensary(dispensary)}>
-        //     <Dispensary 
-        //       className={styles.card}
-        //       key={dispensary.dispensaryId}
-        //       item={dispensary} />
-        //     <br />
-        // </div>
-        // )  
-        //    : (
-        //    <div>
-        //      Loading...
-        //    </div>
-        //   );
           return (
+            <div>
+              <DispensaryNav />
             <Grid container spacing={10}>
 
             <Grid item sm={6} xs={8}>
@@ -83,6 +54,7 @@ class DispensaryPage extends Component {
               {/* <UserDetails user={user}/> */}
             </Grid>
           </Grid>
+          </div>
           );
     }
 }

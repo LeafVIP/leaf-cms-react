@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
+import Search from '../Search';
+
 import PropTypes from 'prop-types';
 import User from '../User';
-import SearchField from "react-search-field";
 
 import UserDetails from '../UserDetails';
 import { connect } from 'react-redux';
 import { getUsers, setUser } from '../../redux/actions/dataActions';
 
 
+const styles = {
+  search: {
+    flex: 1,
+    width: '100%'
+  }
+
+};
 
 class UserPage extends Component {
   state = { user: '' }
@@ -19,7 +27,7 @@ class UserPage extends Component {
     }
    
     render() {
-        const  { users, user, loading } = this.props.data;
+        const  { users, loading } = this.props.data;
 
         let userDetailsMarkup = !loading && users !== null ?
         (
@@ -47,14 +55,15 @@ class UserPage extends Component {
           return (
            
             <Grid container spacing={10}>
-
-            <Grid item sm={8} xs={8}>  
+            <Grid item sm={8} xs={8}> 
+            <Search className={styles.search} />
               {recentUsersMarkup}
             </Grid>
             <Grid item sm={4} xs={4}>
               {userDetailsMarkup}
             </Grid>
-          </Grid>
+            </Grid>
+      
           );
     }
 }
