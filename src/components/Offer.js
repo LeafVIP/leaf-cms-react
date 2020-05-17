@@ -1,49 +1,41 @@
 import React, { Component } from 'react';
-
 import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import { connect } from 'react-redux';
 
-
-class Dispensary extends Component {
+class Offer extends Component {
     render() {
-        const{
-            item: {
-                dispensaryId, 
-                displayName,
-                address,
-                license,
-                cmid
+        const {
+            offer: {
+                productName,
             }
         } = this.props;
 
         return (
             <Card>
-                <CardContent >
-                <Typography
+                <CardContent>
+                    <Typography
                         variant="h6"
                         color="textPrimary">
-                            {displayName }
-                        
-                        </Typography> 
+                            {productName}
+                        </Typography>
                 </CardContent>
             </Card>
-        );
+        )
     }
-};
+}
 
-Dispensary.propTypes = {
-    item: PropTypes.object.isRequired
-};
+Offer.propTypes = {
+    offer: PropTypes.object.isRequired
+}
 
 const mapStateToProps = (state) => ({
-    // user: state.user
+
 });
 
 const mapDispatchToProps = {
-    
-};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dispensary);
+};
+export default connect(mapStateToProps, mapDispatchToProps)(Offer);

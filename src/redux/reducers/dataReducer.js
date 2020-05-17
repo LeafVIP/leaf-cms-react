@@ -3,13 +3,16 @@ import {
     SET_DISPENSARIES,
     SET_USERS, 
     SELECT_USER,
-SELECT_DISPENSARY} from '../types';
+    APPROVE_USER,
+    UNAPPROVE_USER, 
+    SET_OFFERS} from '../types';
 
     const initialState = {
         users: [],
         user: {},
         dispensaries: [],
         dispensary: {},
+        items: [],
         loading: false
     }
 
@@ -35,6 +38,14 @@ SELECT_DISPENSARY} from '../types';
                      user: action.payload
                 }
 
+                case APPROVE_USER:
+                case UNAPPROVE_USER:
+                    return {
+                        ...state,
+                        loading: false,
+                         user: action.payload
+                    }
+
                 case SET_DISPENSARIES:
                     return {
                         ...state,
@@ -42,12 +53,13 @@ SELECT_DISPENSARY} from '../types';
                         dispensaries: action.payload
                     }
 
-                    case SELECT_DISPENSARY:
+                    case SET_OFFERS:
                         return {
                             ...state,
                             loading: false,
-                            dispensary: action.payload
+                            offers: action.payload
                         }
+
             
             default:
                 return state;

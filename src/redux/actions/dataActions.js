@@ -5,7 +5,8 @@ import {
     CLEAR_ERRORS,
     SET_DISPENSARIES,
     SELECT_DISPENSARY,
-    CREATE_DISPENSARY
+    CREATE_DISPENSARY,
+    SET_OFFERS
 } from '../types';
 
 
@@ -65,6 +66,25 @@ export const getDispensaries = () => (dispatch) => {
             console.log(err);
         });
 
+}
+
+export const getOffers = () => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+
+    axios
+        .get('/offers')
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: SET_OFFERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }
 
 export const clearErrors = () => (dispatch) => {

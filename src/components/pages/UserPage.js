@@ -14,11 +14,7 @@ import { getUsers, setUser } from '../../redux/actions/dataActions';
 const styles = {
   search: {
     margin: 'auto'
-    // flex: 1,
-    // marginTop: '0',
-    // width: '100%'
   }
-
 };
 
 class UserPage extends Component {

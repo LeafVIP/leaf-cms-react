@@ -61,7 +61,8 @@ class DispensaryPage extends Component {
 DispensaryPage.propTypes = {
     getDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    offers: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => ({

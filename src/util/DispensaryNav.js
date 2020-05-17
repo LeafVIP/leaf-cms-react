@@ -24,13 +24,12 @@ class DispensaryNav extends Component {
        
         return (
              <Toolbar className={styles.container}>
-                        <MyButton
-                            tip="new dispensary"
-                            onClick={this.newDispensary}>
-                                <Add />
-                        </MyButton>
-                    </Toolbar>
-    
+                <MyButton
+                    tip="new dispensary"
+                    onClick={this.newDispensary}>
+                        <Add />
+                    </MyButton>
+                </Toolbar>
         )
     }
 }

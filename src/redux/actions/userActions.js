@@ -47,11 +47,17 @@ export const logoutUser = () => (dispatch) => {
     dispatch({ type: SET_UNAUTHENTICATED });
 };
 
+export const getUser = (authId) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+        .get('/users')
+        
+}
 export const getUserData = () => (dispatch) => {
     dispatch({ type: LOADING_USER });
 
     axios
-        .get('https://us-central1-leafvip-dev.cloudfunctions.net/users')
+        .get('/users')
         .then(res => {
             dispatch({
                 type: SET_USERS,
