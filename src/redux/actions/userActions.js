@@ -1,5 +1,6 @@
 import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
 import axios from 'axios';
+import Dispensary from '../../components/Dispensary';
 
 export const signupUser = (newUserData, history) => (dispatch) => {
     dispatch({ type: LOADING_UI });
@@ -83,6 +84,18 @@ export const uploadImage = (formData) => (dispatch) => {
       .catch((err) => console.log(err));
   };
   
+  export const approveBadge = (authId) => (dispatch) => {
+    dispatch({LOADING_USER});
+    axios
+        .post('approveBadge')
+        .then(() => {
+            dispatch(getUserData());
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+  };
+
 export const setAuthorizationHeader = (token) => {
     const FBIdToken = `Bearer ${token}`;
     localStorage.setItem('FBIdToken', FBIdToken);

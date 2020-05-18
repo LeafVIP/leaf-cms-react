@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Search from '../Search';
 
 import PropTypes from 'prop-types';
+import SubNav from '../ui/UserSubNav';
 import User from '../User';
 
 import UserDetails from '../UserDetails';
@@ -10,16 +11,7 @@ import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
 import { getUsers, setUser } from '../../redux/actions/dataActions';
 
-
-const styles = {
-  search: {
-    margin: 'auto'
-  }
-};
-
 class UserPage extends Component {
-  state = { user: '' }
-
 
     componentDidMount() {
         this.props.getUsers();
@@ -30,7 +22,7 @@ class UserPage extends Component {
 
         let userDetailsMarkup = !loading && users !== null ?
         (
-          <UserDetails users={users} />
+          <UserDetails key="userDetails" users={users} />
         )
         :
         (
@@ -43,7 +35,7 @@ class UserPage extends Component {
         users.map((user) =>
             <User 
               key={user.authId}
-              item={user} />
+              user={user} />
         )  
            : (
            <UserSkeleteon />
@@ -51,13 +43,14 @@ class UserPage extends Component {
 
           return (
            <div>
+             <SubNav />
              <Search />
              <br />
             <Grid container spacing={10}>
-            <Grid item sm={8} xs={8}> 
+            <Grid item sm={6} xs={6}> 
               {recentUsersMarkup}
             </Grid>
-            <Grid item sm={4} xs={4}>
+            <Grid item sm={6} xs={6}>
               {userDetailsMarkup}
             </Grid>
             </Grid>

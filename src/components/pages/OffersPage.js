@@ -25,16 +25,16 @@ class OfferPage extends Component {
     render () {
         const { offers, loading } = this.props.data;
 
-      
-        let offersMarkup = !loading & offers !== null ? 
-       offers.map((offer) =>
-         <Offer 
-             className={styles.card}
-             key={offer.productName}
-             offer={offer} />
-          
-
-         )
+        let offersMarkup = !loading & offers !== null ? (
+            offers.map((offer) =>
+            <div>
+            <Offer  
+                key={offer.id}
+                offer={offer} />
+<br />
+</div>
+        )  
+        )
            : (
            <OfferSkeleton />
           );

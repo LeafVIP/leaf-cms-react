@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
+import {approveBadge} from '../redux/actions/userActions';
 
 
 // MUI
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
+import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
-import Button from '@material-ui/core/Button';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -34,8 +34,8 @@ const styles = {
     },
     badgeState: {
         position: 'absolute',
-        top: '0px',
-        right: '0px'
+        top: '4px',
+        right: '4px'
     },
     approveButton: {
         position: 'relative',
@@ -50,53 +50,39 @@ class User extends Component {
     badgeColor = (state) => {
         return state === "approved" ? "green" : "yellow";
     }
-    imageClick = () => {
-        console.log("show image");
-      };
 
     render() {
         // dayjs.extend(relativeTime);
         const {
             classes,
-            item: {
+            user: {
+                authId,
                 firstName,
                 lastName,
                 email,
                 badgeState,
                 badgeFrontUrl,
                 phoneNumber,
-                platform
             }
         } = this.props;
 
+  
         let badgeMarkup =  badgeState === "approved" ? (
-                <MyButton
-                    tip="unapprove badge"
-                    tipClassName={classes.badgeState}>
                 <CheckCircleIcon 
-                    style={{fill: "green"}}/>
-                        </MyButton>
-                 
+                    style={{fill: "green"}} 
+                    className={classes.badgeState} />
                 ) : (
-
-                        <MyButton
-                            tip="approve badge"
-                            tipClassName={classes.badgeState}>
                <ErrorIcon
-                    style={{fill: "orange"}} />
-                    </MyButton>
-
-              
+                    style={{fill: "orange"}}
+                    className={classes.badgeState} />
                 )
-        
 
         return (
            <Card className={classes.card}>
                {badgeMarkup}
             <CardMedia
                 image={badgeFrontUrl} 
-                className={classes.image}
-                onClick={this.imageClick} />       
+                className={classes.image} />       
                <CardContent className={classes.content}>
                     <Typography
                         variant="subtitle1"
@@ -112,13 +98,16 @@ class User extends Component {
     }
 }
 User.propTypes = {
-    // user: PropTypes.object.isRequired,
-    item: PropTypes.object.isRequired,
+    approveBadge: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => ({
     // user: state.user
 })
 
+const mapActionsToProps = {
+    approveBadge
+};
 
-export default connect(mapStateToProps)(withStyles(styles)(User));
+export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(User));

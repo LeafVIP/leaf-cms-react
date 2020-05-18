@@ -13,6 +13,7 @@ import {
         dispensaries: [],
         dispensary: {},
         items: [],
+        offers: [],
         loading: false
     }
 
