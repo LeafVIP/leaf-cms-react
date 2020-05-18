@@ -24,6 +24,19 @@ const styles = {
       display: 'flex',
       marginBottom: 20
     },
+    card_active: {
+        position: 'relative',
+        display: 'flex',
+        marginBottom: 20,
+        backgroundColor: '#CCC'
+    },
+
+    card_notactive: {
+        position: 'relative',
+        display: 'flex',
+        marginBottom: 20,
+        backgroundColor: '#FFFFFF'
+    },
     image: {
       minWidth: 200,
     },
@@ -39,7 +52,7 @@ const styles = {
     approveButton: {
         position: 'relative',
         right: '20%'
-    }
+    },
   };
 
 
@@ -54,6 +67,7 @@ class User extends Component {
         // dayjs.extend(relativeTime);
         const {
             classes,
+            isActive,
             user: {
                 firstName,
                 lastName,
@@ -78,34 +92,34 @@ class User extends Component {
                     className={classes.badgeState} />
                 )
 
-        return (
-   
-           <Card className={classes.card}>
-               {badgeMarkup}
-            <CardMedia
-                image={badgeFrontUrl} 
-                className={classes.image} />      
-                <Button onClick={selectUser}>
-                    <CardContent className={classes.content}>
-                    <Typography
-                        variant="subtitle1"
-                        color="textPrimary">
-                            {`${firstName} ${lastName}`} <br />
-                            {email}<br />
-                            {phoneNumber}
-                        </Typography> 
-                </CardContent>   
-                </Button>   
-            </Card>
-            
-        )
+        return(
+            <Card className={this.props.isActive ? classes.card_active : classes.card_notactive}>
+            {badgeMarkup}
+         <CardMedia
+             image={badgeFrontUrl} 
+             className={classes.image} />      
+             <Button onClick={selectUser}>
+                 <CardContent className={classes.content}>
+                 <Typography
+                     variant="subtitle1"
+                     color="textPrimary">
+                         {`${firstName} ${lastName}`} <br />
+                          {email}<br />
+                         {phoneNumber}
+                     </Typography> 
+             </CardContent>   
+             </Button>   
+         </Card>
         
+        )
     }
 }
+
 User.propTypes = {
     approveBadge: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
     classes: PropTypes.object.isRequired
 };
 const mapStateToProps = (state) => ({

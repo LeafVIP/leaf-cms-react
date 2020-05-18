@@ -33,10 +33,14 @@ class UserPage extends Component {
         )
 
         let recentUsersMarkup = !loading && users !== null ? 
-        users.map((user) =>
+        users.map((data) =>
+
+   
             <User 
-              key={user.authId}
-              user={user} />
+              key={data.authId}
+              user={data}
+              isActive={data == user} />
+        
         )  
            : (
            <UserSkeleteon />
