@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import MyButton from '../util/MyButton';
 import {approveBadge} from '../redux/actions/userActions';
+import {setUser} from '../redux/actions/dataActions';
 
 
 // MUI
@@ -12,6 +13,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import ErrorIcon from '@material-ui/icons/Error';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
 
 // Redux
 import { connect } from 'react-redux';
@@ -23,10 +25,7 @@ const styles = {
       marginBottom: 20
     },
     image: {
-   
       minWidth: 200,
- 
-    
     },
     content: {
       padding: 25,
@@ -56,7 +55,6 @@ class User extends Component {
         const {
             classes,
             user: {
-                authId,
                 firstName,
                 lastName,
                 email,
@@ -66,6 +64,9 @@ class User extends Component {
             }
         } = this.props;
 
+        const selectUser = () => {
+            this.props.setUser(this.props.user);
+        }
   
         let badgeMarkup =  badgeState === "approved" ? (
                 <CheckCircleIcon 
@@ -78,12 +79,14 @@ class User extends Component {
                 )
 
         return (
+   
            <Card className={classes.card}>
                {badgeMarkup}
             <CardMedia
                 image={badgeFrontUrl} 
-                className={classes.image} />       
-               <CardContent className={classes.content}>
+                className={classes.image} />      
+                <Button onClick={selectUser}>
+                    <CardContent className={classes.content}>
                     <Typography
                         variant="subtitle1"
                         color="textPrimary">
@@ -91,14 +94,17 @@ class User extends Component {
                             {email}<br />
                             {phoneNumber}
                         </Typography> 
-                </CardContent>      
+                </CardContent>   
+                </Button>   
             </Card>
+            
         )
         
     }
 }
 User.propTypes = {
     approveBadge: PropTypes.func.isRequired,
+    setUser: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     classes: PropTypes.object.isRequired
 };
@@ -107,7 +113,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    approveBadge
+    approveBadge,
+    setUser
 };
 
 export default connect(mapStateToProps, mapActionsToProps)(withStyles(styles)(User));
