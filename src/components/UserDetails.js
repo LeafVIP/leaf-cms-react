@@ -5,9 +5,11 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Button from '@material-ui/core/Button';
 
 //Redux
 import { connect } from 'react-redux';
+import {approveBadge} from '../redux/actions/userActions';
 
 
 const styles = {
@@ -37,10 +39,11 @@ class UserDetails extends Component {
       user
     } = this.props
 
+    const approve = () => {
+      this.props.approveBadge(user.authUid);
+    }
 
    return (
-
-
      this.props.user !== null ? (
        <div className={styles.root}>
       <Grid 
@@ -58,7 +61,16 @@ class UserDetails extends Component {
             </Typography> 
             </Grid>
             <Grid item >
-              <img className={classes.badgeImage} src={user.badgeFrontUrl} />
+              <img className={classes.badgeImage} src={user.badgeFrontUrl} alt={user.badgeFrontUrl} />
+            </Grid>
+            <Grid item>
+             {user.badgeState === "inReview" ? (
+               <Button 
+                color="#FF00CC"
+                onClick={approve} >approve badge</Button>
+               ): (
+                 <div>Approved</div>
+                 )}
             </Grid>
           </Grid>
 
@@ -157,7 +169,8 @@ class UserDetails extends Component {
 
 UserDetails.propTypes = {
   user: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
+  approveBadge: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -166,7 +179,7 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = {
-    
+  approveBadge
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserDetails));

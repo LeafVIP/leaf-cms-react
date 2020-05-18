@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import Typography from '@material-ui/core/Typography';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
@@ -40,7 +39,7 @@ class UserSubNav extends Component {
             const inReviewUsers = (ary) => {
                 if (ary !== null) {
                   const numApproved =  ary.filter(function(user) {
-                    return user.badgeState === "approved"
+                    return user.badgeState === "inReview"
                   })
                   return numApproved.length;
                 } 

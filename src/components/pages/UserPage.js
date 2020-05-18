@@ -10,6 +10,7 @@ import UserDetails from '../UserDetails';
 import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
 import { getUsers, setUser } from '../../redux/actions/dataActions';
+import {approveBadge} from '../../redux/actions/userActions';
 
 class UserPage extends Component {
 
@@ -18,7 +19,7 @@ class UserPage extends Component {
     }
    
     render() {
-        const  { users, loading } = this.props.data;
+        const  { users, user, loading } = this.props.data;
 
         let userDetailsMarkup = !loading && users !== null ?
         (
@@ -62,7 +63,9 @@ class UserPage extends Component {
 
 UserPage.propTypes = {
     getUsers: PropTypes.func.isRequired,
+    approveBadge: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
+    user: PropTypes.object.isRequired,
     data: PropTypes.object.isRequired,
 };
 
@@ -73,6 +76,6 @@ const mapStateToProps = (state) => ({
 
   export default connect(
     mapStateToProps,
-    { getUsers, setUser }
+    { getUsers, setUser, approveBadge }
   )(UserPage);
   

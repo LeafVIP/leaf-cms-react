@@ -1,6 +1,5 @@
 import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
 import axios from 'axios';
-import Dispensary from '../../components/Dispensary';
 
 export const signupUser = (newUserData, history) => (dispatch) => {
     dispatch({ type: LOADING_UI });
@@ -85,9 +84,11 @@ export const uploadImage = (formData) => (dispatch) => {
   };
   
   export const approveBadge = (authId) => (dispatch) => {
-    dispatch({LOADING_USER});
+    dispatch({type: LOADING_USER});
     axios
-        .post('approveBadge')
+        .post('/approveBadge', {
+            userId: authId
+        })
         .then(() => {
             dispatch(getUserData());
         })
