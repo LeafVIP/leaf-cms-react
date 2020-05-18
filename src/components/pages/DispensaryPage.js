@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { getDispensaries, selectDispensary } from '../../redux/actions/dataActions';
 import Dispensary from '../Dispensary';
 import Grid from '@material-ui/core/Grid';
+import DispensaryNav from '../../util/DispensaryNav';
+import DispensarySkeleton from '../../util/DispensarySkeleteon';
 
 const styles = {
     container: {
@@ -35,44 +37,12 @@ class DispensaryPage extends Component {
        </div>
        )  
           : (
-          <div>
-            Loading...
-          </div>
+          <DispensarySkeleton />
          );
 
-      //  let dispensariesMarkup = !loading && dispensaries !== null ?
-      //  (
-      //     dispensaries.map((dispensary) => {
-      //       <div>
-      //       <Dispensary key={dispensary.dispensaryId} item={dispensary} />
-      //       </div>
-
-      //     })
-      //  ) 
-      //  : 
-      //  (
-      //    <div>
-      //      Loading...
-      //   </div>
-      //  )
-
-        // let dispensariesMarkup = !loading && dispensaries !== null ? 
-       
-        // dispensaries.map((dispensary) =>
-        // <div onClick={selectDispensary(dispensary)}>
-        //     <Dispensary 
-        //       className={styles.card}
-        //       key={dispensary.dispensaryId}
-        //       item={dispensary} />
-        //     <br />
-        // </div>
-        // )  
-        //    : (
-        //    <div>
-        //      Loading...
-        //    </div>
-        //   );
           return (
+            <div>
+              <DispensaryNav />
             <Grid container spacing={10}>
 
             <Grid item sm={6} xs={8}>
@@ -83,6 +53,7 @@ class DispensaryPage extends Component {
               {/* <UserDetails user={user}/> */}
             </Grid>
           </Grid>
+          </div>
           );
     }
 }
@@ -90,7 +61,8 @@ class DispensaryPage extends Component {
 DispensaryPage.propTypes = {
     getDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
-    data: PropTypes.object.isRequired
+    data: PropTypes.object.isRequired,
+    offers: PropTypes.array.isRequired
 };
 
 const mapStateToProps = (state) => ({

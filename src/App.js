@@ -18,6 +18,7 @@ import NavBar from './components/NavBar';
 import UserPage from './components/pages/UserPage';
 import DispensaryPage from './components/pages/DispensaryPage';
 import LoginPage from './components/pages/LoginPage';
+import OffersPage from './components/pages/OffersPage';
 // import SignupPage from './components/pages/SignupPage';
 import PageNotFound from './components/pages/PageNotFound';
 
@@ -38,6 +39,7 @@ if (token) {
     store.dispatch({ type: SET_AUTHENTICATED });
     axios.defaults.headers.common["Authorization"] = token;
     store.dispatch(getUserData());
+    window.location.href = "/users";  
 
   }
 }
@@ -54,6 +56,7 @@ if (token) {
                  <Route exact path="/login" component={LoginPage} />
                  <Route exact path="/users" component={UserPage} />
                  <Route exact path="/dispensaries" component={DispensaryPage} />
+                 <Route exact path="/offers" component={OffersPage} />
                  <Route component={PageNotFound} />
               </Switch>
             </div>

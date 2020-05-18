@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import NoImg from '../../images/no-img.png';
+import NoImg from '../images/NoImg.png'
 import PropTypes from 'prop-types';
 // MUI
 import Card from '@material-ui/core/Card';
@@ -9,7 +9,7 @@ import CardContent from '@material-ui/core/CardContent';
 import withStyles from '@material-ui/styles/withStyles';
 
 const styles = (theme) => ({
-    ...theme,
+ 
     card: {
       display: 'flex',
       marginBottom: 20

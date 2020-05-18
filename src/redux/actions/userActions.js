@@ -47,11 +47,17 @@ export const logoutUser = () => (dispatch) => {
     dispatch({ type: SET_UNAUTHENTICATED });
 };
 
+export const getUser = (authId) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+        .get('/users')
+        
+}
 export const getUserData = () => (dispatch) => {
     dispatch({ type: LOADING_USER });
 
     axios
-        .get('https://us-central1-leafvip-dev.cloudfunctions.net/users')
+        .get('/users')
         .then(res => {
             dispatch({
                 type: SET_USERS,
@@ -77,6 +83,20 @@ export const uploadImage = (formData) => (dispatch) => {
       .catch((err) => console.log(err));
   };
   
+  export const approveBadge = (authId) => (dispatch) => {
+    dispatch({type: LOADING_USER});
+    axios
+        .post('/approveBadge', {
+            userId: authId
+        })
+        .then(() => {
+            dispatch(getUserData());
+        })
+        .catch((err) => {
+            console.error(err);
+        })
+  };
+
 export const setAuthorizationHeader = (token) => {
     const FBIdToken = `Bearer ${token}`;
     localStorage.setItem('FBIdToken', FBIdToken);
