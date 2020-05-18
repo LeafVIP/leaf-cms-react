@@ -23,7 +23,7 @@ class UserPage extends Component {
 
         let userDetailsMarkup = !loading && users !== null ?
         (
-          <UserDetails key="userDetails" users={users} />
+            <UserDetails key="userDetails" users={users} />
         )
         :
         (
@@ -65,7 +65,7 @@ UserPage.propTypes = {
     getUsers: PropTypes.func.isRequired,
     approveBadge: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
-    user: PropTypes.object.isRequired,
+    user: PropTypes.object,
     data: PropTypes.object.isRequired,
 };
 
