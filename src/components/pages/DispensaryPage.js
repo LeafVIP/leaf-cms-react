@@ -1,10 +1,11 @@
-import React, { Component} from 'react';
+import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { getDispensaries, selectDispensary } from '../../redux/actions/dataActions';
 import Dispensary from '../Dispensary';
 import Grid from '@material-ui/core/Grid';
-import DispensaryNav from '../../util/DispensaryNav';
+import CreateDispensary from '../CreateDispensary';
+import DispensaryDetails from '../DispensaryDetails';
 import DispensarySkeleton from '../../util/DispensarySkeleteon';
 
 const styles = {
@@ -27,12 +28,13 @@ class DispensaryPage extends Component {
        };
 
        let dispensariesMarkup = !loading & dispensaries !== null ? 
-       dispensaries.map((dispensary) =>
-       <div onClick={setDispensary(dispensary)}>
+       dispensaries.map((dispo) =>
+       <div onClick={setDispensary(dispo)}>
            <Dispensary 
              className={styles.card}
-             key={dispensary.displayName}
-             item={dispensary} />
+             key={dispo.displayName}
+             item={dispo}
+             isActive={dispo == dispensary} />
            <br />
        </div>
        )  
@@ -41,19 +43,19 @@ class DispensaryPage extends Component {
          );
 
           return (
-            <div>
-              <DispensaryNav />
+            <Fragment>
+              <CreateDispensary />
+            
             <Grid container spacing={10}>
 
             <Grid item sm={6} xs={8}>
               {dispensariesMarkup}
             </Grid>
             <Grid item sm={6} xs={4}>
-              {/* {currentUserMarkup} */}
-              {/* <UserDetails user={user}/> */}
+              <DispensaryDetails dispensary={dispensary} />
             </Grid>
           </Grid>
-          </div>
+          </Fragment>
           );
     }
 }

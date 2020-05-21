@@ -7,7 +7,8 @@ export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
 // data reducers
 export const LOADING_DATA = "LOADING_DATA";
 export const SET_USERS = "SET_USERS";
-export const SET_OFFERS = "SET_OFFERS"
+export const SET_OFFERS = "SET_OFFERS";
+export const SELECT_OFFER = "SELECT_OFFER"
 export const SET_DISPENSARIES = "SET_DISPENSARIES";
 export const SELECT_USER = "SET_USER";
 export const DELETE_USER = "DELETE_USER";

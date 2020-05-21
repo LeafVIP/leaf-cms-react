@@ -49,7 +49,7 @@ class UserPage extends Component {
           return (
            <div>
              <SubNav />
-             <Search />
+             <Search items={users}/>
              <br />
             <Grid container spacing={10}>
             <Grid item sm={6} xs={6}> 
