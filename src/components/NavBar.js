@@ -13,7 +13,7 @@ class NavBar extends Component {
     render() {
 
         const users = () => {
-            window.location = "/users";
+            window.location = "/";
         };
 
         const dispensaries = () => {
@@ -24,7 +24,7 @@ class NavBar extends Component {
             window.location = "/offers";
         }
         const usersActive = () => {
-            return window.location === "/users";
+            return window.location === "/";
         }
 
        

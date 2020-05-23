@@ -19,7 +19,7 @@ class UserPage extends Component {
     }
    
     render() {
-        const  { users, user, loading } = this.props.data;
+        const  { users, userFilter, user, loading } = this.props.data;
 
         let userDetailsMarkup = !loading && users !== null ?
         (
@@ -32,8 +32,8 @@ class UserPage extends Component {
            </div>
         )
 
-        let recentUsersMarkup = !loading && users !== null ? 
-        users.map((data) =>
+        let recentUsersMarkup = !loading && userFilter !== null ? 
+        userFilter.map((data) =>
 
    
             <User 

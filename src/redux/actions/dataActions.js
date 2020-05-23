@@ -8,7 +8,8 @@ import {
     CREATE_DISPENSARY,
     SET_OFFERS,
     SELECT_OFFER,
-    SET_ERRORS
+    SET_ERRORS,
+    FILTER_USERS
 } from '../types';
 
 
@@ -60,12 +61,27 @@ export const getUsers = () => (dispatch) => {
         });
 }
 
+// used by role filtering
+export const setUsers = (users) => (dispatch) => {
+    dispatch({
+        type: SET_USERS,
+        payload: users
+    });
+}
+
 export const setUser = (user) => (dispatch) => {
     dispatch({
         type: SELECT_USER,
         payload: user
     })
 
+}
+
+export const filterUsers = (users) => (dispatch) => {
+    dispatch({
+        type: FILTER_USERS,
+        payload: users
+    })
 }
 
 export const selectDispensary = (dispensary) => (dispatch) => {

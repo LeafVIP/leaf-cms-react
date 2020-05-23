@@ -3,6 +3,7 @@ import {
     SET_DISPENSARIES,
     SELECT_DISPENSARY,
     SET_USERS, 
+    FILTER_USERS,
     SELECT_USER,
     APPROVE_USER,
     UNAPPROVE_USER, 
@@ -12,6 +13,7 @@ import {
     const initialState = {
         users: [],
         user: {},
+        userFilter: [],
         dispensaries: [],
         dispensary: {},
         items: [],
@@ -33,7 +35,8 @@ import {
                     ...state,
                     loading: false,
                     users: action.payload,
-                    user: action.payload[0]
+                    user: action.payload[0],
+                    userFilter: action.payload
                 }; 
                 case SELECT_USER: 
                 return {
@@ -41,7 +44,12 @@ import {
                     loading: false,
                      user: action.payload
                 }
-
+                case FILTER_USERS:
+                    return {
+                        ...state,
+                        loading: false,
+                        userFilter: action.payload
+                    }
                 case APPROVE_USER:
                 case UNAPPROVE_USER:
                     return {
