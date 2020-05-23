@@ -4,23 +4,48 @@ import PropTypes from 'prop-types';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import withStyles from '@material-ui/core/styles/withStyles';
 import { connect } from 'react-redux';
 
+const styles = {
+    card: {
+      position: 'relative',
+      display: 'flex',
+      marginBottom: 20
+    },
+    card_active: {
+        position: 'relative',
+        display: 'flex',
+        marginBottom: 20,
+        backgroundColor: '#CCC'
+    },
 
+    card_notactive: {
+        position: 'relative',
+        display: 'flex',
+        marginBottom: 20,
+        backgroundColor: '#FFFFFF'
+    },
+    image: {
+      minWidth: 200,
+    },
+    content: {
+      padding: 25,
+      objectFit: 'cover'
+    }
+  };
 class Dispensary extends Component {
     render() {
         const{
+            isActive,
+            classes,
             item: {
-                dispensaryId, 
                 displayName,
-                address,
-                license,
-                cmid
             }
         } = this.props;
 
         return (
-            <Card>
+            <Card className={isActive === true ? classes.card_active : classes.card_notactive}>
                 <CardContent >
                 <Typography
                         variant="h6"
@@ -35,7 +60,9 @@ class Dispensary extends Component {
 };
 
 Dispensary.propTypes = {
-    item: PropTypes.object.isRequired
+    item: PropTypes.object.isRequired,
+    isActive: PropTypes.bool.isRequired,
+    classes: PropTypes.object.isRequired
 };
 
 const mapStateToProps = (state) => ({
@@ -46,4 +73,4 @@ const mapDispatchToProps = {
     
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Dispensary);
+export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(Dispensary));

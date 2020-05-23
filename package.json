@@ -37,5 +37,5 @@
 		"production": [ ">0.2%", "not dead", "not op_mini all" ],
 		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
 	},
-	"proxy": "http://localhost:5000/leafvip-dev/us-central1"
+	"proxy": "https://us-central1-leafvip-c42db.cloudfunctions.net/"
 }

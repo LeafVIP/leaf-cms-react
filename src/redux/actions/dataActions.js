@@ -6,11 +6,39 @@ import {
     SET_DISPENSARIES,
     SELECT_DISPENSARY,
     CREATE_DISPENSARY,
-    SET_OFFERS
+    SET_OFFERS,
+    SELECT_OFFER,
+    SET_ERRORS,
+    FILTER_USERS
 } from '../types';
 
 
 import axios from 'axios';
+
+export const createDispensary = (newDispensary) => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+
+    console.log('dataActions.createDispenseary: ' +newDispensary);
+    axios
+    .post('/createDispensary', newDispensary)
+    .then(res => {
+        dispatch({
+            type: CREATE_DISPENSARY,
+            payload: res.data
+        })
+
+        dispatch(clearErrors());
+        dispatch(getDispensaries());
+    })
+    .catch(err => {
+        dispatch({
+            type: SET_ERRORS,
+            payload: err.response.data
+        });
+    });
+};
 
 // get all user's in the database
 export const getUsers = () => (dispatch) => {
@@ -33,6 +61,14 @@ export const getUsers = () => (dispatch) => {
         });
 }
 
+// used by role filtering
+export const setUsers = (users) => (dispatch) => {
+    dispatch({
+        type: SET_USERS,
+        payload: users
+    });
+}
+
 export const setUser = (user) => (dispatch) => {
     dispatch({
         type: SELECT_USER,
@@ -41,10 +77,24 @@ export const setUser = (user) => (dispatch) => {
 
 }
 
+export const filterUsers = (users) => (dispatch) => {
+    dispatch({
+        type: FILTER_USERS,
+        payload: users
+    })
+}
+
 export const selectDispensary = (dispensary) => (dispatch) => {
     dispatch({
         type: SELECT_DISPENSARY,
         payload: dispensary
+    })
+}
+
+export const selectOffer = (offer) => (dispatch) => {
+    dispatch({
+        type: SELECT_OFFER,
+        payload: offer
     })
 }
 // get all dispensaries in the database

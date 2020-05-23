@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import Offer from '../Offer';
+import OfferDetails from '../OfferDetails';
 import OfferSkeleton from '../../util/OfferSkeleton';
 import { connect } from 'react-redux';
-import { getOffers } from '../../redux/actions/dataActions';
+import { getOffers, selectOffer } from '../../redux/actions/dataActions';
 
 
 const styles = {
@@ -23,8 +24,13 @@ class OfferPage extends Component {
     }
 
     render () {
-        const { offers, loading } = this.props.data;
+        const { offers, offer, loading } = this.props.data;
 
+        let offerDetailsMarkup = !loading && offer !== null ? (
+            <OfferDetails keuy="offerDetails" offer={offer}/>     
+        ) : (
+            <div>Loading...</div>
+        )
         let offersMarkup = !loading & offers !== null ? (
             offers.map((offer) =>
             <div>
@@ -41,9 +47,13 @@ class OfferPage extends Component {
 
         return(
             <Grid container spacing={10}>
-                <Grid item sm={8} xs={8}>
+                <Grid item sm={6} xs={4}>
                     {offersMarkup}
                 </Grid>
+            
+                <Grid item sm={6} xs={4}>
+                    {offerDetailsMarkup}
+              </Grid>
             </Grid>
         )
     }
