@@ -8,12 +8,14 @@ import {
     APPROVE_USER,
     UNAPPROVE_USER, 
     SET_OFFERS,
-    SELECT_OFFER} from '../types';
+    SET_COMPLETED_OFFERS,
+    SELECT_OFFER,
+    SET_DISPENSARY_USERS} from '../types';
 
     const initialState = {
         users: [],
+        dispensaryUsers: [],
         user: {},
-        userFilter: [],
         dispensaries: [],
         dispensary: {},
         items: [],
@@ -38,17 +40,32 @@ import {
                     user: action.payload[0],
                     userFilter: action.payload
                 }; 
+                case SET_DISPENSARY_USERS:
+                    return {
+                        ...state,
+                        loading: false,
+                        dispensaryUsers: action.payload
+                    }
                 case SELECT_USER: 
                 return {
                     ...state,
                     loading: false,
                      user: action.payload
                 }
+
+
+        case SET_COMPLETED_OFFERS:
+            return {
+                ...state,
+                loading: false,
+                offers: action.payload
+            }
+
                 case FILTER_USERS:
                     return {
                         ...state,
                         loading: false,
-                        userFilter: action.payload
+                        users: action.payload
                     }
                 case APPROVE_USER:
                 case UNAPPROVE_USER:

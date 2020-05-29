@@ -75,6 +75,7 @@ class User extends Component {
                 badgeState,
                 badgeFrontUrl,
                 phoneNumber,
+                createdAt
             }
         } = this.props;
 
@@ -95,9 +96,8 @@ class User extends Component {
         return(
             <Card className={this.props.isActive ? classes.card_active : classes.card_notactive}>
             {badgeMarkup}
-         <CardMedia
-             image={badgeFrontUrl} 
-             className={classes.image} />      
+        
+    
              <Button onClick={selectUser}>
                  <CardContent className={classes.content}>
                  <Typography

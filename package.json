@@ -1,28 +1,30 @@
 {
 	"name": "leafvip-admin-dashboard",
 	"version": "0.1.0",
+	"homepage": "https://leafvip-dev.web.app/",
 	"private": true,
 	"dependencies": {
-		"@material-ui/core": "^4.9.12",
+		"@material-ui/core": "^4.10.0",
 		"@material-ui/icons": "^4.9.1",
-		"@material-ui/styles": "^4.9.10",
+		"@material-ui/styles": "^4.10.0",
 		"@testing-library/jest-dom": "^4.2.4",
 		"@testing-library/react": "^9.3.2",
 		"@testing-library/user-event": "^7.1.2",
 		"axios": "^0.19.2",
 		"cors": "^2.8.5",
-		"dayjs": "^1.8.26",
+		"dayjs": "^1.8.28",
 		"jwt-decode": "^2.2.0",
 		"prop-types": "^15.7.2",
 		"react": "^16.13.1",
 		"react-dom": "^16.13.1",
 		"react-redux": "^7.2.0",
-		"react-router-dom": "^5.1.2",
-		"react-scripts": "3.4.1",
+		"react-router-dom": "^5.2.0",
+		"react-scripts": "^3.4.1",
 		"react-search-box": "^2.0.2",
 		"react-search-field": "^1.0.0",
 		"redux": "^4.0.5",
-		"redux-thunk": "^2.3.0"
+		"redux-thunk": "^2.3.0",
+		"thunk": "0.0.1"
 	},
 	"scripts": {
 		"start": "react-scripts start",
@@ -34,8 +36,16 @@
 		"extends": "react-app"
 	},
 	"browserslist": {
-		"production": [ ">0.2%", "not dead", "not op_mini all" ],
-		"development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ]
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
 	},
 	"proxy": "https://us-central1-leafvip-c42db.cloudfunctions.net/"
 }

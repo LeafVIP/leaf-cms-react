@@ -1,4 +1,4 @@
-import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED, SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
+import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
 import axios from 'axios';
 
 export const signupUser = (newUserData, history) => (dispatch) => {
@@ -53,6 +53,7 @@ export const getUser = (authId) => (dispatch) => {
         .get('/users')
         
 }
+
 export const getUserData = () => (dispatch) => {
     dispatch({ type: LOADING_USER });
 
@@ -72,6 +73,8 @@ export const getUserData = () => (dispatch) => {
             })
         });
 };
+
+
 
 export const uploadImage = (formData) => (dispatch) => {
     dispatch({ type: LOADING_USER });

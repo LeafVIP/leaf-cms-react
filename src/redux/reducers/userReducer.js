@@ -1,7 +1,7 @@
 import {
     LOADING_USER,
     SET_AUTHENTICATED,
-    SET_UNAUTHENTICATED
+    SET_UNAUTHENTICATED,
 } from '../types';
 
 
@@ -9,7 +9,8 @@ const initialState = {
     authenticated: false,
     loading: false,
     credentials: {},
-    users: []
+    users: [],
+    offers: []
 }
 
 export default function (state = initialState, action) {
@@ -29,7 +30,7 @@ export default function (state = initialState, action) {
                 ...state,
                 loading: true
             }
-            
+ 
         default:
             return state;
 

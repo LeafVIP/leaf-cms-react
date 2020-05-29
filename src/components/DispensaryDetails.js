@@ -37,9 +37,6 @@ class DispensaryDetails extends Component {
       dispensary
     } = this.props
 
-    const approve = () => {
-    
-    }
 
    return (
      this.props.user !== null ? (

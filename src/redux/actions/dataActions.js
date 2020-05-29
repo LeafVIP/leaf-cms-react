@@ -4,6 +4,8 @@ import {
     SELECT_USER,
     CLEAR_ERRORS,
     SET_DISPENSARIES,
+    SET_DISPENSARY_USERS,
+    SET_COMPLETED_OFFERS,
     SELECT_DISPENSARY,
     CREATE_DISPENSARY,
     SET_OFFERS,
@@ -97,6 +99,29 @@ export const selectOffer = (offer) => (dispatch) => {
         payload: offer
     })
 }
+
+export const getDispensaryUsers = (id) => (dispatch) => {
+    console.log('getDispensaryUsers: ' +id);
+    dispatch({type: LOADING_DATA});
+    axios
+        .post('/dispensaryUsers',{
+            dispensaryId: id
+        })
+        .then(res => {
+            dispatch({
+                type: SET_DISPENSARY_USERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.error(err);
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        });   
+};
+
 // get all dispensaries in the database
 export const getDispensaries = () => (dispatch) => {
     dispatch({
@@ -118,6 +143,25 @@ export const getDispensaries = () => (dispatch) => {
 
 }
 
+export const getCompletedOffers = (authId) => (dispatch) => {
+    dispatch({type: LOADING_DATA});
+    axios
+        .get('/associatedOffersData')
+        .then(res => {
+            dispatch({
+                type: SET_COMPLETED_OFFERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.error(err);
+            dispatch({
+                type: SET_ERRORS,
+                payload: err.response.data
+            })
+        });
+};
+
 export const getOffers = () => (dispatch) => {
     dispatch({
         type: LOADING_DATA
@@ -136,6 +180,8 @@ export const getOffers = () => (dispatch) => {
             console.log(err);
         })
 }
+
+
 
 export const clearErrors = () => (dispatch) => {
     dispatch({ type: CLEAR_ERRORS });
