@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "default": "leafvip-dev",
+    "firebase-react-deploy": "leafvip-dev"
+  }
+}
