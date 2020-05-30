@@ -1,12 +1,13 @@
 import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getDispensaries, selectDispensary, getDispensaryUsers } from '../../redux/actions/dataActions';
+import { getDispensaries, selectDispensary, getTop50 } from '../../redux/actions/dispensaryActions';
 import Dispensary from '../Dispensary';
 import Grid from '@material-ui/core/Grid';
 import CreateDispensary from '../CreateDispensary';
 import DispensaryDetails from '../DispensaryDetails';
-// import DispensaryUserTable from '../tables/DispensaryUserTable';
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from '@material-ui/core/Link';
 import DispensarySkeleton from '../../util/DispensarySkeleteon';
 
 
@@ -20,7 +21,7 @@ const styles = {
 }
 class DispensaryPage extends Component {
     componentDidMount() {
-        this.props.getDispensaries();
+        this.props.getTop50();
     }
     render() {
         const { dispensaries, dispensaryUsers, dispensary, loading } = this.props.data;
@@ -36,7 +37,7 @@ class DispensaryPage extends Component {
              className={styles.card}
              key={dispo.displayName}
              item={dispo}
-             isActive={dispo == dispensary} />
+             isActive={dispo === dispensary} />
            <br />
        </div>
        )  
@@ -57,9 +58,32 @@ class DispensaryPage extends Component {
           </Grid>
          )
 
+         const filterTop50 = () => {
+          this.props.getTop50();
+      }
+
+      const filterAll = () => {
+        this.props.getDispensaries();
+    }
+
           return (
             <Fragment>
-                  <CreateDispensary />
+                  <Grid container spacing={2}>
+                  <Grid item>
+                         <CreateDispensary />
+                    </Grid>
+                    <Grid item>
+                      <Breadcrumbs aria-label="breadcrumb">
+				                <Link color="inherit" onClick={filterTop50} >Top 50</Link>
+				                <Link color="inherit" onClick={filterAll} >All</Link>
+		                </Breadcrumbs>
+
+                    </Grid>
+                   
+                
+                  </Grid>
+                  
+                  
             
                   <Grid container spacing={10}>
                         <Grid item sm={6} xs={8}>
@@ -86,6 +110,7 @@ class DispensaryPage extends Component {
 DispensaryPage.propTypes = {
     getDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
+    getTop50: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
 };
 
@@ -95,7 +120,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = {
    getDispensaries ,
-   selectDispensary
+   selectDispensary,
+   getTop50
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DispensaryPage);

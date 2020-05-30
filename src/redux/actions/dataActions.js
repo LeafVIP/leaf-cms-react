@@ -17,30 +17,7 @@ import {
 
 import axios from 'axios';
 
-export const createDispensary = (newDispensary) => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
-    });
 
-    console.log('dataActions.createDispenseary: ' +newDispensary);
-    axios
-    .post('/createDispensary', newDispensary)
-    .then(res => {
-        dispatch({
-            type: CREATE_DISPENSARY,
-            payload: res.data
-        })
-
-        dispatch(clearErrors());
-        dispatch(getDispensaries());
-    })
-    .catch(err => {
-        dispatch({
-            type: SET_ERRORS,
-            payload: err.response.data
-        });
-    });
-};
 
 // get all user's in the database
 export const getUsers = () => (dispatch) => {
@@ -86,12 +63,7 @@ export const filterUsers = (users) => (dispatch) => {
     })
 }
 
-export const selectDispensary = (dispensary) => (dispatch) => {
-    dispatch({
-        type: SELECT_DISPENSARY,
-        payload: dispensary
-    })
-}
+
 
 export const selectOffer = (offer) => (dispatch) => {
     dispatch({
@@ -121,27 +93,6 @@ export const getDispensaryUsers = (id) => (dispatch) => {
             })
         });   
 };
-
-// get all dispensaries in the database
-export const getDispensaries = () => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
-    });
-
-    axios
-        .get('/dispensaries')
-        .then(res => {
-            console.log(res.data);
-            dispatch({
-                type: SET_DISPENSARIES,
-                payload: res.data
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        });
-
-}
 
 export const getCompletedOffers = (authId) => (dispatch) => {
     dispatch({type: LOADING_DATA});

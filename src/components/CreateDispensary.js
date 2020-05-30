@@ -11,7 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
-import { createDispensary, clearErrors, getDispensaries } from '../redux/actions/dataActions';
+import { createDispensary, clearErrors, getDispensaries } from '../redux/actions/dispensaryActions';
 
 const styles = (theme) => ({
   

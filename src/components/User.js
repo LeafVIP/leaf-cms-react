@@ -1,19 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import MyButton from '../util/MyButton';
 import {approveBadge} from '../redux/actions/userActions';
 import {setUser} from '../redux/actions/dataActions';
-
-
-// MUI
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
-import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import ErrorIcon from '@material-ui/icons/Error';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
+import Timestamp from 'firestore';
+
+
 
 // Redux
 import { connect } from 'react-redux';
@@ -42,7 +40,7 @@ const styles = {
     },
     content: {
       padding: 25,
-      objectFit: 'cover'
+    //   objectFit: 'cover'
     },
     badgeState: {
         position: 'absolute',
@@ -63,24 +61,25 @@ class User extends Component {
         return state === "approved" ? "green" : "yellow";
     }
 
+   
     render() {
         // dayjs.extend(relativeTime);
         const {
             classes,
-            isActive,
             user: {
                 firstName,
                 lastName,
                 email,
                 badgeState,
-                badgeFrontUrl,
                 phoneNumber,
-                createdAt
             }
         } = this.props;
 
         const selectUser = () => {
             this.props.setUser(this.props.user);
+        }
+        const timestamp = (date) => {
+            return Timestamp(date);
         }
   
         let badgeMarkup =  badgeState === "approved" ? (
@@ -94,18 +93,19 @@ class User extends Component {
                 )
 
         return(
+
+          
             <Card className={this.props.isActive ? classes.card_active : classes.card_notactive}>
             {badgeMarkup}
-        
-    
              <Button onClick={selectUser}>
-                 <CardContent className={classes.content}>
+                 <CardContent>
                  <Typography
                      variant="subtitle1"
                      color="textPrimary">
                          {`${firstName} ${lastName}`} <br />
                           {email}<br />
-                         {phoneNumber}
+                         {phoneNumber} 
+              
                      </Typography> 
              </CardContent>   
              </Button>   

@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import SubNav from '../ui/UserSubNav';
 import User from '../User';
 import UserDetails from '../UserDetails';
-import CompletedOffersTable from '../tables/CompletedOffersTable';
 import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
 import { getUsers, setUser,getCompletedOffers } from '../../redux/actions/dataActions';
@@ -36,14 +35,13 @@ class UserPage extends Component {
             <User 
               key={data.authId}
               user={data}
-              isActive={data == user} />
+              isActive={data === user} />
         )  
            : (
            <UserSkeleteon />
           );
 
-        let completedOffersTableMarkup = !loading && offers
-
+    
           return (
            <Fragment>
              <SubNav />
