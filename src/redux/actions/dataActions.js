@@ -3,13 +3,8 @@ import {
     SET_USERS,
     SELECT_USER,
     CLEAR_ERRORS,
-    SET_DISPENSARIES,
     SET_DISPENSARY_USERS,
     SET_COMPLETED_OFFERS,
-    SELECT_DISPENSARY,
-    CREATE_DISPENSARY,
-    SET_OFFERS,
-    SELECT_OFFER,
     SET_ERRORS,
     FILTER_USERS
 } from '../types';
@@ -65,12 +60,7 @@ export const filterUsers = (users) => (dispatch) => {
 
 
 
-export const selectOffer = (offer) => (dispatch) => {
-    dispatch({
-        type: SELECT_OFFER,
-        payload: offer
-    })
-}
+
 
 export const getDispensaryUsers = (id) => (dispatch) => {
     console.log('getDispensaryUsers: ' +id);
@@ -94,6 +84,7 @@ export const getDispensaryUsers = (id) => (dispatch) => {
         });   
 };
 
+
 export const getCompletedOffers = (authId) => (dispatch) => {
     dispatch({type: LOADING_DATA});
     axios
@@ -113,24 +104,6 @@ export const getCompletedOffers = (authId) => (dispatch) => {
         });
 };
 
-export const getOffers = () => (dispatch) => {
-    dispatch({
-        type: LOADING_DATA
-    });
-
-    axios
-        .get('/offers')
-        .then(res => {
-            console.log(res.data);
-            dispatch({
-                type: SET_OFFERS,
-                payload: res.data
-            })
-        })
-        .catch(err => {
-            console.log(err);
-        })
-}
 
 
 

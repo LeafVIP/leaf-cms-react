@@ -5,6 +5,8 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
+import Grid from '@material-ui/core/Grid';
+
 import { connect } from 'react-redux';
 
 const styles = {
@@ -47,12 +49,44 @@ class Dispensary extends Component {
         return (
             <Card className={isActive === true ? classes.card_active : classes.card_notactive}>
                 <CardContent >
-                <Typography
+                    <Grid container spacing={4}>
+
+                    <Grid item>
+                    <Typography
                         variant="h6"
                         color="textPrimary">
                             {displayName }
-                        
                         </Typography> 
+                    </Grid>
+
+                    <Grid item>
+                    <Typography
+                        variant="body"
+                        color="textPrimary">
+                            <div>leaf bt</div>
+                        </Typography> 
+                    </Grid>
+
+                    <Grid item>
+                    <Typography
+                        variant="body"
+                        color="textPrimary">
+                            <div>bt</div>
+                        </Typography> 
+                    </Grid>
+
+                    <Grid item>
+                    <Typography
+                        variant="body"
+                        color="textPrimary">
+                            <div>%</div>
+                        </Typography> 
+                    </Grid>
+                    
+               
+                   
+
+                        </Grid>
                 </CardContent>
             </Card>
         );

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import Offer from '../Offer';
 import OfferDetails from '../OfferDetails';
 import OfferSkeleton from '../../util/OfferSkeleton';
 import { connect } from 'react-redux';
-import { getOffers, selectOffer } from '../../redux/actions/dataActions';
-
+import { getOffers } from '../../redux/actions/offerActions';
+import CreateOffer from '../CreateOffer';
 
 const styles = {
     container: {
@@ -46,15 +46,24 @@ class OfferPage extends Component {
           );
 
         return(
+            <Fragment>
+
+            <Grid container spacing={2}>
+                <Grid item>
+                    <CreateOffer />
+                </Grid>
+            </Grid>
+
+
             <Grid container spacing={10}>
                 <Grid item sm={6} xs={4}>
                     {offersMarkup}
                 </Grid>
-            
                 <Grid item sm={6} xs={4}>
                     {offerDetailsMarkup}
               </Grid>
             </Grid>
+            </Fragment>
         )
     }
 }
