@@ -43,8 +43,13 @@ class Dispensary extends Component {
             classes,
             item: {
                 displayName,
+                users
             }
         } = this.props;
+
+        const numberOfLeafUsers = (users) => {
+            return users.length;
+        }
 
         return (
             <Card className={isActive === true ? classes.card_active : classes.card_notactive}>
@@ -63,7 +68,7 @@ class Dispensary extends Component {
                     <Typography
                         variant="body"
                         color="textPrimary">
-                            <div>leaf bt</div>
+                            {users !== undefined ? users.length : 0} <div>leaf users</div>
                         </Typography> 
                     </Grid>
 
