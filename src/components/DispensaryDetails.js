@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 // MUI stuff
 import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 
@@ -41,6 +42,7 @@ class DispensaryDetails extends Component {
    return (
      this.props.user !== null ? (
        <div className={styles.root}>
+         <Paper>
       <Grid 
         container
         spacing={2}
@@ -102,6 +104,7 @@ class DispensaryDetails extends Component {
           </Grid>
 
         </Grid>
+        </Paper>
         </div>
 
       ) : (

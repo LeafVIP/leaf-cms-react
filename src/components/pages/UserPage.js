@@ -1,23 +1,24 @@
 import React, { Component,Fragment } from 'react';
 import Search from '../Search';
 import PropTypes from 'prop-types';
-import SubNav from '../ui/UserSubNav';
-import User from '../User';
-import UserDetails from '../UserDetails';
+import SubNav from '../users/UserSubNav';
+import User from '../users/User';
+import UserDetails from '../users/UserDetails';
 import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
-import { getUsers, setUser,getCompletedOffers } from '../../redux/actions/dataActions';
-import {approveBadge } from '../../redux/actions/userActions';
+import { getCompletedOffers} from '../../redux/actions/dataActions';
+import { getUserData, setUser } from '../../redux/actions/userActions';
 import Grid from '@material-ui/core/Grid';
+import  CircularProgress from '@material-ui/core/CircularProgress';
 
 class UserPage extends Component {
 
     componentDidMount() {
-        this.props.getUsers();
+        this.props.getUserData();
     }
    
     render() {
-        const  { users, user, offers, loading } = this.props.data;
+        const  { users, user, loading } = this.props.data;
 
         let userDetailsMarkup = !loading && user !== null ?
         (
@@ -25,20 +26,20 @@ class UserPage extends Component {
         )
         :
         (
-          <div>
-            Loading...
-           </div>
+          <CircularProgress color="secondary"/>
         )
 
         let recentUsersMarkup = !loading && users !== null ? 
         users.map((data) =>
+        <Grid item xs={12}>
             <User 
               key={data.authId}
               user={data}
               isActive={data === user} />
+              </Grid>
         )  
            : (
-           <UserSkeleteon />
+           <CircularProgress color="secondary" />
           );
 
     
@@ -47,13 +48,15 @@ class UserPage extends Component {
              <SubNav />
              <Search items={users}/>
              <br />
-            <Grid container spacing={10}>
-                <Grid item sm={6} xs={6}> 
-                    {recentUsersMarkup}
+            <Grid container spacing={3}>
+                <Grid item sm={6} xs={3}> 
+                    <Grid container spacing={3}>
+                            {recentUsersMarkup}
+                    </Grid>
                 </Grid>
            
         
-                      <Grid item sm={6} xs={6}>
+                      <Grid item sm={6} xs={3}>
                           {userDetailsMarkup}
                       </Grid>
                
@@ -65,8 +68,7 @@ class UserPage extends Component {
 }
 
 UserPage.propTypes = {
-    getUsers: PropTypes.func.isRequired,
-    approveBadge: PropTypes.func.isRequired,
+    getUserData: PropTypes.func.isRequired,
     getCompletedOffers: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     user: PropTypes.object,
@@ -81,6 +83,6 @@ const mapStateToProps = (state) => ({
 
   export default connect(
     mapStateToProps,
-    { getUsers, setUser, approveBadge, getCompletedOffers }
+    { getUserData, setUser, getCompletedOffers }
   )(UserPage);
   

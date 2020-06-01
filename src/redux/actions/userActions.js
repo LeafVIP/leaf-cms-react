@@ -1,4 +1,4 @@
-import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI } from '../types';
+import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS} from '../types';
 import axios from 'axios';
 
 export const signupUser = (newUserData, history) => (dispatch) => {
@@ -74,7 +74,27 @@ export const getUserData = () => (dispatch) => {
         });
 };
 
+export const setUser = (user) => (dispatch) => {
+    dispatch({
+        type: SELECT_USER,
+        payload: user
+    })
 
+}
+
+export const setUsers = (users) => (dispatch) => {
+    dispatch({
+        type: SET_USERS,
+        payload: users
+    });
+}
+
+export const filterUsers = (users) => (dispatch) => {
+    dispatch({
+        type: FILTER_USERS,
+        payload: users
+    })
+}
 
 export const uploadImage = (formData) => (dispatch) => {
     dispatch({ type: LOADING_USER });
@@ -86,11 +106,13 @@ export const uploadImage = (formData) => (dispatch) => {
       .catch((err) => console.log(err));
   };
   
-  export const approveBadge = (authId) => (dispatch) => {
+
+  export const updateUser = (authId, userData) => (dispatch) => {
     dispatch({type: LOADING_USER});
     axios
-        .post('/approveBadge', {
-            userId: authId
+        .post('/updateUser', {
+            userId: authId,
+            userData: userData
         })
         .then(() => {
             dispatch(getUserData());
@@ -98,7 +120,8 @@ export const uploadImage = (formData) => (dispatch) => {
         .catch((err) => {
             console.error(err);
         })
-  };
+  }
+
 
 export const setAuthorizationHeader = (token) => {
     const FBIdToken = `Bearer ${token}`;

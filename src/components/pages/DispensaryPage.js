@@ -8,7 +8,14 @@ import CreateDispensary from '../CreateDispensary';
 import DispensaryDetails from '../DispensaryDetails';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
+import Table from '@material-ui/core/Table';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableCell from '@material-ui/core/TableCell';
 import DispensarySkeleton from '../../util/DispensarySkeleteon';
+import DispensaryUserTable from '../tables/DispensaryUserTable';
+import { TableRow, TableBody } from '@material-ui/core';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const styles = {
@@ -24,7 +31,7 @@ class DispensaryPage extends Component {
         this.props.getTop50();
     }
     render() {
-        const { dispensaries, dispensaryUsers, dispensary, loading } = this.props.data;
+        const { dispensaries, dispensary, users, loading } = this.props.data;
 
         const setDispensary = (dispensary) => () => {
           this.props.selectDispensary(dispensary); 
@@ -32,31 +39,21 @@ class DispensaryPage extends Component {
 
        let dispensariesMarkup = !loading && dispensaries !== null ? 
        dispensaries.map((dispo) =>
-       <div onClick={setDispensary(dispo)} key={dispo.id}>
-           <Dispensary 
-             className={styles.card}
-             key={dispo.displayName}
-             item={dispo}
-             isActive={dispo === dispensary} />
-           <br />
-       </div>
+  
+        <TableRow onClick={setDispensary}>
+          <TableCell>{dispo.displayName}</TableCell>
+          <TableCell>{dispo.users.length}</TableCell>
+          <TableCell>{0}</TableCell>
+          <TableCell>{100}</TableCell>
+        </TableRow>
+   
        )  
           : (
-          <DispensarySkeleton />
+          <CircularProgress color="secondary" />
          );
 
 
-         let userTableMarkup = !loading && dispensaryUsers !== null ? 
-         (
-              <Grid item>
-                <div>users</div>
-                     {/* <DispensaryUserTable users={dispensaryUsers} /> */}
-               </Grid>
-         ): (
-          <Grid item>
-            <div>loading users...</div>
-          </Grid>
-         )
+        
 
          const filterTop50 = () => {
           this.props.getTop50();
@@ -65,6 +62,14 @@ class DispensaryPage extends Component {
       const filterAll = () => {
         this.props.getDispensaries();
     }
+
+    const headCells = [
+      { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+      { id: 'users', numeric: true, disablePadding: false, label: 'Users' },
+      { id: 'employees', numeric: true, disablePadding: false, label: 'Employees' },
+      { id: 'saturation', numeric: true, disablePadding: false, label: 'saturation' },
+    ];
+
 
           return (
             <Fragment>
@@ -87,19 +92,20 @@ class DispensaryPage extends Component {
             
                   <Grid container spacing={10}>
                         <Grid item sm={6} xs={8}>
-                              {dispensariesMarkup}
+                              {/* {dispensariesMarkup} */}
+                              <Table aria-label="dispensaries">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell align="left" >name</TableCell>
+                                    <TableCell align="center>">users</TableCell>
+                                    <TableCell align="center>">employees</TableCell>
+                                    <TableCell align="center>">saturation</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                {dispensariesMarkup}
+                              </Table>
                         </Grid>
-                        <Grid item sm={4} xs={6}>
-                          <Grid container spacing={4}>
-                              <Grid item>
-                                  <DispensaryDetails dispensary={dispensary} />
-                              </Grid>
-                            {userTableMarkup}
-                              
-                              
-                          </Grid>
-                            
-                        </Grid>
+
                         
                     </Grid>
               </Fragment>
@@ -115,7 +121,7 @@ DispensaryPage.propTypes = {
 };
 
 const mapStateToProps = (state) => ({
-    data: state.data
+    data: state.data,
 });
 
 const mapDispatchToProps = {

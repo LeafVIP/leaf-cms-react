@@ -1,15 +1,13 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-
-// MUI stuff
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
-
-//Redux
+import MyButton from '../../util/MyButton';
+import EditUserDetails from './EditUserDetails';
 import { connect } from 'react-redux';
-import {approveBadge} from '../redux/actions/userActions';
+import {updateUser} from '../../redux/actions/userActions';
 
 
 const styles = {
@@ -18,7 +16,9 @@ const styles = {
   },
   badgeImage: {
     minWidth: 200,
-    maxWidth: 400
+    minHeight: 150,
+    maxWidth: 300,
+    maxHeight: 250
   },
 
   CardMedia: {
@@ -39,8 +39,12 @@ class UserDetails extends Component {
       user
     } = this.props
 
-    const approve = () => {
-      this.props.approveBadge(user.authUid);
+    const approveBadge = () => {
+      this.props.updateUser(user.authUid, {badgeState: 'approved'});
+    }
+
+    const unapproveBadge = () => {
+      this.props.updateUser(user.authUid, {badgeState: 'inReview'});
     }
 
    return (
@@ -48,39 +52,56 @@ class UserDetails extends Component {
        <div className={styles.root}>
       <Grid 
         container
-        spacing={2}
+        spacing={3}
         direction="column"
         justify="center"
         >
           <Grid item xs={10}>
           <Grid item >
-            <Typography
-              variant="caption"
-              color="secondary">
-                badge   
-            </Typography> 
+            <Grid container spacing={6}>
+                      <Grid item>
+                              <Typography
+                              variant="caption"
+                              color="body">
+                                badge state
+                            </Typography> 
+                      </Grid>
+
+                      <Grid item>
+                              <Typography
+                              variant="subheader">
+                               {user.badgeState}
+                            </Typography> 
+                      </Grid>
+
+                      <Grid item>
+                              {user.badgeState === "inReview" ? (
+                               <Button 
+                                 color="#FF00CC"
+                                 onClick={approveBadge} >approve</Button>
+                                ): (
+                                  <Button 
+                                  color="#FF00CC"
+                                  onClick={unapproveBadge}>unapprove</Button>
+                                  )}   
+                       </Grid>
+
             </Grid>
-            <Grid item >
+         </Grid>
+         <Grid item >
               <img className={classes.badgeImage} src={user.badgeFrontUrl} alt={user.badgeFrontUrl} />
             </Grid>
-            <Grid item>
-             {user.badgeState === "inReview" ? (
-               <Button 
-                color="#FF00CC"
-                onClick={approve} >approve badge</Button>
-               ): (
-                 <div>Approved</div>
-                 )}
-            </Grid>
-          </Grid>
+        </Grid>
 
           <Grid item xs={10}>
+            
             <Grid item >
             <Typography
               variant="caption"
               color="secondary">
                 name   
             </Typography> 
+            <EditUserDetails user={user}/>
             </Grid>
             <Grid item >
               {user.firstName} {user.lastName}
@@ -170,7 +191,7 @@ class UserDetails extends Component {
 UserDetails.propTypes = {
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  approveBadge: PropTypes.func.isRequired
+  updateUser: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -179,7 +200,7 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = {
-  approveBadge
+  updateUser
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserDetails));

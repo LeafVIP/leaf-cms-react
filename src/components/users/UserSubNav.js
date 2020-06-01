@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {setUsers, getUsers, filterUsers} from '../../redux/actions/dataActions';
+import {setUsers, getUserData, filterUsers} from '../../redux/actions/userActions';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
@@ -16,7 +16,7 @@ const styles = {
 };
 class UserSubNav extends Component {
 	render() {
-        const { users, getUsers, filterUsers, setUsers } = this.props;
+        const { users, getUserData, filterUsers, setUsers } = this.props;
 
        
         const clearFilter = () => {
@@ -200,7 +200,7 @@ class UserSubNav extends Component {
 
 UserSubNav.propTypes = {
     users: PropTypes.array.isRequired,
-    getUsers: PropTypes.func.isRequired,
+    getUserData: PropTypes.func.isRequired,
     setUsers: PropTypes.func.isRequired,
     filterUsers: PropTypes.func.isRequired
 };
@@ -211,7 +211,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-    getUsers,
+    getUserData,
     setUsers,
     filterUsers
 };

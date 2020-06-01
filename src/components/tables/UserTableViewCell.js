@@ -12,14 +12,14 @@ class UserTableViewCell extends Component {
             lastName,
             email,
             role,
-        }} = this.props.data;
+        }} = this.props;
         return (
             <TableRow key={authId}>
               <TableCell component="th" scope="row">
-                {firstName} {lastName}
+                <div>name</div>
               </TableCell>
-              <TableCell align="right">{role}</TableCell>
-              <TableCell align="right">{email}</TableCell>
+              <TableCell align="right">role</TableCell>
+              <TableCell align="right">email</TableCell>
             </TableRow>
         )
     }
@@ -30,7 +30,7 @@ UserTableViewCell.propTypes = {
 }   
 
 const mapStateToProps = (state) => ({
-    data: state.data
+    user: state.data.user
 })
 
 export default connect(mapStateToProps, {})(UserTableViewCell);

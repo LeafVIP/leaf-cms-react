@@ -1,56 +1,63 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {approveBadge} from '../redux/actions/userActions';
-import {setUser} from '../redux/actions/dataActions';
-import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import {setUser} from '../../redux/actions/userActions';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
 import Typography from '@material-ui/core/Typography';
 import ErrorIcon from '@material-ui/icons/Error';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+import ButtonBase from '@material-ui/core/ButtonBase';
 import Timestamp from 'firestore';
-
+import dayjs from 'dayjs';
 
 
 // Redux
 import { connect } from 'react-redux';
 
 const styles = {
-    card: {
-      position: 'relative',
-      display: 'flex',
-      marginBottom: 20
-    },
-    card_active: {
-        position: 'relative',
-        display: 'flex',
-        marginBottom: 20,
-        backgroundColor: '#CCC'
+    root: {
+        flexGrow: 1,
+      },
+      paper: {
+        padding: 2,
+        margin: 'auto',
+        maxWidth: 500,
+      },
+      paper_active: {
+        padding: 2,
+        margin: 'auto',
+        maxWidth: 500,
+        backgroundColor: '#17a800'
     },
 
-    card_notactive: {
-        position: 'relative',
-        display: 'flex',
-        marginBottom: 20,
+    paper_notactive: {
+        padding: 2,
+        margin: 'auto',
+        maxWidth: 500,
         backgroundColor: '#FFFFFF'
     },
-    image: {
-      minWidth: 200,
-    },
-    content: {
-      padding: 25,
-    //   objectFit: 'cover'
-    },
-    badgeState: {
-        position: 'absolute',
-        top: '4px',
-        right: '4px'
-    },
-    approveButton: {
+
+      image: {
+        width: 128,
+        height: 128,
+      },
+      text: {
+          position: 'relative',
+          margin: 10
+      },
+      text_active: {
         position: 'relative',
-        right: '20%'
-    },
+        margin: 10,
+        color: '#FFF'
+      },
+      img: {
+        margin: 'auto',
+        display: 'block',
+        maxWidth: '100%',
+        maxHeight: '100%',
+      },
   };
 
 
@@ -67,11 +74,13 @@ class User extends Component {
         const {
             classes,
             user: {
+                authUid,
                 firstName,
                 lastName,
                 email,
                 badgeState,
                 phoneNumber,
+                createdAt
             }
         } = this.props;
 
@@ -79,7 +88,8 @@ class User extends Component {
             this.props.setUser(this.props.user);
         }
         const timestamp = (date) => {
-            return Timestamp(date);
+        
+            return Timestamp(date)      
         }
   
         let badgeMarkup =  badgeState === "approved" ? (
@@ -94,6 +104,39 @@ class User extends Component {
 
         return(
 
+    <div className={styles.root}>
+        
+      <Paper className={this.props.isActive ? classes.paper_active : classes.paper_notactive}>
+            <Grid item xs container direction="column" spacing={2}>
+            <Button onClick={selectUser}>
+              <Grid item xs>
+
+                <Typography gutterBottom variant="subtitle1" className={this.props.isActive? classes.text_active : classes.text}>
+                    <div>{firstName} {lastName}</div>
+                </Typography>
+                <Typography variant="body2"className={this.props.isActive? classes.text_active : classes.text}>
+                    <div><b>badge state</b> {badgeState}</div>
+                </Typography>
+                <Typography variant="body2" className={this.props.isActive? classes.text_active : classes.text}>
+                    <div><b>firebase id</b> {authUid}</div>
+                </Typography>
+                <Typography variant="body2" className={this.props.isActive? classes.text_active : classes.text}>
+                <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+                </Typography>
+
+                <Typography variant="body2" className={this.props.isActive? classes.text_active : classes.text}>
+                    <div><b>email</b> {email}</div>
+                </Typography>
+
+             
+              </Grid>
+              </Button>
+            </Grid>
+      </Paper>
+     
+    </div>
+
+            /*
           
             <Card className={this.props.isActive ? classes.card_active : classes.card_notactive}>
             {badgeMarkup}
@@ -110,13 +153,13 @@ class User extends Component {
              </CardContent>   
              </Button>   
          </Card>
+         */
         
         )
     }
 }
 
 User.propTypes = {
-    approveBadge: PropTypes.func.isRequired,
     setUser: PropTypes.func.isRequired,
     user: PropTypes.object.isRequired,
     isActive: PropTypes.bool.isRequired,
@@ -127,7 +170,6 @@ const mapStateToProps = (state) => ({
 })
 
 const mapActionsToProps = {
-    approveBadge,
     setUser
 };
 
