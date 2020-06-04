@@ -14,7 +14,6 @@ import { connect } from 'react-redux';
 import { createDispensary, clearErrors, getDispensaries } from '../redux/actions/dispensaryActions';
 
 const styles = (theme) => ({
-  
     submitButton: {
         position: 'relative',
         float: 'right',

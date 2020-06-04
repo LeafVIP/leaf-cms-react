@@ -12,10 +12,13 @@ import Table from '@material-ui/core/Table';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableCell from '@material-ui/core/TableCell';
+import MyButton from '../../util/MyButton';
 import DispensarySkeleton from '../../util/DispensarySkeleteon';
 import DispensaryUserTable from '../tables/DispensaryUserTable';
+import EditIcon from '@material-ui/icons/EditOutlined'
 import { TableRow, TableBody } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import EditDispensary from '../EditDispensary';
 
 
 const styles = {
@@ -27,6 +30,8 @@ const styles = {
     }
 }
 class DispensaryPage extends Component {
+
+
     componentDidMount() {
         this.props.getTop50();
     }
@@ -37,23 +42,30 @@ class DispensaryPage extends Component {
           this.props.selectDispensary(dispensary); 
        };
 
+
+       function saturationRate(users, employees) {
+         if (users == 0 || employees == 0) {
+           return 0;
+         }
+
+         return (users / employees).toFixed(2) * 100;
+       }
+
        let dispensariesMarkup = !loading && dispensaries !== null ? 
        dispensaries.map((dispo) =>
   
         <TableRow onClick={setDispensary}>
           <TableCell>{dispo.displayName}</TableCell>
           <TableCell>{dispo.users.length}</TableCell>
-          <TableCell>{0}</TableCell>
-          <TableCell>{100}</TableCell>
+          <TableCell>{dispo.employees}</TableCell>
+          <TableCell>{saturationRate(dispo.users.length, dispo.employees)}%</TableCell>
+          <TableCell align="left"><EditDispensary /></TableCell>
         </TableRow>
    
        )  
           : (
           <CircularProgress color="secondary" />
          );
-
-
-        
 
          const filterTop50 = () => {
           this.props.getTop50();
@@ -91,22 +103,22 @@ class DispensaryPage extends Component {
                   
             
                   <Grid container spacing={10}>
-                        <Grid item sm={6} xs={8}>
-                              {/* {dispensariesMarkup} */}
-                              <Table aria-label="dispensaries">
+                        <Grid>
+                            { loading ? (<center><CircularProgress color="secondary" /></center>) : ( <Table aria-label="dispensaries">
                                 <TableHead>
                                   <TableRow>
                                     <TableCell align="left" >name</TableCell>
                                     <TableCell align="center>">users</TableCell>
                                     <TableCell align="center>">employees</TableCell>
                                     <TableCell align="center>">saturation</TableCell>
+                             
                                   </TableRow>
                                 </TableHead>
                                 {dispensariesMarkup}
-                              </Table>
+                              </Table>)}
+                             
                         </Grid>
-
-                        
+                       
                     </Grid>
               </Fragment>
           );

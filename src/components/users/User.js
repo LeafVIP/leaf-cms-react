@@ -8,13 +8,10 @@ import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import ButtonBase from '@material-ui/core/ButtonBase';
-import Timestamp from 'firestore';
-import dayjs from 'dayjs';
-
-
-// Redux
 import { connect } from 'react-redux';
+import moment from 'moment';
+import Timestamp from 'firestore'
+import dataReducer from '../../redux/reducers/dataReducer';
 
 const styles = {
     root: {
@@ -79,7 +76,6 @@ class User extends Component {
                 lastName,
                 email,
                 badgeState,
-                phoneNumber,
                 createdAt
             }
         } = this.props;
@@ -87,9 +83,8 @@ class User extends Component {
         const selectUser = () => {
             this.props.setUser(this.props.user);
         }
-        const timestamp = (date) => {
-        
-            return Timestamp(date)      
+        const timestamp = (createdAt) => {
+            return new Date(createdAt._seconds * 1000).toLocaleDateString("en-US")
         }
   
         let badgeMarkup =  badgeState === "approved" ? (
@@ -121,7 +116,7 @@ class User extends Component {
                     <div><b>firebase id</b> {authUid}</div>
                 </Typography>
                 <Typography variant="body2" className={this.props.isActive? classes.text_active : classes.text}>
-                <span>Joined {dayjs(createdAt).format('MMM YYYY')}</span>
+                <span>member since: {timestamp(createdAt)}</span>
                 </Typography>
 
                 <Typography variant="body2" className={this.props.isActive? classes.text_active : classes.text}>
@@ -135,25 +130,6 @@ class User extends Component {
       </Paper>
      
     </div>
-
-            /*
-          
-            <Card className={this.props.isActive ? classes.card_active : classes.card_notactive}>
-            {badgeMarkup}
-             <Button onClick={selectUser}>
-                 <CardContent>
-                 <Typography
-                     variant="subtitle1"
-                     color="textPrimary">
-                         {`${firstName} ${lastName}`} <br />
-                          {email}<br />
-                         {phoneNumber} 
-              
-                     </Typography> 
-             </CardContent>   
-             </Button>   
-         </Card>
-         */
         
         )
     }

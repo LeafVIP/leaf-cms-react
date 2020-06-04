@@ -8,15 +8,6 @@ import { connect } from 'react-redux';
 import { getOffers } from '../../redux/actions/offerActions';
 import CreateOffer from '../CreateOffer';
 
-const styles = {
-    container: {
-        width: '100%',
-        flex: 1,
-        flexDirection:'row',
-        padding: 25
-    }
-}
-
 class OfferPage extends Component {
 
     componentDidMount() {

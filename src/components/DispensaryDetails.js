@@ -99,8 +99,9 @@ class DispensaryDetails extends Component {
             </Typography> 
             </Grid>
             <Grid item>
-              {dispensary.address}
+              {dispensary.address} 
             </Grid>
+         
           </Grid>
 
         </Grid>
