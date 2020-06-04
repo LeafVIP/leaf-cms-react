@@ -1,19 +1,26 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {setUser} from '../../redux/actions/userActions';
 import CheckCircleIcon from '@material-ui/icons/CheckCircleOutline';
 import Typography from '@material-ui/core/Typography';
 import ErrorIcon from '@material-ui/icons/Error';
+import ChatIcon from '@material-ui/icons/Chat';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import { connect } from 'react-redux';
-import moment from 'moment';
-import Timestamp from 'firestore'
-import dataReducer from '../../redux/reducers/dataReducer';
+import {setUser} from '../../redux/actions/userActions';
+import MyButton from '../../util/MyButton';
 
 const styles = {
+    card: {
+        position: 'relative',
+        display: 'flex',
+        marginBottom: 20
+      },
     root: {
         flexGrow: 1,
       },
@@ -36,9 +43,8 @@ const styles = {
         backgroundColor: '#FFFFFF'
     },
 
-      image: {
-        width: 128,
-        height: 128,
+    image: {
+        minWidth: 200
       },
       text: {
           position: 'relative',
@@ -49,12 +55,10 @@ const styles = {
         margin: 10,
         color: '#FFF'
       },
-      img: {
-        margin: 'auto',
-        display: 'block',
-        maxWidth: '100%',
-        maxHeight: '100%',
-      },
+      content: {
+        padding: 25,
+        objectFit: 'cover'
+      }
   };
 
 
@@ -76,9 +80,17 @@ class User extends Component {
                 lastName,
                 email,
                 badgeState,
-                createdAt
-            }
+                createdAt,
+                badgeFrontUrl,
+                dispensary
+            },
+            authenticated
         } = this.props;
+
+        // const deleteButton =
+        // authenticated && userHandle === handle ? (
+        //   <DeleteScream screamId={screamId} />
+        // ) : null;
 
         const selectUser = () => {
             this.props.setUser(this.props.user);
@@ -99,6 +111,49 @@ class User extends Component {
 
         return(
 
+            <Card className={classes.card} onClick={selectUser}>
+            <CardMedia
+              image={badgeFrontUrl}
+              title="Ba image"
+              className={classes.image}
+            />
+            <CardContent className={classes.content}>
+            <Typography
+                variant="h5"
+                color="secondary"
+              >
+                {firstName} {lastName}
+              </Typography>
+
+          
+
+           
+              {/* {deleteButton} */}
+
+
+              <Typography variant="body1">{dispensary}</Typography>
+
+              
+              <Typography
+                variant="body"
+                color="secondary"
+              >
+                {timestamp(createdAt)}
+              </Typography>
+             
+              <MyButton tip="comments">
+                <ChatIcon color="secondary" />
+              </MyButton>
+              {/* <span>{commentCount} comments</span> */}
+              {/* <ScreamDialog
+                screamId={screamId}
+                userHandle={userHandle}
+                openDialog={this.props.openDialog}
+              /> */}
+            </CardContent>
+          </Card>
+
+            /*
     <div className={styles.root}>
         
       <Paper className={this.props.isActive ? classes.paper_active : classes.paper_notactive}>
@@ -130,7 +185,7 @@ class User extends Component {
       </Paper>
      
     </div>
-        
+        */
         )
     }
 }
