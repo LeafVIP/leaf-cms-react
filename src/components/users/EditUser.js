@@ -79,6 +79,18 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
                         <ListItemText primary="Phone" secondary={user.phoneNumber} />
                     </ListItem>
                     <Divider />
+                    <ListItem>
+                        <ListItemText primary="Platform" secondary={user.platform} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                        <ListItemText primary="Version" secondary={user.version} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                        <ListItemText primary="Push Notification" secondary={(user.fcmToken === undefined || user.fcmToken === '' ) ? 'Disabled' : 'Enabled' } />
+                    </ListItem>
+                    <Divider />
                     < ListItem button value={user} onClick={onBadgeClick}>
                         <ListItemText primary="Badge State" secondary={user.badgeState} />
                     </ListItem>
