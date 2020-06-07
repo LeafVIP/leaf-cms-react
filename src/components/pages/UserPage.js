@@ -1,17 +1,21 @@
-import React, { Component,Fragment } from 'react';
-import Search from '../Search';
+import React, { Component,Fragment, useState } from 'react';
+import Search from '../../util/Search';
 import PropTypes from 'prop-types';
 import SubNav from '../users/UserSubNav';
-import User from '../users/User';
-import UserDetails from '../users/UserDetails';
-import UserSkeleteon from '../../util/UserSkeleton';
 import { connect } from 'react-redux';
 import { getCompletedOffers} from '../../redux/actions/dataActions';
-import { getUserData, setUser } from '../../redux/actions/userActions';
+import { getUserData, updateUser, setUser } from '../../redux/actions/userActions';
 import Grid from '@material-ui/core/Grid';
-import  CircularProgress from '@material-ui/core/CircularProgress';
+import UsersTable from '../users/UsersTable'
+import EditUser from '../users/EditUser';
+
 
 class UserPage extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {open: false}
+  }
 
     componentDidMount() {
         this.props.getUserData();
@@ -20,46 +24,50 @@ class UserPage extends Component {
     render() {
         const  { users, user, loading } = this.props.data;
 
-        let userDetailsMarkup = !loading && user !== null ?
-        (
-            <UserDetails key="userDetails" user={user} />
-        )
-        :
-        (
-          <CircularProgress color="secondary"/>
-        )
+        const showUserDetails = (user) => {
+          this.user = user;
+          this.setState({open: true});
+        }
 
-        let recentUsersMarkup = !loading && users !== null ? 
-        users.map((data) =>
-        <Grid item xs={12}>
-            <User 
-              key={data.authId}
-              user={data}
-              isActive={data === user} />
-              </Grid>
-        )  
-           : (
-           <CircularProgress color="secondary" />
-          );
+        const hideUserDetails = () => {
+          this.setState({open: false});
+        }
 
-    
+        const toggleBadgeState = (event) => {
+          const newBadgState = user.badgeState === 'approved' ? 'inReview' : 'approved'
+          const userId = user.authUid;
+          this.props.updateUser(user.authUid, {badgeState: newBadgState})
+        }
+        let editUserMarkup = !loading && user !== null ? (
+          <EditUser 
+            user={user} 
+            open={this.state.open} 
+            onClose={hideUserDetails}
+            onBadgeClick={toggleBadgeState} />
+        ) : (
+          <div></div>
+        )
           return (
+
+          
            <Fragment>
              <SubNav />
              <Search items={users}/>
              <br />
             <Grid container spacing={3}>
-                <Grid item sm={6} xs={3}> 
-                    <Grid container spacing={3}>
-                            {recentUsersMarkup}
+                <Grid item sm={12} xs={3}> 
+                    <Grid container spacing={3}>           
+                            {
+                              !loading && users !== null ? (
+                                <UsersTable users={users} onSelectUser={showUserDetails} />
+                              
+                              ) : (
+                                <div>Loading...</div>
+                              )
+                            }
                     </Grid>
                 </Grid>
-           
-        
-                      <Grid item sm={6} xs={3}>
-                          {userDetailsMarkup}
-                      </Grid>
-               
+                {editUserMarkup}
             </Grid>
             </Fragment>
       
@@ -70,7 +78,7 @@ class UserPage extends Component {
 UserPage.propTypes = {
     getUserData: PropTypes.func.isRequired,
     getCompletedOffers: PropTypes.func.isRequired,
-    setUser: PropTypes.func.isRequired,
+    updateUser: PropTypes.func.isRequired,
     user: PropTypes.object,
     data: PropTypes.object.isRequired,
 
@@ -83,6 +91,6 @@ const mapStateToProps = (state) => ({
 
   export default connect(
     mapStateToProps,
-    { getUserData, setUser, getCompletedOffers }
+    { getUserData, updateUser, getCompletedOffers }
   )(UserPage);
   

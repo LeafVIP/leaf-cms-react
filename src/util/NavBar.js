@@ -23,10 +23,6 @@ class NavBar extends Component {
         const offers = () => {
             window.location = "/offers";
         }
-        const usersActive = () => {
-            return window.location === "/";
-        }
-
        
         return (
             <>

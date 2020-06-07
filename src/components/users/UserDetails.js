@@ -4,11 +4,11 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
 import Button from '@material-ui/core/Button';
+import EditIcon from '@material-ui/icons/Edit';
 import MyButton from '../../util/MyButton';
 import EditUserDetails from './EditUserDetails';
 import { connect } from 'react-redux';
-import {updateUser} from '../../redux/actions/userActions';
-
+import {updateUser, uploadBadgeImage} from '../../redux/actions/userActions';
 
 const styles = {
   root: {
@@ -32,6 +32,21 @@ const styles = {
 };
 
 class UserDetails extends Component {
+
+  handleImageChange = (event) => {
+    const image = event.target.files[0];
+    const formData = new FormData();
+    formData.append('image', image, image.name);
+    formData.append('Content-Type', 'multipart/form-data');
+    formData.append('Access-Control-Allow-Origin', '*');
+    this.props.uploadBadgeImage(formData, this.props.user.authUid);
+  };
+
+  handleEditPicture = () => {
+    const fileInput = document.getElementById('imageInput');
+    fileInput.click();
+  };
+
 
   render() {
     const {
@@ -90,6 +105,18 @@ class UserDetails extends Component {
          </Grid>
          <Grid item >
               <img className={classes.badgeImage} src={user.badgeFrontUrl} alt={user.badgeFrontUrl} />
+              <input  
+                type="file"
+                id="imageInput"
+                hidden="hidden"
+                onChange={this.handleImageChange} />
+
+                <MyButton
+                  tip="edit badge picture"
+                  onClick={this.handleEditPicture}
+                  btnClassName="button">
+                    <EditIcon color="secondary" />
+                  </MyButton>
             </Grid>
         </Grid>
 
@@ -191,7 +218,8 @@ class UserDetails extends Component {
 UserDetails.propTypes = {
   user: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
-  updateUser: PropTypes.func.isRequired
+  updateUser: PropTypes.func.isRequired,
+  uploadBadgeImage: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state) => ({
@@ -200,7 +228,8 @@ const mapStateToProps = (state) => ({
 
 
 const mapDispatchToProps = {
-  updateUser
+  updateUser,
+  uploadBadgeImage
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(UserDetails));

@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import Button from '@material-ui/core/Button';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 import EditIcon from '@material-ui/icons/EditOutlined';
 import CloseIcon from '@material-ui/icons/Close';
 import  Dialog  from '@material-ui/core/Dialog';
@@ -79,8 +79,7 @@ class EditDispensary extends Component {
                     displayName,
                     address,
                     cmId, 
-                    license,
-                    employees
+                    license
             }
             }
         } = this.props;

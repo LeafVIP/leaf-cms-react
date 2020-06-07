@@ -1,5 +1,20 @@
-import { LOADING_USER, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS} from '../types';
+import { LOADING_USER, LOADING_DATA, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS, SET_DISPENSARY_USERS} from '../types';
 import axios from 'axios';
+
+export const uploadBadgeImage = (formData, authId) => (dispatch) => {
+    dispatch({ type: LOADING_USER });
+    axios
+        .post('/uploadBadgeImage', {
+            formData: formData,
+            userId: authId
+        })
+        .then(() => {
+            dispatch(getUser(authId))
+        })
+        .catch(err => {
+            console.error(err);
+        })
+}
 
 export const signupUser = (newUserData, history) => (dispatch) => {
     dispatch({ type: LOADING_UI });
@@ -54,8 +69,26 @@ export const getUser = (authId) => (dispatch) => {
         
 }
 
+export const getUsers = (users) => (dispatch) => {
+    dispatch({type: LOADING_USER});
+    axios  
+        .post('/getUsers',{
+            userIds: users
+        })
+        .then(res => {
+            dispatch({
+                type: SET_DISPENSARY_USERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.error(err);
+        })
+
+}
+
 export const getUserData = () => (dispatch) => {
-    dispatch({ type: LOADING_USER });
+    dispatch({ type: LOADING_DATA });
 
     axios
         .get('/users')
@@ -67,10 +100,10 @@ export const getUserData = () => (dispatch) => {
         })
         .catch(err => {
             console.error(err);
-            dispatch({
-                type: SET_ERRORS,
-                payload: err.response.data
-            })
+            // dispatch({
+            //     type: SET_ERRORS,
+            //     payload: err.response.data
+            // })
         });
 };
 

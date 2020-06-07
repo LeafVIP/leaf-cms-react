@@ -1,14 +1,11 @@
 import React, { Component} from 'react';
 import PropTypes from 'prop-types';
-
-// MUI stuff
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper'
 import Typography from '@material-ui/core/Typography';
 import withStyles from '@material-ui/core/styles/withStyles';
-
-//Redux
 import { connect } from 'react-redux';
+import { getDispensaryUsers }  from '../../redux/actions/dispensaryActions';
 
 
 const styles = {
@@ -31,16 +28,17 @@ const styles = {
 };
 
 class DispensaryDetails extends Component {
-
+ 
+  componentDidMount() {
+    getDispensaryUsers(this.props.dispensary.users);
+  }
   render() {
     const {
-      classes,
-      dispensary
+      dispensary,
     } = this.props
 
-
    return (
-     this.props.user !== null ? (
+     this.props.dispensary !== null ? (
        <div className={styles.root}>
          <Paper>
       <Grid 
@@ -117,18 +115,22 @@ class DispensaryDetails extends Component {
   
 
 DispensaryDetails.propTypes = {
+  getDispensaryUsers: PropTypes.func.isRequired,
   dispensary: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
+  users: PropTypes.array.isRequired
  
 }
 
 const mapStateToProps = (state) => ({
-  dispensary: state.data.dispensary
+  dispensary: state.data.dispensary,
+  dispensaryUsers: state.data.dispensaryUsers,
+  users: state.data.users
 });
 
 
 const mapDispatchToProps = {
-  
+  getDispensaryUsers
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DispensaryDetails));

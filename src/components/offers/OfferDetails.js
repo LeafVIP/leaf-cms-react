@@ -32,25 +32,15 @@ class OfferDetails extends Component {
 
   render() {
     const {
-      classes,
+     
       offer: {
-        imagePath,
         productName, 
         productDescription,
         isActive,
-        rewardAmount,
-        originalQuantity,
-        remainingQuantity,
         brandName,
-        videoLength,
-        videoUrl,
 
       }
     } = this.props
-
-    const approve = () => {
-     
-    }
 
    return (
      this.props.offer !== null ? (

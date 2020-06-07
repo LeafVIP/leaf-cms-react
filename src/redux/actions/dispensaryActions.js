@@ -3,12 +3,56 @@ import {
     SET_DISPENSARIES,
     CREATE_DISPENSARY,
     SELECT_DISPENSARY,
+    SET_DISPENSARY_USERS,
+    UPDATE_DISPENSARY,
     LOADING_DATA,
     SET_ERRORS, 
-    CLEAR_ERRORS
+    CLEAR_ERRORS,
+    LOADING_USER
 } from '../types';
 
+export const getDispensaryUsers = (userIds) => (dispatch) => {
+    console.log('getDispensaryUsers: ' +userIds);
+    dispatch({
+        type: LOADING_USER
+    });
+    axios
+        .post('/getUsers', {userIds})
+        .then(res => {
+            dispatch({
+                type: SET_DISPENSARY_USERS,
+                payload: res.data
+            }
+            );
+        })
+        .catch(err => {
+            console.log(err);
+        });
+};
 
+
+export const updateDispensary = (dispensaryId, data) => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+
+    axios
+        .post('/updateDispensary', {
+             dispensaryId,
+             data
+        })
+        .then(res => {
+            dispatch(
+            {
+                UPDATE_DISPENSARY,
+                payload: res.data
+             }
+            )
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 export const getDispensaries = () => (dispatch) => {
     dispatch({
         type: LOADING_DATA

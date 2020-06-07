@@ -14,7 +14,7 @@ import { logoutUser, getUserData } from './redux/actions/userActions';
 import { SET_AUTHENTICATED } from './redux/types';
 
 import themeFile from './util/theme';
-import NavBar from './components/NavBar';
+import NavBar from './util/NavBar';
 import UserPage from './components/pages/UserPage';
 import DispensaryPage from './components/pages/DispensaryPage';
 import LoginPage from './components/pages/LoginPage';
@@ -22,7 +22,8 @@ import OffersPage from './components/pages/OffersPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';
 
-axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net"
+// axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net";
+axios.defaults.baseURL = "https://us-central1-leafvip-dev.cloudfunctions.net"
 const theme = createMuiTheme(themeFile);
 const token = localStorage.FBIdToken;
 

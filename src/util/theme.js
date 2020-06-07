@@ -11,6 +11,12 @@ export default {
       main: '#666',
       dark: '#b22a00',
       contrastText: '#000'
+    },
+    green: {
+      main: '#345'
+    },
+    yellow: {
+      main: '#0033CC'
     }
   },
   typography: {

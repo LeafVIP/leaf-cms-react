@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import Offer from '../Offer';
-import OfferDetails from '../OfferDetails';
 import OfferSkeleton from '../../util/OfferSkeleton';
 import { connect } from 'react-redux';
 import { getOffers } from '../../redux/actions/offerActions';
-import CreateOffer from '../CreateOffer';
+import CreateOffer from '../offers/CreateOffer';
+import Offer from '../offers/Offer';
+import OfferDetails from '../offers/OfferDetails';
 
 class OfferPage extends Component {
 

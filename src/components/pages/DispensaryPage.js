@@ -1,50 +1,61 @@
 import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getDispensaries, selectDispensary, getTop50 } from '../../redux/actions/dispensaryActions';
-import Dispensary from '../Dispensary';
+import { getDispensaryUsers, getDispensaries, selectDispensary, getTop50 } from '../../redux/actions/dispensaryActions';
 import Grid from '@material-ui/core/Grid';
-import CreateDispensary from '../CreateDispensary';
-import DispensaryDetails from '../DispensaryDetails';
+import CreateDispensary from '../dispensaries/CreateDispensary';
+import DispensaryDetails from '../dispensaries/DispensaryDetails';
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 import Table from '@material-ui/core/Table';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
-import TableCell from '@material-ui/core/TableCell';
-import MyButton from '../../util/MyButton';
-import DispensarySkeleton from '../../util/DispensarySkeleteon';
-import DispensaryUserTable from '../tables/DispensaryUserTable';
-import EditIcon from '@material-ui/icons/EditOutlined'
-import { TableRow, TableBody } from '@material-ui/core';
+import TableCell from '@material-ui/core/TableCell'; 
+import { TableRow } from '@material-ui/core';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import EditDispensary from '../EditDispensary';
+import EditDispensary from '../dispensaries/EditDispensary';
 
+// const styles = {
+//     container: {
+//         width: '100%',
+//         flex: 1,
+//         flexDirection:'row',
+//         padding: 25
+//     }
+// }
 
-const styles = {
-    container: {
-        width: '100%',
-        flex: 1,
-        flexDirection:'row',
-        padding: 25
-    }
-}
+let didFetchUsers = false;
 class DispensaryPage extends Component {
 
-
     componentDidMount() {
+      didFetchUsers = false;
         this.props.getTop50();
     }
+
+    createSortHandler = (property) => (event) => {
+      // onRequestSort(event, property);
+    };
+   
     render() {
-        const { dispensaries, dispensary, users, loading } = this.props.data;
+
+
+      this.componentDidUpdate = (prevProps) => {
+        if(dispensary !== null) 
+        {
+          this.props.getDispensaryUsers(dispensary.users);
+          didFetchUsers = true;
+        }
+       
+      }
+        const { dispensaries, dispensary, dispensaryUsers, loading } = this.props.data;
 
         const setDispensary = (dispensary) => () => {
+          didFetchUsers = false;
           this.props.selectDispensary(dispensary); 
        };
 
 
        function saturationRate(users, employees) {
-         if (users == 0 || employees == 0) {
+         if (users === 0 || employees === 0) {
            return 0;
          }
 
@@ -54,7 +65,8 @@ class DispensaryPage extends Component {
        let dispensariesMarkup = !loading && dispensaries !== null ? 
        dispensaries.map((dispo) =>
   
-        <TableRow onClick={setDispensary}>
+    
+        <TableRow onClick={setDispensary(dispo)}>
           <TableCell>{dispo.displayName}</TableCell>
           <TableCell>{dispo.users.length}</TableCell>
           <TableCell>{dispo.employees}</TableCell>
@@ -71,16 +83,29 @@ class DispensaryPage extends Component {
           this.props.getTop50();
       }
 
+
+      let usersMarkup = !loading && dispensaryUsers !== null ? 
+      dispensaryUsers.map((user) =>
+       <TableRow>
+         <TableCell>{user.firstName} {user.lastName}</TableCell>
+         <TableCell>{user.role}</TableCell>
+       </TableRow>
+
+      )  
+         : (
+         <CircularProgress color="secondary" />
+        );
+
       const filterAll = () => {
         this.props.getDispensaries();
     }
 
-    const headCells = [
-      { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
-      { id: 'users', numeric: true, disablePadding: false, label: 'Users' },
-      { id: 'employees', numeric: true, disablePadding: false, label: 'Employees' },
-      { id: 'saturation', numeric: true, disablePadding: false, label: 'saturation' },
-    ];
+    // const headCells = [
+    //   { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+    //   { id: 'users', numeric: true, disablePadding: false, label: 'Users' },
+    //   { id: 'employees', numeric: true, disablePadding: false, label: 'Employees' },
+    //   { id: 'saturation', numeric: true, disablePadding: false, label: 'saturation' },
+    // ];
 
 
           return (
@@ -94,29 +119,67 @@ class DispensaryPage extends Component {
 				                <Link color="inherit" onClick={filterTop50} >Top 50</Link>
 				                <Link color="inherit" onClick={filterAll} >All</Link>
 		                </Breadcrumbs>
-
                     </Grid>
-                   
-                
                   </Grid>
                   
                   
             
-                  <Grid container spacing={10}>
-                        <Grid>
-                            { loading ? (<center><CircularProgress color="secondary" /></center>) : ( <Table aria-label="dispensaries">
+                  <Grid container spacing={8}>
+                        <Grid item sm={6} xs={3}>
+                            { loading ? (<center><CircularProgress color="secondary" /></center>) : (
+                              
+                              <Table aria-label="dispensaries">
                                 <TableHead>
                                   <TableRow>
-                                    <TableCell align="left" >name</TableCell>
-                                    <TableCell align="center>">users</TableCell>
-                                    <TableCell align="center>">employees</TableCell>
-                                    <TableCell align="center>">saturation</TableCell>
+                                  <TableCell
+                                      key="name"
+                                      align="left"
+                                      padding="default">
+                                        name
+                                      </TableCell>
+
+                                      <TableCell
+                                      key="name"
+                                      align="left"
+                                      padding="default">
+                                        users
+                                      </TableCell>
+
+                                      <TableCell
+                                      key="name"
+                                      align="left"
+                                      padding="default">
+                                        employees
+                                      </TableCell>
+
+                                      <TableCell
+                                      key="name"
+                                      align="left"
+                                      padding="default">
+                                        saturation
+                                      </TableCell>
+                                  
                              
                                   </TableRow>
                                 </TableHead>
                                 {dispensariesMarkup}
-                              </Table>)}
+                              </Table>
+                              
+                              )}
                              
+                        </Grid>
+
+                        <Grid item sm={6} xs={3}>
+                          <DispensaryDetails dispensary={dispensary} />
+                          <Table aria-label="dispensaries">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell align="left" >user</TableCell>
+                                    <TableCell align="center>">role</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                {usersMarkup}
+                              </Table>
                         </Grid>
                        
                     </Grid>
@@ -128,6 +191,7 @@ class DispensaryPage extends Component {
 DispensaryPage.propTypes = {
     getDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
+    getDispensaryUsers: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
 };
@@ -137,7 +201,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
-   getDispensaries ,
+   getDispensaries,
+   getDispensaryUsers,
    selectDispensary,
    getTop50
 };

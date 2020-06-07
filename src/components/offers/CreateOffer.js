@@ -1,7 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import withStyles from '@material-ui/core/styles/withStyles';
-import MyButton from '../util/MyButton';
+import MyButton from '../../util/MyButton';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
@@ -12,7 +12,7 @@ import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
 import { connect } from 'react-redux';
 
-import {createOffer, getOffers, clearErrors} from '../redux/actions/offerActions';
+import {createOffer, getOffers, clearErrors} from '../../redux/actions/offerActions';
 
 const styles = (theme) => ({
   
@@ -45,7 +45,8 @@ class CreateOffer extends Component {
         productDescription: '',
         videoUrl: '',
         surveyCode: '',
-        surveyId: ''
+        surveyId: '',
+        campaignName: '',
     };
 
     componentWillReceiveProps(nextProps) {
@@ -87,13 +88,14 @@ class CreateOffer extends Component {
             productDescription: this.state.productDescription,
             videoUrl: this.state.videoUrl,
             surveyCode: this.state.surveyCode,
-            surveyId: this.state.surveyId
+            surveyId: this.state.surveyId,
+            campaignName: this.state.campaignName
         };
         this.props.createOffer(offer);
     };
 
     render() {
-        const {errors} = this.state
+       
         const{
             classes,
             UI: {loading}
@@ -118,6 +120,15 @@ class CreateOffer extends Component {
                             <DialogTitle>Create a new offer</DialogTitle>
                             <DialogContent>
                             <form onSubmit={this.handleSubmit}>
+                            <TextField
+                                    name="campaignName"
+                                    type="text"
+                                    label="campaignName"
+                                    rows="1"
+                                    placeholder="enter campaignName"
+                                    className={classes.textField}
+                                    onChange={this.handleChange}
+                                    fullWidth />
                             <TextField
                                     name="productName"
                                     type="text"

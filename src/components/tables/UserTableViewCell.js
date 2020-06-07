@@ -5,6 +5,10 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 
 class UserTableViewCell extends Component {
+
+    function name(first: String, last: string) {
+        return <span>{first} {last}</span>
+    }
     render() {
         const { user: {
             authId,
@@ -16,7 +20,7 @@ class UserTableViewCell extends Component {
         return (
             <TableRow key={authId}>
               <TableCell component="th" scope="row">
-                <div>name</div>
+                {name(firstName, lastName)}
               </TableCell>
               <TableCell align="right">role</TableCell>
               <TableCell align="right">email</TableCell>

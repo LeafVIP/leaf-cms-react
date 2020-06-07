@@ -2,6 +2,7 @@ import {
     LOADING_DATA,
     SET_DISPENSARIES,
     SELECT_DISPENSARY,
+    UPDATE_DISPENSARY,
     SET_USERS, 
     FILTER_USERS,
     SELECT_USER,
@@ -80,7 +81,8 @@ import {
                         ...state,
                         loading: false,
                         dispensaries: action.payload,
-                        dispensary: action.payload[0]
+                        dispensary: action.payload[0],
+                        dispensaryUsers: action.payload[0].users
                     }
                 case SELECT_DISPENSARY:
                     return {
@@ -88,6 +90,13 @@ import {
                         loading: false,
                         dispensary: action.payload
                     }
+
+                    case UPDATE_DISPENSARY:
+                        return {
+                            ...state,
+                            loading: false,
+                            dispensary: action.payload
+                        }
 
                     case SET_OFFERS:
                         return {

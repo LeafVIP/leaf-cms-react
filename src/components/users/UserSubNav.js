@@ -5,18 +5,18 @@ import {setUsers, getUserData, filterUsers} from '../../redux/actions/userAction
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
-const styles = {
-	paper: {
-		position: 'relative',
-		display: 'flex',
-		marginLeft: 20,
-		marginRight: 20,
-		marginBottom: 20
-	}
-};
+// const styles = {
+// 	paper: {
+// 		position: 'relative',
+// 		display: 'flex',
+// 		marginLeft: 20,
+// 		marginRight: 20,
+// 		marginBottom: 20
+// 	}
+// };
 class UserSubNav extends Component {
 	render() {
-        const { users, getUserData, filterUsers, setUsers } = this.props;
+        const { users, filterUsers } = this.props;
 
        
         const clearFilter = () => {
