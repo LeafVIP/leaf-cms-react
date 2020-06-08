@@ -48,7 +48,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'productName', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'remainingQuantity', numeric: true, disablePadding: false, label:'Remaining' },
+  { id: 'remainingQuantity', numeric: true, disablePadding: false, label:'Videos Remaining' },
 ];
 
 function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
@@ -90,7 +90,6 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -252,7 +251,7 @@ export default function EnhancedTable({offers, onSelectItem}) {
                       selected={isItemSelected}
                     >
 
-                      <TableCell component="th" id='productName' scope="productName"  align='left' padding='default'>
+                      <TableCell id='productName' scope="productName"  align='left' padding='default'>
                             {offer.productName}
                       </TableCell>
                       <TableCell align='left' padding='default' scope='remainingQuantity'>{offer.remainingQuantity}</TableCell>

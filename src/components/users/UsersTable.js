@@ -275,7 +275,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
                       selected={isItemSelected}
                     >
                    
-                      <TableCell component="th" id={labelId} scope="name"  align='left' padding='default'>
+                      <TableCell id="name" scope="name"  align='left' padding='default'>
                         <span>{user.firstName !== '' ? name(user.firstName, user.lastName) : 'n/a'}</span>
                       </TableCell>
                       <TableCell align='left' padding='default' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>

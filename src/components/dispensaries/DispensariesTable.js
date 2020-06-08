@@ -19,6 +19,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+import Chip from '@material-ui/core/Chip';
+import { Button } from '@material-ui/core';
+
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -120,7 +123,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
+const EnhancedTableToolbar = ({numSelected, onCreateItem, onFilter}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -134,10 +137,17 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
           {numSelected} selected
         </Typography>
       ) : (
+        <div>
+          <Button>
+              <Chip label="All Dispensaries"/>
+          </Button>
+
+          <Button>
+              <Chip label="Top50"/>
+          </Button>
+          
+        </div>
         
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          All Dispensaries / Top 50
-        </Typography>
       )}
 
       {numSelected > 0 ? (
@@ -233,7 +243,7 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} />
+        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem}/>
         <TableContainer>
           <Table
             className={classes.table}

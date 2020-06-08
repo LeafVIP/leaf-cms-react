@@ -35,7 +35,6 @@ class DispensaryPage extends Component {
         }
         
         const saveDispensary = (newDispensary) => {
-          console.log("DispensaryPage.saveDispensary: " +newDispensary.employees);
           this.props.updateDispensary(dispensary.id, newDispensary);
           this.setState({open: false, dispensary: undefined});
         }
@@ -46,15 +45,6 @@ class DispensaryPage extends Component {
           this.setState({open: true, dispensary: undefined});
         }
 
-      let dispensaryMarkup = !loading && dispensary !== null ? (
-        <DispensaryDetails 
-            dispensary={this.state.dispensary ?? dispensary} 
-            open={this.state.open} 
-            onClose={hideDispensaryDetails}
-            onSave={saveDispensary} />
-      ) : (
-        <div></div>
-      )
           return (
               <Fragment>  
                 <Grid container spacing={3}>
@@ -107,6 +97,7 @@ DispensaryPage.propTypes = {
     updateDispensary: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    dispensaries: PropTypes.array
 };
 
 const mapStateToProps = (state) => ({
