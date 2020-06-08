@@ -38,6 +38,7 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
 
     const classes = useStyles();
     
+    const [id] = useState(dispensary.dispensaryId);
     const [license, setLicense] = useState(dispensary.license);
     const [cmId, setCmid] = useState(dispensary.cmId);
     const [address, setAddress] = useState(dispensary.address);
@@ -49,26 +50,42 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
       onClose()
     };
 
+    const handleEdit = () => {
+      setDetailsState('edit');
+    }
     const handleSave = () => {
-      onSave(license, cmId, address, employees);
+     
+      const newDispo = {
+        id,
+        license,
+        cmId,
+        address,
+        employees
+      }
+      onSave(newDispo);
+      setDetailsState('view');
     }
 
-    const handleState = () => {
-      if (detailsState === 'view') {
-        setDetailsState('edit');
-      } else {
-        setDetailsState('view');
-        const dispensary = {
-          license: license,
-          cmId: cmId,
-          address: address,
-          employees: employees
-         
-        }
-        handleSave(dispensary);
-      
-      }
-    }
+    const handleLicenseChange = (event) => {
+      setLicense(event.target.value);
+    };
+
+
+    const handleCmidChange = (event) => {
+      setCmid(event.target.value);
+    };
+
+
+    const handleAddressChange = (event) => {
+      setAddress(event.target.value);
+    };
+
+
+    const handleEmployeeschange = (event) => {
+      setEmployees(event.target.value);
+    };
+
+
 
     return (
         <div>
@@ -81,18 +98,29 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                         <Typography variant="h6" className={classes.title}>
                             {dispensary.displayName}
                         </Typography>      
-                        <Button autoFocus color="inherit" onClick={handleState}>
-                           {
-                                detailsState === 'view' ? ( <span>Edit</span>) : 
-                                (<span>Save</span>)
-                           } 
-                        </Button>
+
+                        {
+                          detailsState === 'view' ? (
+                            <Button autoFocus color="inherit" onClick={handleEdit}>
+                            {
+                                <span>Edit</span>
+                            } 
+                         </Button>
+                          ) : (
+                            <Button autoFocus color="inherit" onClick={handleSave}>
+                            {
+                                 <span>Save</span>
+                            } 
+                         </Button>
+                          )
+                        }
+                   
                     </Toolbar>
                 </AppBar>
 
                 <List>
                     <ListItem>
-                        <ListItemText primary="Firebase ID" secondary={dispensary.id} />
+                        <ListItemText primary="Firebase ID" secondary={id} />
                     </ListItem>
                     <Divider />
                     <ListItem>
@@ -106,7 +134,8 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                             label="License"
                             type="text"
                             className={classes.textField}
-                            placeholder={license}/>
+                            placeholder={license}
+                            onChange={handleLicenseChange} />
                         )
                       }
                      
@@ -122,7 +151,8 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                             label="CMID"
                             type="text"
                             className={classes.textField}
-                            placeholder={dispensary.cmId} />
+                            placeholder={dispensary.cmId}
+                            onChange={handleCmidChange} />
                         )
                      }
                     </ListItem>
@@ -137,7 +167,8 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                             label="Address"
                             type="text"
                             className={classes.textField}
-                            placeholder={dispensary.address}
+                            placeholder={address}
+                            onChange={handleAddressChange}
                             multiline/>
                         )
                      }
@@ -153,9 +184,13 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                             label='Employees'
                             type="number"
                             className={classes.textField}
-                            placeholder={employees}/>
+                            placeholder={employees}
+                            onChange={handleEmployeeschange} />
                         )
                      }
+                    </ListItem>
+                    <ListItem>
+                      <ListItemText primary="Leaf Users" secondary={dispensary.users !== undefined ?  dispensary.users.length : 0} />
                     </ListItem>
                 </List>
             </Dialog>

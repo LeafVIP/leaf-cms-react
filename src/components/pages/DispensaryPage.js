@@ -10,7 +10,7 @@ class DispensaryPage extends Component {
 
   constructor(props) {
       super(props);
-     this.state = {open: false}
+     this.state = {open: false, item: undefined}
   }
 
     componentDidMount() {
@@ -27,20 +27,20 @@ class DispensaryPage extends Component {
 
         const showDispensaryDetails = (dispensary) => {
             this.dispensary = dispensary;
-            this.setState({open: true});
+            this.setState({open: true, item: dispensary});
           };
 
         const hideDispensaryDetails = () => {
-          this.setState({open: false});
+          this.setState({open: false, item: undefined});
         }
         
+        const saveDispensary = (newDispensary) => {
+          console.log("DispensaryPage.saveDispensary: " +newDispensary.employees);
 
-        const saveDispensary = (dispensary) => {
-          console.log("onSaveDispensary: " +dispensary.displayName);
-          // updateDispensary(dispensaryId, dispensary);
+          this.props.updateDispensary(dispensary.id, newDispensary);
+          this.setState({open: false, item: undefined});
         }
 
-    
 
       let dispensaryMarkup = !loading && dispensary !== null ? (
         <DispensaryDetails 
@@ -53,6 +53,7 @@ class DispensaryPage extends Component {
       )
           return (
 
+       
               <Fragment>  
                 <Grid container spacing={3}>
                 <Grid item sm={12} xs={3}> 
@@ -84,6 +85,7 @@ DispensaryPage.propTypes = {
     getDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
     getDispensaryUsers: PropTypes.func.isRequired,
+    updateDispensary: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
 };
@@ -96,7 +98,8 @@ const mapDispatchToProps = {
    getDispensaries,
    getDispensaryUsers,
    selectDispensary,
-   getTop50
+   getTop50,
+   updateDispensary
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DispensaryPage);

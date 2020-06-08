@@ -14,7 +14,7 @@ class UserPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: false}
+    this.state = {open: false, user: undefined}
   }
 
     componentDidMount() {
@@ -25,12 +25,14 @@ class UserPage extends Component {
         const  { users, user, loading } = this.props.data;
 
         const showUserDetails = (user) => {
+          console.log('showUserDetails: user.authUid: ' +user.authUid); 
           this.user = user;
-          this.setState({open: true});
+
+          this.setState({open: true, user: user});
         }
 
         const hideUserDetails = () => {
-          this.setState({open: false});
+          this.setState({open: false, user: undefined});
         }
 
         const toggleBadgeState = (event) => {
@@ -39,7 +41,7 @@ class UserPage extends Component {
         }
         let editUserMarkup = !loading && user !== null ? (
           <EditUser 
-            user={user} 
+            user={this.state.user ?? user} 
             open={this.state.open} 
             onClose={hideUserDetails}
             onBadgeClick={toggleBadgeState} />

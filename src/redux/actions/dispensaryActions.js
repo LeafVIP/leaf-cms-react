@@ -32,6 +32,7 @@ export const getDispensaryUsers = (userIds) => (dispatch) => {
 
 
 export const updateDispensary = (dispensaryId, data) => (dispatch) => {
+    console.log('in update dispensary');
     dispatch({
         type: LOADING_DATA
     });
@@ -42,17 +43,14 @@ export const updateDispensary = (dispensaryId, data) => (dispatch) => {
              data
         })
         .then(res => {
-            dispatch(
-            {
-                UPDATE_DISPENSARY,
-                payload: res.data
-             }
-            )
+         dispatch(getDispensaries())
+        
         })
         .catch(err => {
-            console.log(err);
-        })
-}
+            console.error(err);
+        });
+};
+
 export const getDispensaries = () => (dispatch) => {
     dispatch({
         type: LOADING_DATA

@@ -210,6 +210,7 @@ export default function EnhancedTable({dispensaries, onSelectItem}) {
   };
 
   const handleClick = (event, dispensary) => {
+    console.log('handleClick: ' +dispensary.id);
     onSelectItem(dispensary);
   };
 
