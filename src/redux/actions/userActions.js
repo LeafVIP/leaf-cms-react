@@ -100,10 +100,6 @@ export const getUserData = () => (dispatch) => {
         })
         .catch(err => {
             console.error(err);
-            // dispatch({
-            //     type: SET_ERRORS,
-            //     payload: err.response.data
-            // })
         });
 };
 

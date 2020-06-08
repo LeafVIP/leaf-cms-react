@@ -6,9 +6,7 @@ import TableCell from '@material-ui/core/TableCell';
 
 class UserTableViewCell extends Component {
 
-    function name(first: String, last: string) {
-        return <span>{first} {last}</span>
-    }
+    
     render() {
         const { user: {
             authId,

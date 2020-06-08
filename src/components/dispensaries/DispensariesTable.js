@@ -47,13 +47,13 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
-  { id: 'dispensary', numeric: false, disablePadding: false, label: 'Dispensary' },
-  { id: 'badgeState', numeric: false, disablePadding: false, label: 'Status' },
-  { id: 'platform', numeric: false, disablePadding: false, label: 'Platform' },
-  { id: 'version', numeric: true, disablePadding: false, label: 'Version' },
-  { id: 'createdAt', numeric: false, disablePadding: false, label: 'Member Since' },
+  { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'license', numeric: false, disablePadding: false, label: 'License' },
+  { id: 'cmId', numeric: false, disablePadding: false, label: 'CMID' },
+  { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
+  { id: 'employees', numeric: true, disablePadding: false, label: 'Total Employees' },
+  { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
+  // { id: 'createdAt', numeric: false, disablePadding: false, label: 'Joined On' },
 ];
 
 function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
@@ -121,7 +121,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({users, numSelected}) => {
+const EnhancedTableToolbar = ({numSelected}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -135,8 +135,11 @@ const EnhancedTableToolbar = ({users, numSelected}) => {
           {numSelected} selected
         </Typography>
       ) : (
+
+
+        
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          All Users
+          All Dispensaries / Top 50
         </Typography>
       )}
 
@@ -185,7 +188,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
+export default function EnhancedTable({dispensaries, onSelectItem}) {
 
     const timestamp = (createdAt) => {
         return new Date(createdAt._seconds * 1000).toLocaleDateString("en-US")
@@ -206,9 +209,8 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
     setOrderBy(property);
   };
 
-  const handleClick = (event, user) => {
-    console.log('handleClick: event name: ' +event.name + ' - value: ' + event.value);
-     onSelectUser(user);
+  const handleClick = (event, dispensary) => {
+    onSelectItem(dispensary);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -226,14 +228,15 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
 
-  const name = (firstName, lastName) => {
-      if(firstName !== undefined) {
-        return <span>{firstName} {lastName}</span>
-      }
-      return "n/a";
-  }
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, dispensaries.length - page * rowsPerPage);
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
+  function saturationRate(users, employees) {
+    if (users === 0 || employees === 0) {
+      return 0;
+    }
+
+    return (users / employees).toFixed(2) * 100;
+  }
 
   return (
     <div className={classes.root}>
@@ -252,35 +255,35 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={users.length}
+              rowCount={dispensaries.length}
             />
             <TableBody>
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(dispensaries, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((user, index) => {
-                  const isItemSelected = isSelected(user.name);
+                .map((dispensary, index) => {
+                  const isItemSelected = isSelected(dispensary.displayName);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, user)}
+                      onClick={(event) => handleClick(event, dispensary)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={user.email}
+                      key={dispensary.displayName}
                       selected={isItemSelected}
                     >
-                   
-                      <TableCell component="th" id={labelId} scope="name"  align='left' padding='default'>
-                        <span> {name(user.firstName, user.lastName)}</span>
+
+                      <TableCell component="th" id={labelId} scope="displayName"  align='left' padding='default'>
+                        <span> {dispensary.displayName}</span>
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.role}</TableCell>
-                      <TableCell align='left' padding='default' scope='dispensary'>{user.dispensary}</TableCell>
-                      <TableCell align='left' padding='default' scope='role' onClick={onSelectBadge}>{user.badgeState}</TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.platform}</TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.version}</TableCell>
-                      <TableCell align='left' padding='default' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
+                      <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
+                      <TableCell align='left' padding='default' scope='cmId'>{dispensary.cmId}</TableCell>
+                      <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
+                      <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
+                      <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
+
                     </TableRow>
                   );
                 })}
@@ -295,7 +298,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, {value: -1, label: 'All'}]}
           component="div"
-          count={users.length}
+          count={dispensaries.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

@@ -1,10 +1,10 @@
-import React, { Component,Fragment, useState } from 'react';
+import React, { Component, Fragment } from 'react';
 import Search from '../../util/Search';
 import PropTypes from 'prop-types';
 import SubNav from '../users/UserSubNav';
 import { connect } from 'react-redux';
 import { getCompletedOffers} from '../../redux/actions/dataActions';
-import { getUserData, updateUser, setUser } from '../../redux/actions/userActions';
+import { getUserData, updateUser } from '../../redux/actions/userActions';
 import Grid from '@material-ui/core/Grid';
 import UsersTable from '../users/UsersTable'
 import EditUser from '../users/EditUser';
@@ -35,7 +35,6 @@ class UserPage extends Component {
 
         const toggleBadgeState = (event) => {
           const newBadgState = user.badgeState === 'approved' ? 'inReview' : 'approved'
-          const userId = user.authUid;
           this.props.updateUser(user.authUid, {badgeState: newBadgState})
         }
         let editUserMarkup = !loading && user !== null ? (
@@ -47,9 +46,7 @@ class UserPage extends Component {
         ) : (
           <div></div>
         )
-          return (
-
-          
+          return (  
            <Fragment>
              <SubNav />
              <Search items={users}/>

@@ -1,136 +1,164 @@
-import React, { Component} from 'react';
-import PropTypes from 'prop-types';
-import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper'
+import React, { useState } from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
+import Divider from '@material-ui/core/Divider';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import withStyles from '@material-ui/core/styles/withStyles';
-import { connect } from 'react-redux';
-import { getDispensaryUsers }  from '../../redux/actions/dispensaryActions';
+import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import { TextField } from '@material-ui/core';
+
+const useStyles = makeStyles((theme) => ({
+    appBar: {
+      position: 'relative',
+    },
+    title: {
+      marginLeft: theme.spacing(2),
+      flex: 1,
+    },
+    img: {
+        maxWidth: 400,
+        maxHeight: 300
+    }
+  }));
 
 
-const styles = {
-  root: {
-    flexGrow: 1
-  },
-  image: {
-    minWidth: 200,
-    maxWidth: 400
-  },
-
-  CardMedia: {
-    position: 'relative',
-    display: 'flex',
-    marginLeft: 20,
-    marginRight: 20,
-    marginBottom: 20,
-  }
-
-};
-
-class DispensaryDetails extends Component {
- 
-  componentDidMount() {
-    getDispensaryUsers(this.props.dispensary.users);
-  }
-  render() {
-    const {
-      dispensary,
-    } = this.props
-
-   return (
-     this.props.dispensary !== null ? (
-       <div className={styles.root}>
-         <Paper>
-      <Grid 
-        container
-        spacing={2}
-        direction="column"
-        justify="center"
-        >
-          <Grid item xs={10}>
-            <Grid item >
-            <Typography
-              variant="caption"
-              color="secondary">
-                displayName   
-            </Typography> 
-            </Grid>
-            <Grid item >
-              {dispensary.displayName} 
-            </Grid>
-          </Grid>
-
-
-          <Grid item xs={10}>
-            <Grid item>
-            <Typography
-              variant="caption"
-              color="secondary">
-                license
-            </Typography> 
-            </Grid>
-            <Grid item>
-              {dispensary.license}
-            </Grid>
-          </Grid>
-
-
-          <Grid item xs={10}>
-            <Grid>
-            <Typography
-              variant="caption"
-              color="secondary">
-                cmid
-            </Typography> 
-            </Grid>
-            <Grid item>
-              {dispensary.cmid}
-            </Grid>
-          </Grid>
-
-          <Grid item xs={10}>
-            <Grid item>
-            <Typography
-              variant="caption"
-              color="secondary">
-                address
-            </Typography> 
-            </Grid>
-            <Grid item>
-              {dispensary.address} 
-            </Grid>
-         
-          </Grid>
-
-        </Grid>
-        </Paper>
-        </div>
-
-      ) : (
-        <div />
-     )
-   )
-  }
-};
+  const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
   
 
-DispensaryDetails.propTypes = {
-  getDispensaryUsers: PropTypes.func.isRequired,
-  dispensary: PropTypes.object.isRequired,
-  classes: PropTypes.object.isRequired,
-  users: PropTypes.array.isRequired
- 
+export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
+
+    const classes = useStyles();
+    
+    const [license, setLicense] = useState(dispensary.license);
+    const [cmId, setCmid] = useState(dispensary.cmId);
+    const [address, setAddress] = useState(dispensary.address);
+    const [employees, setEmployees] = useState(dispensary.employees);
+    const [detailsState, setDetailsState] = useState('view');
+
+    const handleClose = () => {
+      setDetailsState('view')
+      onClose()
+    };
+
+    const handleSave = () => {
+      onSave(license, cmId, address, employees);
+    }
+
+    const handleState = () => {
+      if (detailsState === 'view') {
+        setDetailsState('edit');
+      } else {
+        setDetailsState('view');
+        const dispensary = {
+          license: license,
+          cmId: cmId,
+          address: address,
+          employees: employees
+         
+        }
+        handleSave(dispensary);
+      
+      }
+    }
+
+    return (
+        <div>
+             <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
+                <AppBar className={classes.appBar}>
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
+                            <CloseIcon />
+                        </IconButton>
+                        <Typography variant="h6" className={classes.title}>
+                            {dispensary.displayName}
+                        </Typography>      
+                        <Button autoFocus color="inherit" onClick={handleState}>
+                           {
+                                detailsState === 'view' ? ( <span>Edit</span>) : 
+                                (<span>Save</span>)
+                           } 
+                        </Button>
+                    </Toolbar>
+                </AppBar>
+
+                <List>
+                    <ListItem>
+                        <ListItemText primary="Firebase ID" secondary={dispensary.id} />
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+
+                      {
+                        detailsState === 'view' ? (
+                          <ListItemText primary="License" secondary={license} />
+                        ) : (
+                          <TextField 
+                            name="license"
+                            label="License"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={license}/>
+                        )
+                      }
+                     
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                    {
+                        detailsState === 'view' ? (
+                          <ListItemText primary="CMID" secondary={cmId} />
+                        ) : (
+                          <TextField 
+                            name="cmid"
+                            label="CMID"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={dispensary.cmId} />
+                        )
+                     }
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                    {
+                        detailsState === 'view' ? (
+                          <ListItemText primary="Address" secondary={address} />
+                        ) : (
+                          <TextField 
+                            name="address"
+                            label="Address"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={dispensary.address}
+                            multiline/>
+                        )
+                     }
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
+                    {
+                        detailsState === 'view' ? (
+                          <ListItemText primary="Employees" secondary={dispensary.employees } />
+                        ) : (
+                          <TextField 
+                            name="employees"
+                            label='Employees'
+                            type="number"
+                            className={classes.textField}
+                            placeholder={employees}/>
+                        )
+                     }
+                    </ListItem>
+                </List>
+            </Dialog>
+        </div>
+    )
 }
-
-const mapStateToProps = (state) => ({
-  dispensary: state.data.dispensary,
-  dispensaryUsers: state.data.dispensaryUsers,
-  users: state.data.users
-});
-
-
-const mapDispatchToProps = {
-  getDispensaryUsers
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(DispensaryDetails));
