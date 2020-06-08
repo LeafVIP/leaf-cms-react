@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function EditUser({user, open, onClose, onBadgeClick}) {
+export default function EditOffer({offer, open, onClose}) {
 
     const classes = useStyles();
     
@@ -50,7 +50,7 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
                             <CloseIcon />
                         </IconButton>
                         <Typography variant="h6" className={classes.title}>
-                            {user.firstName} {user.lastName}
+                            {offer.productName}
                         </Typography>      
                         <Button autoFocus color="inherit" onClick={handleClose}>
                             save
@@ -60,45 +60,40 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
 
                 <List>
                     <ListItem>
-                        <ListItemText primary="Firebase ID" secondary={user.authUid} />
+                        <ListItemText primary="Firebase ID" secondary={offer.id} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Email" secondary={user.email} />
+                        <ListItemText primary="Thumbnail" secondary={offer.imagePath} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Phone" secondary={user.phoneNumber} />
+                        <ListItemText primary="Description" secondary={offer.productDescription} />
                     </ListItem>
                     <Divider />
                     <ListItem button>
-                        <ListItemText primary="dispensary" secondary={user.dispensary} />
+                        <ListItemText primary="Reward" secondary={offer.rewardAmount} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Phone" secondary={user.phoneNumber} />
+                        <ListItemText primary="Quantity" secondary={offer.originalQuantity} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Platform" secondary={user.platform} />
+                        <ListItemText primary="Video" secondary={offer.videoUrl} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Version" secondary={user.version} />
+                        <ListItemText primary="Survey Code" secondary={offer.surveyCode} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Push Notification" secondary={(user.fcmToken === undefined || user.fcmToken === '' ) ? 'Disabled' : 'Enabled' } />
-                    </ListItem>
-                    <Divider />
-                    < ListItem button value={user} onClick={onBadgeClick}>
-                        <ListItemText primary="Badge State" secondary={user.badgeState} />
+                        <ListItemText primary="Job Filter" secondary={offer.jobTypes} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-
-                        <img  className={classes.img} src={user.badgeFrontUrl} alt={user.authUid} />
-                    </ListItem>
+                        <ListItemText primary="Dispensary Filter" secondary={offer.dispensaries} />
+                     </ListItem>
                 </List>
             </Dialog>
         </div>

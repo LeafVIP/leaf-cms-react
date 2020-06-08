@@ -18,7 +18,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -51,7 +51,7 @@ const headCells = [
   { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
   { id: 'dispensary', numeric: false, disablePadding: false, label: 'Dispensary' },
   { id: 'badgeState', numeric: false, disablePadding: false, label: 'Status' },
-  { id: 'platform', numeric: false, disablePadding: false, label: 'Platform' },
+  { id: 'platform', numeric: true, disablePadding: false, label: 'Platform' },
   { id: 'version', numeric: true, disablePadding: false, label: 'Version' },
   { id: 'createdAt', numeric: false, disablePadding: false, label: 'Member Since' },
 ];
@@ -68,7 +68,7 @@ function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align='left'
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -95,7 +95,6 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -121,7 +120,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({users, numSelected}) => {
+const EnhancedTableToolbar = ({users, numSelected, onAddClick}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -147,9 +146,9 @@ const EnhancedTableToolbar = ({users, numSelected}) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="Filter list">
-          <IconButton aria-label="filter list">
-            <FilterListIcon />
+        <Tooltip title="New User">
+          <IconButton aria-label="new user" onClick={onAddClick}>
+            <AddCircleOutlinedIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -198,7 +197,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
   const [selected] = React.useState([]);
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [rowsPerPage, setRowsPerPage] = React.useState(-1);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -220,6 +219,10 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
     setPage(0);
   };
 
+  const handleAddUser = () => {
+    console.log('handleAddUser' );
+  }
+
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
@@ -238,7 +241,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleAddUser} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -273,13 +276,13 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
                     >
                    
                       <TableCell component="th" id={labelId} scope="name"  align='left' padding='default'>
-                        <span> {name(user.firstName, user.lastName)}</span>
+                        <span>{user.firstName !== '' ? name(user.firstName, user.lastName) : 'n/a'}</span>
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.role}</TableCell>
-                      <TableCell align='left' padding='default' scope='dispensary'>{user.dispensary}</TableCell>
-                      <TableCell align='left' padding='default' scope='role' onClick={onSelectBadge}>{user.badgeState}</TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.platform}</TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.version}</TableCell>
+                      <TableCell align='left' padding='default' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' scope='dispensary'>{user.dispensary !== '' && user.dispensary !== undefined ? user.dispensary : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' scope='badgeState' onClick={onSelectBadge}>{user.badgeState !== null && user.badgeState !== undefined ? user.badgeState : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
                       <TableCell align='left' padding='default' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
                     </TableRow>
                   );

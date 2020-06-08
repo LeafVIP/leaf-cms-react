@@ -1,14 +1,18 @@
 import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
-import OfferSkeleton from '../../util/OfferSkeleton';
 import { connect } from 'react-redux';
 import { getOffers } from '../../redux/actions/offerActions';
-import CreateOffer from '../offers/CreateOffer';
-import Offer from '../offers/Offer';
-import OfferDetails from '../offers/OfferDetails';
+import OffersTable from '../offers/OffersTable';
+import EditOffer from '../offers/EditOffer';
+import Search from '../../util/Search';
 
 class OfferPage extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {open: false, offer: undefined};
+    }
 
     componentDidMount() {
         this.props.getOffers();
@@ -17,44 +21,47 @@ class OfferPage extends Component {
     render () {
         const { offers, offer, loading } = this.props.data;
 
-        let offerDetailsMarkup = !loading && offer !== null ? (
-            <OfferDetails keuy="offerDetails" offer={offer}/>     
+        const showOfferDetails = (offer) => {
+            console.log('showOfferDetails: ' +offer.productName);
+            this.offer = offer;
+            this.setState({open: true, offer: offer});
+        }
+
+        const hideOfferDetails = () => {
+            this.setState({open: false, offer: undefined});
+        }
+
+        let editOfferMarkup = !loading && this.state.offer !== undefined ? (
+            <EditOffer
+                offer={this.state.offer ?? offer}
+                open={this.state.open}
+                onClose={hideOfferDetails} />
         ) : (
-            <div>Loading...</div>
+            <div></div>
         )
-        let offersMarkup = !loading & offers !== null ? (
-            offers.map((offer) =>
-            <div>
-            <Offer  
-                key={offer.id}
-                offer={offer} />
-<br />
-</div>
-        )  
-        )
-           : (
-           <OfferSkeleton />
-          );
 
         return(
             <Fragment>
-
-            <Grid container spacing={2}>
-                <Grid item>
-                    <CreateOffer />
-                </Grid>
-            </Grid>
-
-
-            <Grid container spacing={10}>
-                <Grid item sm={6} xs={4}>
-                    {offersMarkup}
-                </Grid>
-                <Grid item sm={6} xs={4}>
-                    {offerDetailsMarkup}
-              </Grid>
-            </Grid>
-            </Fragment>
+            <Search items={offers}/>
+            <br />
+           <Grid container spacing={3}>
+               <Grid item sm={12} xs={3}> 
+                   <Grid container spacing={3}>           
+                           {
+                             !loading && offers !== null ? (
+                               <OffersTable 
+                                offers={offers} 
+                                onSelectItem={showOfferDetails} />
+                             
+                             ) : (
+                               <div>Loading...</div>
+                             )
+                           }
+                   </Grid>
+               </Grid>
+               {editOfferMarkup}
+           </Grid>
+           </Fragment>
         )
     }
 }

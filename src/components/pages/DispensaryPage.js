@@ -10,7 +10,7 @@ class DispensaryPage extends Component {
 
   constructor(props) {
       super(props);
-     this.state = {open: false, item: undefined}
+     this.state = {open: false, dispensary: undefined}
   }
 
     componentDidMount() {
@@ -27,24 +27,28 @@ class DispensaryPage extends Component {
 
         const showDispensaryDetails = (dispensary) => {
             this.dispensary = dispensary;
-            this.setState({open: true, item: dispensary});
+            this.setState({open: true, dispensary: dispensary});
           };
 
         const hideDispensaryDetails = () => {
-          this.setState({open: false, item: undefined});
+          this.setState({open: false, dispensary: undefined});
         }
         
         const saveDispensary = (newDispensary) => {
           console.log("DispensaryPage.saveDispensary: " +newDispensary.employees);
-
           this.props.updateDispensary(dispensary.id, newDispensary);
-          this.setState({open: false, item: undefined});
+          this.setState({open: false, dispensary: undefined});
         }
 
+        const createDispensary = () => {
+          console.log('createDispensary');
+          this.dispensary = undefined;
+          this.setState({open: true, dispensary: undefined});
+        }
 
       let dispensaryMarkup = !loading && dispensary !== null ? (
         <DispensaryDetails 
-            dispensary={dispensary} 
+            dispensary={this.state.dispensary ?? dispensary} 
             open={this.state.open} 
             onClose={hideDispensaryDetails}
             onSave={saveDispensary} />
@@ -52,12 +56,17 @@ class DispensaryPage extends Component {
         <div></div>
       )
           return (
-
-       
               <Fragment>  
                 <Grid container spacing={3}>
                 <Grid item sm={12} xs={3}> 
+                {
+                  !loading && dispensaries !== null ? (
+                   
                     <Search items={dispensaries}/>
+               
+                  ) : (<></>)
+                }
+               
                   </Grid>
                 <Grid item sm={12} xs={3}> 
                     <Grid container spacing={3}>           
@@ -66,14 +75,24 @@ class DispensaryPage extends Component {
                                 <DispensariesTable 
                                   dispensaries={dispensaries}
                                   onClose={hideDispensaryDetails}
-                                  onSelectItem={showDispensaryDetails}/> 
+                                  onSelectItem={showDispensaryDetails}
+                                  onCreateItem={createDispensary}/> 
                               ) : (
                                 <div>Loading...</div>
                               )
                             }
                     </Grid>
                 </Grid>
-                {dispensaryMarkup}
+                { 
+                  !loading && dispensary !== null ? (
+                      <DispensaryDetails 
+                          dispensary={this.state.dispensary ?? dispensary} 
+                          open={this.state.open} 
+                          onClose={hideDispensaryDetails}
+                          onSave={saveDispensary} />
+                    ) : (
+                      <div></div>
+                    )}
             </Grid>
 
               </Fragment>

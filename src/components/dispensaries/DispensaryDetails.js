@@ -189,6 +189,7 @@ export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
                         )
                      }
                     </ListItem>
+                    <Divider />
                     <ListItem>
                       <ListItemText primary="Leaf Users" secondary={dispensary.users !== undefined ?  dispensary.users.length : 0} />
                     </ListItem>

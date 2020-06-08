@@ -47,13 +47,8 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'license', numeric: false, disablePadding: false, label: 'License' },
-  { id: 'cmId', numeric: false, disablePadding: false, label: 'CMID' },
-  { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
-  { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
-  { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
-  // { id: 'createdAt', numeric: false, disablePadding: false, label: 'Joined On' },
+  { id: 'productName', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'remainingQuantity', numeric: true, disablePadding: false, label:'Remaining' },
 ];
 
 function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
@@ -68,7 +63,7 @@ function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
+            align='left'
             padding={headCell.disablePadding ? 'none' : 'default'}
             sortDirection={orderBy === headCell.id ? order : false}
           >
@@ -95,6 +90,7 @@ EnhancedTableHead.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   onRequestSort: PropTypes.func.isRequired,
+  onSelectAllClick: PropTypes.func.isRequired,
   order: PropTypes.oneOf(['asc', 'desc']).isRequired,
   orderBy: PropTypes.string.isRequired,
   rowCount: PropTypes.number.isRequired,
@@ -120,7 +116,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
+const EnhancedTableToolbar = ({numSelected}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -134,9 +130,11 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
           {numSelected} selected
         </Typography>
       ) : (
+
+
         
         <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          All Dispensaries / Top 50
+          All Offers
         </Typography>
       )}
 
@@ -147,9 +145,9 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title='new dispensary'>
-          <IconButton aria-label="new dispensary" onClick={onCreateItem}>
-          <AddCircleOutlinedIcon />
+        <Tooltip title="New Offer">
+          <IconButton aria-label="new offer">
+            <AddCircleOutlinedIcon />
           </IconButton>
         </Tooltip>
       )}
@@ -185,7 +183,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}) {
+export default function EnhancedTable({offers, onSelectItem}) {
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -199,11 +197,6 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
-  };
-
-  const handleClick = (event, dispensary) => {
-    console.log('handleClick: ' +dispensary.id);
-    onSelectItem(dispensary);
   };
 
   const handleChangePage = (event, newPage) => {
@@ -220,20 +213,13 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
   };
 
   const isSelected = (name) => selected.indexOf(name) !== -1;
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, dispensaries.length - page * rowsPerPage);
 
-  function saturationRate(users, employees) {
-    if (users === 0 || employees === 0) {
-      return 0;
-    }
-
-    return (users / employees).toFixed(2) * 100;
-  }
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, offers.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} />
+        <EnhancedTableToolbar numSelected={selected.length} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -247,35 +233,29 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={dispensaries.length}
+              rowCount={offers.length}
             />
             <TableBody>
-              {stableSort(dispensaries, getComparator(order, orderBy))
+              {stableSort(offers, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((dispensary, index) => {
-                  const isItemSelected = isSelected(dispensary.displayName);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
+                .map((offer, index) => {
+                  const isItemSelected = isSelected(offer.productName);
+    
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, dispensary)}
+                      onClick={(event) => onSelectItem(offer)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={dispensary.id}
+                      key={offer.productName}
                       selected={isItemSelected}
                     >
 
-                      <TableCell component="th" id={labelId} scope="displayName"  align='left' padding='default'>
-                        <span> {dispensary.displayName}</span>
+                      <TableCell component="th" id='productName' scope="productName"  align='left' padding='default'>
+                            {offer.productName}
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
-                      <TableCell align='left' padding='default' scope='cmId'>{dispensary.cmId}</TableCell>
-                      <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
-                      <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
-                      <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
-
+                      <TableCell align='left' padding='default' scope='remainingQuantity'>{offer.remainingQuantity}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -290,7 +270,7 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
         <TablePagination
           rowsPerPageOptions={[5, 10, 25, {value: -1, label: 'All'}]}
           component="div"
-          count={dispensaries.length}
+          count={offers.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}
