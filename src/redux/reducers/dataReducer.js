@@ -12,7 +12,7 @@ import {
     SET_COMPLETED_OFFERS,
     SELECT_OFFER,
     DELETE_OFFER,
-    SET_DISPENSARY_USERS} from '../types';
+    SET_DISPENSARY_USERS, SET_BRANDS, CREATE_BRAND, UPDATE_BRAND, DELETE_BRAND} from '../types';
 
     const initialState = {
         users: [],
@@ -23,6 +23,8 @@ import {
         items: [],
         offers: [],
         offer: {},
+        brands: [],
+        brand: {},
         loading: false
     }
 
@@ -120,7 +122,43 @@ import {
                        offer: action.payload
                     }
 
-            
+
+
+
+            // Brands
+            case SET_BRANDS:
+            return {
+                ...state,
+                laoding: false,
+                brands: action.payload
+            }
+
+        case CREATE_BRAND: 
+        const newBrands =[action.payload, ...state.brands];
+            return {
+                ...state,
+                loading: false,
+                brands: newBrands
+            }
+    
+        case UPDATE_BRAND:
+            return {
+                ...state,
+                loading: false,
+            }
+
+        case DELETE_BRAND:
+        
+            const id = action.payload;
+            const deletedBrands = state.brands.filter(function(entity) {
+                return entity.id !== id;
+            })
+            return {
+                ...state,
+                loading: false,
+                brands: deletedBrands
+            }
+
             default:
                 return state;
         }

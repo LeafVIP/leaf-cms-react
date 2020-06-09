@@ -4,6 +4,12 @@ export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
 export const SET_COMPLETED_OFFERS = "SET_COMPLETED_OFFERS";
 
+// brand reducers
+export const SET_BRANDS = "SET_BRANDS";
+export const SET_BRAND = "SET_BRAND";
+export const UPDATE_BRAND = "UPDATE_BRAND";
+export const CREATE_BRAND = "CREATE_BRAND";
+export const DELETE_BRAND = "DELETE_BRAND";
 
 // data reducers
 export const LOADING_DATA = "LOADING_DATA";
@@ -17,7 +23,7 @@ export const SET_OFFERS = "SET_OFFERS";
 export const SELECT_OFFER = "SELECT_OFFER"
 export const CREATE_OFFER = "CREATE_OFFER";
 export const DELETE_OFFER = "DELETE_OFFER";
-export const CREATE_BRAND = "CREATE_BRAND";
+
 
 // Dispensary Reducers
 export const SET_DISPENSARIES = "SET_DISPENSARIES";

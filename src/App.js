@@ -19,6 +19,7 @@ import UserPage from './components/pages/UserPage';
 import DispensaryPage from './components/pages/DispensaryPage';
 import LoginPage from './components/pages/LoginPage';
 import OffersPage from './components/pages/OffersPage';
+import BrandsPage from './components/pages/BrandsPage';
 import PushNotificationsPage from './components/pages/PushNotificationsPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';
@@ -53,6 +54,7 @@ if (token) {
               <Switch>
                  <Route exact path="/" component={UserPage} />
                  <Route exact path="/login" component={LoginPage} />
+                 <Route exact path="/brands" component={BrandsPage} />
                  <Route exact path="/dispensaries" component={DispensaryPage} />
                  <Route exact path="/offers" component={OffersPage} />
                  <Route exact path="/notifications" component={PushNotificationsPage} />

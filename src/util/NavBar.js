@@ -24,6 +24,10 @@ class NavBar extends Component {
             window.location = "/offers";
         }
 
+        const brands = () => {
+            window.location = "/brands";
+        }
+
         const push = () => {
             window.location = '/notifications';
         }
@@ -36,6 +40,7 @@ class NavBar extends Component {
                             users
                         </Button>
                         <Button color="inherit" onClick={dispensaries}>dispensaries</Button>
+                        <Button color="inherit" onClick={brands}>brands</Button>
                         <Button color="inherit" onClick={offers}>offers</Button>
                         <Button color="inherit" onClick={push}>notifications</Button>
                     </Toolbar>
