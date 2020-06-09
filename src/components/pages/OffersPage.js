@@ -17,7 +17,6 @@ class OfferPage extends Component {
     componentDidMount() {
         this.props.getOffers();
     }
-
     render () {
         const { offers, offer, loading } = this.props.data;
 
@@ -31,10 +30,6 @@ class OfferPage extends Component {
             this.setState({open: false, create: false, offer: undefined});
         }
 
-
-        const saveNewOffer = (newOffer) => {
-            this.props.createOffer(newOffer);
-        }
         return(
             <Fragment>
             <Search items={offers}/>
