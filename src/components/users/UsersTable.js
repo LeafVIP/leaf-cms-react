@@ -189,7 +189,10 @@ const useStyles = makeStyles((theme) => ({
 export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
 
     const timestamp = (createdAt) => {
+      if(createdAt !== undefined) {
         return new Date(createdAt._seconds * 1000).toLocaleDateString("en-US")
+      }
+     
     }
 
 

@@ -181,10 +181,25 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Filters"/>
-                        {/* <JobTypeTransferList /> */}
+                     
+                        { 
+                            displayState === 'view' || state.jobTypes ? (
+
+                                <div>
+                                    <ListItemText primary="Job Types" secondary={state.jobTypes} />
+                                </div>
+                            ) : (
+                                <JobTypeTransferList />
+                            )
+
+                        }
                     </ListItem>
-    
+                    <Divider />
+
+                    <ListItem button>
+                        <ListItemText primary="Dispensaries" secondary={state.dispensaries} />
+                    </ListItem>
+ 
                 </List>
             </Dialog>
         </div>
