@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getOffers, createOffer } from '../../redux/actions/offerActions';
+import { getOffers, createOffer, deleteOffer } from '../../redux/actions/offerActions';
 import OffersTable from '../offers/OffersTable';
 import EditOffer from '../offers/EditOffer';
 import Search from '../../util/Search';
@@ -28,6 +28,10 @@ class OfferPage extends Component {
 
         const closeModal = () => {
             this.setState({open: false, create: false, offer: undefined});
+        }
+
+        const deleteOffer = (offerId) => {
+            this.props.deleteOffer(offerId);
         }
 
         return(
@@ -56,7 +60,8 @@ class OfferPage extends Component {
                                 <EditOffer
                                     offer={this.state.offer ?? offer}
                                     open={this.state.open}
-                                    onClose={closeModal} />
+                                    onClose={closeModal}
+                                    onDelete={deleteOffer} />
                             </div>
                         
                     
@@ -74,6 +79,7 @@ class OfferPage extends Component {
 OfferPage.propTypes = {
     getOffers: PropTypes.func.isRequired,
     createOffer: PropTypes.func.isRequired,
+    deleteOffer: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
@@ -83,7 +89,8 @@ const mapStateToProps = (state) => ({
 
 const mapActionsToProps = {
     getOffers,
-    createOffer
+    createOffer,
+    deleteOffer
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(OfferPage);

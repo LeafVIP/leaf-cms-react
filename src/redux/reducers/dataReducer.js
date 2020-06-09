@@ -11,6 +11,7 @@ import {
     SET_OFFERS,
     SET_COMPLETED_OFFERS,
     SELECT_OFFER,
+    DELETE_OFFER,
     SET_DISPENSARY_USERS} from '../types';
 
     const initialState = {
@@ -105,6 +106,12 @@ import {
                             offers: action.payload,
                             offer: action.payload[0]
                         }
+                case DELETE_OFFER:
+                    return {
+                        ...state,
+                        loading: false,
+                        offer: action.payload
+                    }
 
                 case SELECT_OFFER:
                     return {

@@ -4,9 +4,11 @@ import {
     LOADING_DATA,
     SET_OFFERS,
     SELECT_OFFER,
+    DELETE_OFFER,
     CLEAR_ERRORS,
     CREATE_OFFER,
-    SET_ERRORS
+    SET_ERRORS,
+    LOADING_UI
 } from '../types';
 
 export const createOffer = (newOffer) => (dispatch) => {
@@ -31,6 +33,28 @@ export const createOffer = (newOffer) => (dispatch) => {
         });
 };
 
+
+export const deleteOffer = (offerId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios
+        .post('/deleteOffer', {offerId})
+        .then(res => {
+            dispatch({
+                type: DELETE_OFFER,
+                payload: offerId
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err
+            })
+        })
+
+}
 
 export const selectOffer = (offer) => (dispatch) => {
     dispatch({

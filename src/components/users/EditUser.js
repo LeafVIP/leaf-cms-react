@@ -44,6 +44,10 @@ export default function EditUser({user, open, onClose, onDelete, onBadgeClick}) 
     const handleDelete = () => {
         onDelete(user.authUid);
     }
+
+    const handleBadgeUpload = () => {
+        console.log('upload badge');
+    }
     return (
         <div>
              <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -74,12 +78,16 @@ export default function EditUser({user, open, onClose, onDelete, onBadgeClick}) 
                         <ListItemText primary="Phone" secondary={user.phoneNumber} />
                     </ListItem>
                     <Divider />
+                    <ListItem>
+                        <ListItemText primary="Zip" secondary={user.zip} />
+                    </ListItem>
+                    <Divider />
                     <ListItem button>
                         <ListItemText primary="dispensary" secondary={user.dispensary} />
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Phone" secondary={user.phoneNumber} />
+                        <ListItemText primary="PayPal Identifier" secondary={user.payPalPayoutReceiver} />
                     </ListItem>
                     <Divider />
                     <ListItem>
@@ -94,14 +102,28 @@ export default function EditUser({user, open, onClose, onDelete, onBadgeClick}) 
                         <ListItemText primary="Push Notification" secondary={(user.fcmToken === undefined || user.fcmToken === '' ) ? 'Disabled' : 'Enabled' } />
                     </ListItem>
                     <Divider />
+                    <ListItem>
+                        <ListItemText primary="Location" secondary={(user.locationEnabled === undefined || user.locationEnabled === false ) ? 'Disabled' : 'Enabled' } />
+                    </ListItem>
+                    <Divider />
                     < ListItem button value={user} onClick={onBadgeClick}>
                         <ListItemText primary="Badge State" secondary={user.badgeState} />
                     </ListItem>
                     <Divider />
-                    <ListItem>
-
-                        <img  className={classes.img} src={user.badgeFrontUrl} alt={user.authUid} />
-                    </ListItem>
+            
+                        {
+                            user.badgeFrontUrl !== undefined ? (
+                                <ListItem>
+                                <img  className={classes.img} src={user.badgeFrontUrl} alt={user.authUid} />
+                                </ListItem>
+                            ) : (
+                                <ListItem button value={user.badgeFrontUrl} onClick={handleBadgeUpload}>
+                                <ListItemText primary='Badge' secondary='not uploaded' />
+                                </ListItem>
+                            )
+                        }
+                       
+ 
                 </List>
             </Dialog>
         </div>

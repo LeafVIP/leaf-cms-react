@@ -50,9 +50,11 @@ const headCells = [
   { id: 'name', numeric: false, disablePadding: false, label: 'Name' },
   { id: 'role', numeric: false, disablePadding: false, label: 'Role' },
   { id: 'dispensary', numeric: false, disablePadding: false, label: 'Dispensary' },
+  { id: 'zip', numeric: true, disablePadding: false, label: 'Zipcode' },
   { id: 'badgeState', numeric: false, disablePadding: false, label: 'Status' },
   { id: 'platform', numeric: true, disablePadding: false, label: 'Platform' },
   { id: 'version', numeric: true, disablePadding: false, label: 'Version' },
+  { id: 'locationEnabled', numeric: false, disablePadding: false, label: 'Location Enabled' },
   { id: 'createdAt', numeric: false, disablePadding: false, label: 'Member Since' },
 ];
 
@@ -277,9 +279,11 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
                       </TableCell>
                       <TableCell align='left' padding='default' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
                       <TableCell align='left' padding='default' scope='dispensary'>{user.dispensary !== '' && user.dispensary !== undefined ? user.dispensary : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' scope='zip'>{user.zip !== '' && user.zip !== undefined ? user.zip : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' scope='badgeState' onClick={onSelectBadge}>{user.badgeState !== null && user.badgeState !== undefined ? user.badgeState : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
+                      <TableCell align='left' padding='default' scope='locationEnabled'>{user.locationEnabled !== undefined  && user.locationEnabled === true ? 'true' : 'false'}</TableCell>
                       <TableCell align='left' padding='default' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
                     </TableRow>
                   );
