@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function DispensaryDetails({dispensary, open, onClose, onSave}) {
+export default function EditDispensary({dispensary, open, onClose, onSave}) {
 
     const classes = useStyles();
     

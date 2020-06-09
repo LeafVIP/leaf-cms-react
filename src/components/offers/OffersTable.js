@@ -18,7 +18,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+// import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+import CreateOffer from './CreateOffer';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -144,11 +145,12 @@ const EnhancedTableToolbar = ({numSelected}) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <Tooltip title="New Offer">
-          <IconButton aria-label="new offer">
-            <AddCircleOutlinedIcon />
-          </IconButton>
-        </Tooltip>
+        <CreateOffer />
+        // <Tooltip title="New Offer">
+        //   <IconButton aria-label="new offer">
+        //     <AddCircleOutlinedIcon />
+        //   </IconButton>
+        // </Tooltip>
       )}
     </Toolbar>
   );

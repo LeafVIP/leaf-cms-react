@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getOffers } from '../../redux/actions/offerActions';
+import { getOffers, createOffer } from '../../redux/actions/offerActions';
 import OffersTable from '../offers/OffersTable';
 import EditOffer from '../offers/EditOffer';
 import Search from '../../util/Search';
@@ -11,7 +11,7 @@ class OfferPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {open: false, offer: undefined};
+        this.state = {open: false, create: false, offer: undefined};
     }
 
     componentDidMount() {
@@ -27,19 +27,14 @@ class OfferPage extends Component {
             this.setState({open: true, offer: offer});
         }
 
-        const hideOfferDetails = () => {
-            this.setState({open: false, offer: undefined});
+        const closeModal = () => {
+            this.setState({open: false, create: false, offer: undefined});
         }
 
-        let editOfferMarkup = !loading && this.state.offer !== undefined ? (
-            <EditOffer
-                offer={this.state.offer ?? offer}
-                open={this.state.open}
-                onClose={hideOfferDetails} />
-        ) : (
-            <div></div>
-        )
 
+        const saveNewOffer = (newOffer) => {
+            this.props.createOffer(newOffer);
+        }
         return(
             <Fragment>
             <Search items={offers}/>
@@ -59,7 +54,22 @@ class OfferPage extends Component {
                            }
                    </Grid>
                </Grid>
-               {editOfferMarkup}
+               {
+                    !loading && this.state.offer !== undefined ? (
+                       
+                       <div>
+                                <EditOffer
+                                    offer={this.state.offer ?? offer}
+                                    open={this.state.open}
+                                    onClose={closeModal} />
+                            </div>
+                        
+                    
+                    ) : (
+                        <div></div>
+                    )
+                }
+                
            </Grid>
            </Fragment>
         )
@@ -68,6 +78,7 @@ class OfferPage extends Component {
 
 OfferPage.propTypes = {
     getOffers: PropTypes.func.isRequired,
+    createOffer: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
@@ -76,7 +87,8 @@ const mapStateToProps = (state) => ({
 });
 
 const mapActionsToProps = {
-    getOffers
+    getOffers,
+    createOffer
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(OfferPage);

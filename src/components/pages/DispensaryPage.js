@@ -1,16 +1,17 @@
 import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getDispensaryUsers, getDispensaries, selectDispensary, getTop50, updateDispensary } from '../../redux/actions/dispensaryActions';
+import { getDispensaryUsers, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary } from '../../redux/actions/dispensaryActions';
 import Grid from '@material-ui/core/Grid';
-import DispensaryDetails from '../dispensaries/DispensaryDetails';
+import EditDispensary from '../dispensaries/EditDispensary';
+import CreateDispensary from '../dispensaries/CreateDispensary';
 import Search from '../../util/Search';
 import DispensariesTable from '../dispensaries/DispensariesTable';
 class DispensaryPage extends Component {
 
   constructor(props) {
       super(props);
-     this.state = {open: false, dispensary: undefined}
+     this.state = {open: false, create: false, dispensary: undefined}
   }
 
     componentDidMount() {
@@ -30,19 +31,24 @@ class DispensaryPage extends Component {
             this.setState({open: true, dispensary: dispensary});
           };
 
-        const hideDispensaryDetails = () => {
-          this.setState({open: false, dispensary: undefined});
+        const closeModal = () => {
+          this.setState({open: false, create: false});
         }
         
         const saveDispensary = (newDispensary) => {
           this.props.updateDispensary(dispensary.id, newDispensary);
-          this.setState({open: false, dispensary: undefined});
+          this.setState({open: false});
         }
 
-        const createDispensary = () => {
-          console.log('createDispensary');
-          this.dispensary = undefined;
-          this.setState({open: true, dispensary: undefined});
+        const addNewDispensaryClicked = () => {
+          console.log('addNewDispensaryClicked');
+          this.setState({create: true, open: false});
+        }
+
+        const saveNewDispensary = (newDispensary) => {
+          console.log('save new dispensary: ' +newDispensary.displayName);
+          this.props.createDispensary(newDispensary);
+          this.setState({create: false, dispensary});
         }
 
           return (
@@ -64,9 +70,9 @@ class DispensaryPage extends Component {
                               !loading && dispensaries !== null ? (
                                 <DispensariesTable 
                                   dispensaries={dispensaries}
-                                  onClose={hideDispensaryDetails}
+                                  onClose={closeModal}
                                   onSelectItem={showDispensaryDetails}
-                                  onCreateItem={createDispensary}/> 
+                                  onCreateItem={addNewDispensaryClicked}/> 
                               ) : (
                                 <div>Loading...</div>
                               )
@@ -74,15 +80,27 @@ class DispensaryPage extends Component {
                     </Grid>
                 </Grid>
                 { 
-                  !loading && dispensary !== null ? (
-                      <DispensaryDetails 
+                  !loading && dispensary !== undefined ? (
+                    <div>
+                      <EditDispensary 
                           dispensary={this.state.dispensary ?? dispensary} 
                           open={this.state.open} 
-                          onClose={hideDispensaryDetails}
+                          onClose={closeModal}
                           onSave={saveDispensary} />
+
+                 
+                          <CreateDispensary
+                            open={this.state.create}
+                            onClose={closeModal}
+                            onSave={saveNewDispensary} />
+
+</div>
+                          
                     ) : (
-                      <div></div>
+                      <></>
                     )}
+                    
+
             </Grid>
 
               </Fragment>
@@ -95,6 +113,7 @@ DispensaryPage.propTypes = {
     selectDispensary: PropTypes.func.isRequired,
     getDispensaryUsers: PropTypes.func.isRequired,
     updateDispensary: PropTypes.func.isRequired,
+    createDispensary: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
     dispensaries: PropTypes.array
@@ -109,7 +128,8 @@ const mapDispatchToProps = {
    getDispensaryUsers,
    selectDispensary,
    getTop50,
-   updateDispensary
+   updateDispensary,
+   createDispensary
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DispensaryPage);

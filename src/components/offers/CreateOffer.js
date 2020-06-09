@@ -10,9 +10,14 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import AddIcon from '@material-ui/icons/Add';
 import CloseIcon from '@material-ui/icons/Close';
+import Slide from '@material-ui/core/Slide';
+import Typography from '@material-ui/core/Typography';
+import ListItem from '@material-ui/core/ListItem';
+import List from '@material-ui/core/List';
 import { connect } from 'react-redux';
 
 import {createOffer, getOffers, clearErrors} from '../../redux/actions/offerActions';
+import { AppBar, Toolbar, IconButton, Divider } from '@material-ui/core';
 
 const styles = (theme) => ({
   
@@ -30,6 +35,12 @@ const styles = (theme) => ({
         top: '6%'
     }
 });
+
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+  });
+  
 
 class CreateOffer extends Component {
     state = {
@@ -103,15 +114,155 @@ class CreateOffer extends Component {
 
         return (
             <Fragment>
-                <MyButton onClick={this.handleOpen}  tip="Create a Dispensary">
+                <MyButton onClick={this.handleOpen}  tip="create offer">
                     <AddIcon />
                 </MyButton>
                 <Dialog
                     open={this.state.open}
                     onClose={this.handleClose}
-                    fullWidth
-                    maxWidth="sm">
-                        <MyButton
+                    fullScreen
+                    TransitionComponent={Transition}>
+                        <AppBar className={classes.appBar}>
+                            <Toolbar>
+                                <IconButton 
+                                    edge="start"
+                                    color="inherit"
+                                    onClick={this.handleClose}
+                                    aria-label="close">
+                                        <CloseIcon />
+                                    </IconButton>
+                                    <Typography variant="h6" className={classes.title}>
+                                       Create a new offer
+                                    </Typography>  
+                            </Toolbar>
+                        </AppBar>
+                        <List>
+                        <ListItem>
+                                <TextField 
+                                name="campaignName"
+                                label="Campaign Name"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.campaignName}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="productName"
+                                label="Product Name"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.productName}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="brandName"
+                                label="Brand Name"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.brandName}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="brandId"
+                                label="Brand ID"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.brandId}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="brandLicense"
+                                label="Brand License"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.brandLicense}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="imagePath"
+                                label="Thumbnail"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={this.state.imagePath}
+                                onChange={this.handleChange} />
+                            </ListItem>
+                            <Divider />
+
+                            <ListItem>
+                                <TextField 
+                                name="originalQuantity"
+                                label="Quantity"
+                                type="number"
+                                className={classes.textField}
+                                placeholder={this.state.originalQuantity}
+                                onChange={this.handleChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                  }} />
+                            </ListItem>
+                            <Divider />
+
+
+                            <ListItem>
+                                <TextField 
+                                name="rewardAmount"
+                                label="Reward"
+                                type="number"
+                                className={classes.textField}
+                                placeholder={this.state.rewardAmount}
+                                onChange={this.handleChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                  }} />
+                            </ListItem>
+                            <Divider />
+
+
+                            <ListItem>
+                                <TextField 
+                                name="videoLength"
+                                label="Video Length"
+                                type="number"
+                                className={classes.textField}
+                                placeholder={this.state.videoLength}
+                                onChange={this.handleChange}
+                                InputLabelProps={{
+                                    shrink: true,
+                                  }} />
+                            </ListItem>
+                            <Divider />
+                            <ListItem>
+                                {
+                                    !loading ? (
+                                        <Button className={classes.saveBtn} onClick={this.handleSubmit}>
+                                            Save
+                                        </Button>
+                                    ) : (
+                                        <CircularProgress
+                                            size={30}
+                                            className={classes.progressSpinner} />
+                                    )
+                                }
+                           
+                             </ListItem>
+
+                        </List>
+                        {/* <MyButton
                             tip="Close"
                             onClick={this.handleClose}
                             tipClassName={classes.closeButton}>
@@ -236,7 +387,7 @@ class CreateOffer extends Component {
           </Button>
           </form>
 
-                            </DialogContent>
+                            </DialogContent> */}
                     </Dialog>
             </Fragment>
         )
