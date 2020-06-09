@@ -16,6 +16,7 @@ export const FILTER_USERS = "FILTER_USERS";
 export const SET_OFFERS = "SET_OFFERS";
 export const SELECT_OFFER = "SELECT_OFFER"
 export const CREATE_OFFER = "CREATE_OFFER";
+export const DELETE_OFFER = "DELETE_OFFER";
 export const CREATE_BRAND = "CREATE_BRAND";
 
 // Dispensary Reducers
@@ -24,6 +25,7 @@ export const UPDATE_DISPENSARY = "UPDATE_DISPENSARY";
 export const SELECT_DISPENSARY = "SELECT_DISPENSARY";
 export const SET_DISPENSARY_USERS = "SET_DISPENSARY_USERS";
 export const CREATE_DISPENSARY = "CREATE_DISPENSARY";
+export const DELETE_DISPENSARY = "DELETE_DISPENSARY";
 
 // UI reducers
 export const LOADING_UI = "LOADING_UI";

@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function EditUser({user, open, onClose, onBadgeClick}) {
+export default function EditUser({user, open, onClose, onDelete, onBadgeClick}) {
 
     const classes = useStyles();
     
@@ -41,6 +41,9 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
       onClose()
     };
 
+    const handleDelete = () => {
+        onDelete(user.authUid);
+    }
     return (
         <div>
              <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -52,8 +55,8 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
                         <Typography variant="h6" className={classes.title}>
                             {user.firstName} {user.lastName}
                         </Typography>      
-                        <Button autoFocus color="inherit" onClick={handleClose}>
-                            save
+                        <Button autoFocus color="inherit" onClick={handleDelete}>
+                            delete
                         </Button>
                     </Toolbar>
                 </AppBar>

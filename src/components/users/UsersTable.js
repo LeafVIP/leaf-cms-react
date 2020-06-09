@@ -268,11 +268,8 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
                     <TableRow
                       hover
                       onClick={(event) => handleClick(event, user)}
-                      role="checkbox"
-                      aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={user.email}
-                      selected={isItemSelected}
                     >
                    
                       <TableCell id="name" scope="name"  align='left' padding='default'>

@@ -1,6 +1,22 @@
 import { LOADING_USER, LOADING_DATA, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS, SET_DISPENSARY_USERS} from '../types';
 import axios from 'axios';
 
+export const deleteUser = (userId) => (dispatch) => {
+    dispatch({type: LOADING_UI});
+    axios
+        .post('/deleteUser', {
+            userId
+        })
+        .then(() => {
+            dispatch({type: CLEAR_ERRORS});
+            dispatch(getUsers());
+        })
+        .catch(err => {
+            console.error(err);
+            dispatch({type: SET_ERRORS, payload: err});
+        });
+}
+
 export const uploadBadgeImage = (formData, authId) => (dispatch) => {
     dispatch({ type: LOADING_USER });
     axios
