@@ -13,7 +13,13 @@ import Typography from '@material-ui/core/Typography';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
+import Switch from '@material-ui/core/Switch';
 import JobTypeTransferList from '../../util/JobTypeTransferList';
+import Grid from '@material-ui/core/Grid';
+import EditIcon from '@material-ui/icons/Edit';
+
+const devStorageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
+const prodStorageBucket = 'https://leafvip-c42db.appspot.com';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -26,6 +32,15 @@ const useStyles = makeStyles((theme) => ({
     img: {
         maxWidth: 400,
         maxHeight: 300
+    },
+    saveBtn: {
+        background: '#0389ff'
+    },
+    deleteBtn: {
+        background: '#FF0000'
+    },
+    btnTxt: {
+        color: '#FFF'
     }
   }));
 
@@ -35,31 +50,32 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
+export default function EditOffer({offer, open, onClose, onSave, onDelete, onUploadThumbnail}) {
 
     const classes = useStyles();
 
+
+    const [isActive, setActive] = useState(offer.isActive);
     const [displayState, setDisplayState] = useState('view');
 
     const state = {
         open: false,
+        id: offer.id,
         brandLicense: offer.brandLicense,
         brandName: offer.brandName,
         brandId: offer.brandId,
-        imagePath: offer.imagePath,
         originalQuantity: offer.originalQuantity,
         rewardAmount: offer.rewardAmount,
-        videoLength: offer.videoLength,
         productName: offer.productName,
         productDescription: offer.productDescription,
-        videoUrl: offer.videoUrl,
         surveyCode: offer.surveyCode,
         surveyId: offer.surveyId,
         campaignName: offer.campaignName,
+        isActive: offer.isActive,
+        imagePath: offer.imagePath
     };
 
 
-    const [id] = useState(offer.id);
 
     const handleClose = () => {
       setDisplayState('view');
@@ -69,23 +85,34 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
     const handleEdit = () => {
         setDisplayState('edit');
     }
+    const handleEditThumbnail = () => {
+        const fileInput = document.getElementById('imageInput');
+        fileInput.click();
+    }
+
+    const handleImageChange = (event) => {
+        const image = event.target.files[0];
+     
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        console.log('handleImageChange: ' +formData.image);
+        onUploadThumbnail(formData);
+      };
 
     const handleSave = () => {
-        const productName = this.state.productName;
-        const productDescription = this.state.productDescription;
-        const brandName = this.state.brandName;
-        const brandLicense = this.state.brandLicense;
-        const brandId = this.state.brandId;
-        const rewardAmount = this.state.rewardAmount;
-        const originalQuantity = this.state.originalQuantity;
-        const jobTypes = this.state.jobTypes;
-        const dispensaries = this.state.dispensaries;
-        const videoUrl = this.state.videoUrl;
-        const imageUrl = this.state.imageUrl;
-        const surveyCode = this.state.surveyCode;
+        const productName = state.productName;
+        const productDescription = state.productDescription;
+        const brandName = state.brandName;
+        const brandLicense = state.brandLicense;
+        const brandId = state.brandId;
+        const rewardAmount = state.rewardAmount;
+        const originalQuantity = state.originalQuantity;
+        const jobTypes = state.jobTypes;
+        const dispensaries = state.dispensaries;
+        const surveyCode = state.surveyCode;
+        const isActive = state.isActive;
 
         const newOffer = {
-            id,
             productName,
             productDescription,
             brandName, 
@@ -95,21 +122,27 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
             originalQuantity,
             jobTypes,
             dispensaries,
-            imageUrl,
-            videoUrl,
-            surveyCode
+            surveyCode,
+            isActive
         }
-        onSave(newOffer);
+        onSave(state.id, newOffer);
         setDisplayState('edit');
     }
 
     const handleChange = (event) => {
-        console.log('handleChange: ' +event.target.name + ' - ' +event.target.value);
-       this.setState({[event.target.name]: event.target.value});
+        state[event.target.name] = event.target.value;
     };
 
+    const toggleActive = () => {
+        setActive(!isActive);
+    }
+
     const handleDelete = () => {
-        onDelete(id);
+        onDelete(state.id);
+    }
+
+    const handleCancel = () => {
+        setDisplayState('view');
     }
 
     return (
@@ -122,17 +155,14 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
                         </IconButton>
                        
                                 {
-                                    displayState === 'edit' ? (
-                                        <TextField
-                                            name="productName"
-                                            label="Product Name"
-                                            type="text"
-                                            placeholder={state.productName}
-                                            onChange={handleChange} />
-                                    ) : (
+                                    displayState === 'view' ? (
                                         <Typography variant="h6" className={classes.title}>
                                             {state.productName}
                                          </Typography>  
+                                    ) : (
+                                        <Typography variant="h6" className={classes.title}>
+                                            Update Offer
+                                        </Typography>  
 
                                     )
                                 }
@@ -143,8 +173,8 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
                                          Edit
                                      </Button>
                                 ) : (<div>
-                                    <Button autoFocus color="inherit"  onClick={handleDelete}>
-                                         Delete
+                                    <Button autoFocus color="inherit"  onClick={handleCancel}>
+                                         cancel
                                      </Button>
                                 </div>) }
                                 
@@ -153,31 +183,129 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
 
                 <List>
                     <ListItem>
-                        <ListItemText primary="Firebase ID" secondary={id} />
+                        <ListItemText primary="Firebase ID" secondary={state.id} />
+                    </ListItem>
+                    <Divider />
+                    {displayState === 'edit' ? (
+                        <div>
+                        <ListItem>
+                            <TextField 
+                                name="productName"
+                                label="Name"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={state.productName}
+                                onChange={handleChange} />
+                        </ListItem>
+                        </div>
+                    ) :(<div></div>)}  
+                    <ListItem>
+
+
+                    {
+                        displayState === 'view' ? (
+                            <div>
+                                <ListItemText primary="Offer Status" secondary={state.isActive ? "Active" : "Inactive"} />    
+                            </div>
+                            
+                        ) : (
+
+                            <div>
+                                <ListItemText primary="Offer Status" secondary={isActive ? "Active" : "Inactive"} /> 
+                                <Switch
+                                    checked={isActive}
+                                    onClick={handleChange}
+                                    value={isActive}
+                                    name="isActive"
+                                    inputProps={{ 'aria-label': 'secondary checkbox' }}
+                                />
+                            </div>
+                        )
+                    }
+                     
+                        
+                    
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Thumbnail" secondary={state.imagePath} />
+                        <ListItemText primary="Video Thumbnail" />
                     </ListItem>
-                    <Divider />
                     <ListItem>
-                        <ListItemText primary="Description" secondary={state.productDescription} />
+                        <Button onClick={handleEditThumbnail}>
+                            <img src={`${devStorageBucket}${state.imagePath}?alt=media`} alt={state.productName} />
+                            <input
+                                type="file"
+                                id="imageInput"
+                                hidden="hidden"
+                                onChange={handleImageChange} />
+                       
+                        </Button>
+                    </ListItem>
+            
+                    <Divider />
+               
+                    <ListItem>
+                        {
+                            displayState === 'view' ? (
+                                <ListItemText primary="Description" secondary={state.productDescription} />
+                            ) : (
+                                <TextField 
+                                    name="productDescription"
+                                    label="Description"
+                                    type="text"
+                                    className={classes.textField}
+                                    placeholder={state.productDescription}
+                                    onChange={handleChange}
+                                    multiline />
+                            )
+                        }
+                      
                     </ListItem>
                     <Divider />
                     <ListItem button>
-                        <ListItemText primary="Reward" secondary={state.rewardAmount} />
+
+                        {displayState === 'view' ? (
+                            <ListItemText primary="Reward" secondary={state.rewardAmount} />
+                            ) : (
+                                <TextField 
+                                name="rewardAmount"
+                                label="Reward"
+                                type="number"
+                                className={classes.textField}
+                                placeholder={state.rewardAmount}
+                                onChange={handleChange} />
+                            )}
+                        
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Quantity" secondary={state.originalQuantity} />
+                    {
+                        displayState === 'view' ? (
+                            <ListItemText primary="Quantity" secondary={state.originalQuantity} />
+                            ) : (
+                                <TextField 
+                                    name="originalQuantity"
+                                    label="Quantity"
+                                    type="number"
+                                    className={classes.textField}
+                                    placeholder={state.originalQuantity}
+                                    onChange={handleChange} />
+                            )}
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Video" secondary={state.videoUrl} />
-                    </ListItem>
-                    <Divider />
-                    <ListItem>
-                        <ListItemText primary="Survey Code" secondary={state.surveyCode} />
+                     {
+                        displayState === 'view' ? (
+                            <ListItemText primary="Survey Code" secondary={state.surveyCode} />
+                            ) : (
+                                <TextField 
+                                    name="surveyCode"
+                                    label="Survey Code"
+                                    type="text"
+                                    className={classes.textField}
+                                    placeholder={state.surveyCode}
+                                    onChange={handleChange} />
+                            )}
                     </ListItem>
                     <Divider />
                     <ListItem>
@@ -189,7 +317,10 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
                                     <ListItemText primary="Job Types" secondary={state.jobTypes} />
                                 </div>
                             ) : (
-                                <JobTypeTransferList />
+                                <div>
+                                    <ListItemText primary="Job Types" secondary={state.jobTypes} />
+                                    <JobTypeTransferList />
+                                </div>
                             )
 
                         }
@@ -199,6 +330,32 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete}) {
                     <ListItem button>
                         <ListItemText primary="Dispensaries" secondary={state.dispensaries} />
                     </ListItem>
+
+                    {
+                        displayState === 'edit' ? (
+                            <div>
+                                <ListItem>
+
+                                    <Grid container spacing={3}>
+
+                                         <Grid item xs={6} sm={3}>
+                                            <Button className={classes.deleteBtn} onClick={handleDelete}>
+                                                <span className={classes.btnTxt}>Delete</span>
+                                            </Button>
+                                        </Grid>
+
+                                        <Grid item xs={6} sm={3}>
+                                            <Button className={classes.saveBtn} onClick={handleSave}>
+                                                <span className={classes.btnTxt}>Save</span>
+                                            </Button>
+                                        </Grid>
+
+                                     
+                                    </Grid>
+                                </ListItem>
+                            </div>
+                        ) : (<div></div>)
+                    }
  
                 </List>
             </Dialog>

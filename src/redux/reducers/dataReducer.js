@@ -10,9 +10,9 @@ import {
     UNAPPROVE_USER, 
     SET_OFFERS,
     SET_COMPLETED_OFFERS,
-    SELECT_OFFER,
     DELETE_OFFER,
-    SET_DISPENSARY_USERS, SET_BRANDS, CREATE_BRAND, UPDATE_BRAND, DELETE_BRAND} from '../types';
+    UPDATE_OFFER,
+    SET_DISPENSARY_USERS, SET_BRANDS, CREATE_BRAND, UPDATE_BRAND, DELETE_BRAND, CREATE_OFFER} from '../types';
 
     const initialState = {
         users: [],
@@ -44,19 +44,19 @@ import {
                     user: action.payload[0],
                     userFilter: action.payload
                 }; 
-                case SET_DISPENSARY_USERS:
-                    return {
-                        ...state,
-                        loading: false,
-                        dispensaryUsers: action.payload
-                    }
-                case SELECT_USER: 
+            case SET_DISPENSARY_USERS:
+                return {
+                    ...state,
+                    loading: false,
+                    dispensaryUsers: action.payload
+                }
+
+            case SELECT_USER: 
                 return {
                     ...state,
                     loading: false,
                      user: action.payload
                 }
-
 
         case SET_COMPLETED_OFFERS:
             return {
@@ -65,12 +65,12 @@ import {
                 offers: action.payload
             }
 
-                case FILTER_USERS:
-                    return {
-                        ...state,
-                        loading: false,
-                        users: action.payload
-                    }
+            case FILTER_USERS:
+                return {
+                    ...state,
+                    loading: false,
+                    users: action.payload
+                }
                 case APPROVE_USER:
                 case UNAPPROVE_USER:
                     return {
@@ -101,29 +101,33 @@ import {
                             dispensary: action.payload
                         }
 
-                    case SET_OFFERS:
-                        return {
-                            ...state,
-                            loading: false,
-                            offers: action.payload,
-                            offer: action.payload[0]
-                        }
-                case DELETE_OFFER:
-                    return {
-                        ...state,
-                        loading: false,
-                        offer: action.payload
-                    }
-
-                case SELECT_OFFER:
-                    return {
-                        ...state,
-                       loading: false,
-                       offer: action.payload
-                    }
 
 
-
+            // Offers
+            case SET_OFFERS:
+                return {
+                    ...state,
+                    loading: false,
+                    offers: action.payload
+                }
+            case DELETE_OFFER:
+                return {
+                    ...state,
+                    loading: false,
+                    offer: action.payload
+                }
+            case UPDATE_OFFER:
+                return {
+                    ...state,
+                    loading: false,
+                }
+            case CREATE_OFFER:
+                const newOffers =[action.payload, ...state.offers];
+                return {
+                    ...state,
+                    loading: false,
+                    offers: newOffers
+                }
 
             // Brands
             case SET_BRANDS:

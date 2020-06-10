@@ -1,5 +1,6 @@
 // user reducers
 export const LOADING_USER = "LOADING_USER";
+export const CREATE_USER = "CREATE_USER";
 export const SET_AUTHENTICATED = "SET_AUTHENTICATED";
 export const SET_UNAUTHENTICATED = "SET_UNAUTHENTICATED";
 export const SET_COMPLETED_OFFERS = "SET_COMPLETED_OFFERS";
@@ -11,6 +12,12 @@ export const UPDATE_BRAND = "UPDATE_BRAND";
 export const CREATE_BRAND = "CREATE_BRAND";
 export const DELETE_BRAND = "DELETE_BRAND";
 
+// offer reducers
+export const SET_OFFERS = "SET_OFFERS";
+export const CREATE_OFFER = "CREATE_OFFER";
+export const DELETE_OFFER = "DELETE_OFFER";
+export const UPDATE_OFFER = "UPDATE_OFFER";
+
 // data reducers
 export const LOADING_DATA = "LOADING_DATA";
 export const SET_USERS = "SET_USERS";
@@ -19,10 +26,7 @@ export const UNAPPROVE_USER = "UNAPPROVE_USER";
 export const SELECT_USER = "SET_USER";
 export const DELETE_USER = "DELETE_USER";
 export const FILTER_USERS = "FILTER_USERS";
-export const SET_OFFERS = "SET_OFFERS";
-export const SELECT_OFFER = "SELECT_OFFER"
-export const CREATE_OFFER = "CREATE_OFFER";
-export const DELETE_OFFER = "DELETE_OFFER";
+
 
 
 // Dispensary Reducers

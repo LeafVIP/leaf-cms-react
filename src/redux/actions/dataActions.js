@@ -9,8 +9,13 @@ import {
     CREATE_BRAND,
     UPDATE_BRAND,
     DELETE_BRAND,
-    SET_BRANDS
+    SET_BRANDS,
+    SET_OFFERS,
+    CREATE_OFFER,
+    UPDATE_OFFER,
+    DELETE_OFFER
 } from '../types';
+import { updateUser } from './userActions';
 
 
 export const getUsers = () => (dispatch) => {
@@ -123,6 +128,110 @@ export const getBrands = () => (dispatch) => {
             });
         });  
 };
+
+
+export const createOffer = (newOffer) => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+    axios
+        .post('/createOffer', newOffer)
+        .then(res => {
+            dispatch({
+                type: CREATE_OFFER,
+                payload: res.data
+            });
+            dispatch(clearErrors());
+            dispatch(getOffers());
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err
+            });
+        });
+};
+
+export const updateOffer = (offerId, data) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    console.log('in update offer ' + offerId);
+    axios
+        .post('/updateOffer', {offerId, data})
+        .then(res => {
+            dispatch({type: CLEAR_ERRORS});
+            dispatch({type: UPDATE_OFFER, payload: res.data});
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err
+            })
+        })
+
+};
+
+export const deleteOffer = (offerId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios
+        .post('/deleteOffer', {offerId})
+        .then(res => {
+            dispatch({
+                type: DELETE_OFFER,
+                payload: offerId
+            })
+        })
+        .catch(err => {
+            dispatch({
+                type: SET_ERRORS,
+                payload: err
+            })
+        })
+
+}
+
+export const getOffers = () => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+
+    axios
+        .get('/offers')
+        .then(res => {
+            console.log(res.data);
+            dispatch({
+                type: SET_OFFERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+
+export const uploadImage = (data) => (dispatch) => {
+    dispatch({
+        type: LOADING_DATA
+    });
+
+    axios
+        .post('/uploadImage', data)
+        .cors({origin: true})
+        .then(res => {
+            console.log(res);
+            dispatch({
+                type: CLEAR_ERRORS
+            });
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 
 
 export const clearErrors = () => (dispatch) => {

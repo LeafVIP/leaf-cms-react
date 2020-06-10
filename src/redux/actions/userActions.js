@@ -1,4 +1,4 @@
-import { LOADING_USER, LOADING_DATA, SET_USERS, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS, SET_DISPENSARY_USERS} from '../types';
+import { LOADING_USER, LOADING_DATA, SET_USERS, CREATE_USER, SET_UNAUTHENTICATED,SET_ERRORS, CLEAR_ERRORS, LOADING_UI, SELECT_USER, FILTER_USERS, SET_DISPENSARY_USERS} from '../types';
 import axios from 'axios';
 
 export const deleteUser = (userId) => (dispatch) => {
@@ -25,7 +25,7 @@ export const uploadBadgeImage = (formData, authId) => (dispatch) => {
             userId: authId
         })
         .then(() => {
-            dispatch(getUser(authId))
+            dispatch({type: CLEAR_ERRORS});
         })
         .catch(err => {
             console.error(err);
@@ -78,12 +78,21 @@ export const logoutUser = () => (dispatch) => {
     dispatch({ type: SET_UNAUTHENTICATED });
 };
 
-export const getUser = (authId) => (dispatch) => {
-    dispatch({ type: LOADING_USER });
+
+export const createUser = (userData) => (dispatch) => {
+    dispatch({type: LOADING_UI});
     axios
-        .get('/users')
-        
-}
+        .post('/createUser', userData)
+        .then(res => {
+            dispatch({
+                type: CREATE_USER,
+                payload: res.data
+            });
+        })
+        .catch(err => {
+            console.error(err);
+        });
+};
 
 export const getUsers = (users) => (dispatch) => {
     dispatch({type: LOADING_USER});

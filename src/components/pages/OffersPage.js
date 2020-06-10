@@ -2,16 +2,17 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getOffers, createOffer, deleteOffer } from '../../redux/actions/offerActions';
+import { getOffers, createOffer, deleteOffer, updateOffer, uploadImage } from '../../redux/actions/dataActions';
 import OffersTable from '../offers/OffersTable';
 import EditOffer from '../offers/EditOffer';
 import Search from '../../util/Search';
+import CreateOffer from '../offers/CreateOffer';
 
 class OfferPage extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {open: false, create: false, offer: undefined};
+        this.state = {edit: false, create: false, offer: undefined};
     }
 
     componentDidMount() {
@@ -21,17 +22,33 @@ class OfferPage extends Component {
         const { offers, offer, loading } = this.props.data;
 
         const showOfferDetails = (offer) => {
-            console.log('showOfferDetails: ' +offer.productName);
-            this.offer = offer;
-            this.setState({open: true, offer: offer});
+            console.log('show offer details: ' +offer.id);
+            this.setState({edit: true, create: false, offer: offer});
+        }
+        const createOffer = () => {
+            console.log('create offer');
+            this.setState({edit: false, create: true, offer: undefined});
         }
 
         const closeModal = () => {
-            this.setState({open: false, create: false, offer: undefined});
+            this.setState({edit: false, create: false, offer: undefined});
         }
 
-        const deleteOffer = (offerId) => {
-            this.props.deleteOffer(offerId);
+        const updateOffer = (offerId, newOffer) => {
+            console.log('calling update offer' +offerId);
+            this.props.updateOffer(offerId, newOffer);
+        }
+
+        const createNewOffer = (newOffer) => {
+            this.props.createOffer(newOffer);
+        }
+
+        const updateThumbnail = (id, data) => {
+            console.log(`OffersPage.updateThumbnail: offer - ${id}, ${data}`);
+            this.props.uploadImage(id, data);
+        }
+        const deleteOffer = (id) => {
+            this.props.deleteOffer(id);
         }
 
         return(
@@ -45,7 +62,8 @@ class OfferPage extends Component {
                              !loading && offers !== null ? (
                                <OffersTable 
                                 offers={offers} 
-                                onSelectItem={showOfferDetails} />
+                                onSelectItem={showOfferDetails}
+                                onCreateItem={createOffer} />
                              
                              ) : (
                                <div>Loading...</div>
@@ -54,14 +72,21 @@ class OfferPage extends Component {
                    </Grid>
                </Grid>
                {
-                    !loading && this.state.offer !== undefined ? (
+                    !loading ? (
                        
-                       <div>
+                            <div>
                                 <EditOffer
                                     offer={this.state.offer ?? offer}
-                                    open={this.state.open}
+                                    open={this.state.edit}
                                     onClose={closeModal}
-                                    onDelete={deleteOffer} />
+                                    onSave={updateOffer}
+                                    onDelete={deleteOffer}
+                                    onUploadThumbnail={updateThumbnail} />
+
+                                <CreateOffer
+                                    open={this.state.create}
+                                    onClose={closeModal}
+                                    onSave={createNewOffer} />
                             </div>
                         
                     
@@ -80,6 +105,8 @@ OfferPage.propTypes = {
     getOffers: PropTypes.func.isRequired,
     createOffer: PropTypes.func.isRequired,
     deleteOffer: PropTypes.func.isRequired,
+    updateOffer: PropTypes.func.isRequired,
+    uploadImage: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
@@ -90,7 +117,9 @@ const mapStateToProps = (state) => ({
 const mapActionsToProps = {
     getOffers,
     createOffer,
-    deleteOffer
+    deleteOffer,
+    updateOffer,
+    uploadImage
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(OfferPage);

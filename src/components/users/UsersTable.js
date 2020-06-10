@@ -186,7 +186,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
+export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCreateItem}) {
 
     const timestamp = (createdAt) => {
       if(createdAt !== undefined) {
@@ -224,9 +224,6 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
     setPage(0);
   };
 
-  const handleAddUser = () => {
-    console.log('handleAddUser' );
-  }
 
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
@@ -246,7 +243,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge}) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onAddClick={handleAddUser} />
+        <EnhancedTableToolbar numSelected={selected.length} onAddClick={onCreateItem} />
         <TableContainer>
           <Table
             className={classes.table}

@@ -18,8 +18,8 @@ import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
-// import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-import CreateOffer from './CreateOffer';
+import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+import { createOffer } from '../../redux/actions/dataActions';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -116,7 +116,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected}) => {
+const EnhancedTableToolbar = ({numSelected, onCreate}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -145,12 +145,12 @@ const EnhancedTableToolbar = ({numSelected}) => {
           </IconButton>
         </Tooltip>
       ) : (
-        <CreateOffer />
-        // <Tooltip title="New Offer">
-        //   <IconButton aria-label="new offer">
-        //     <AddCircleOutlinedIcon />
-        //   </IconButton>
-        // </Tooltip>
+     
+        <Tooltip title="new offer">
+          <IconButton aria-label="new offer" onClick={onCreate}>
+            <AddCircleOutlinedIcon />
+          </IconButton>
+        </Tooltip>
       )}
     </Toolbar>
   );
@@ -184,7 +184,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({offers, onSelectItem}) {
+export default function EnhancedTable({offers, onSelectItem, onCreateItem}) {
 
   const classes = useStyles();
   const [order, setOrder] = React.useState('asc');
@@ -220,7 +220,7 @@ export default function EnhancedTable({offers, onSelectItem}) {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar numSelected={selected.length} onCreate={onCreateItem}/>
         <TableContainer>
           <Table
             className={classes.table}

@@ -41,10 +41,8 @@ export default function EditBrand({brand, open, onClose, onSave, onDelete}) {
 
     const classes = useStyles();
     
-    const [id] = useState(brand.id);
     const [license, setLicense] = useState(brand.license);
     const [name, setName] = useState(brand.name);
-    const [loading, setLoading] = useState(false);
     const [detailsState, setDetailsState] = useState('view');
 
     const handleClose = () => {
@@ -124,6 +122,25 @@ export default function EditBrand({brand, open, onClose, onSave, onDelete}) {
                         <ListItemText primary="Firebase ID" secondary={brand.id} />
                     </ListItem>
                     <Divider />
+                    {
+                      detailsState === 'edit' ? (
+                        <div>
+                          <ListItem>
+                              <TextField 
+                                name="name"
+                                label="Name"
+                                type="text"
+                                className={classes.textField}
+                                placeholder={name}
+                                onChange={handleNameChange} />
+                          </ListItem>
+                          <Divider />
+                        </div>
+                       
+                      ) : (
+                        <div></div>
+                      )
+                    }
                     <ListItem>
 
                       {

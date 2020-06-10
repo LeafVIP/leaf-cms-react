@@ -1,7 +1,6 @@
-import React, { Component, useState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
-import ListItemText from '@material-ui/core/ListItemText';
 import ListItem from '@material-ui/core/ListItem';
 import List from '@material-ui/core/List';
 import Divider from '@material-ui/core/Divider';
@@ -11,7 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
-import { TextField } from '@material-ui/core';
+import TextField from '@material-ui/core/TextField';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -43,12 +42,10 @@ export default function CreateBrand({open, onClose, onSave}) {
     
     const [name, setName] = useState('');
     const [license, setLicense] = useState('');
-    const [cmId, setCmid] = useState('');
-    const [address, setAddress] = useState('');
-    const [employees, setEmployees] = useState(0);
+
 
     const handleClose = () => {
-      onClose()
+      onClose();
     };
 
     const handleSave = () => {

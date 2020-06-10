@@ -11,7 +11,6 @@ import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
@@ -19,8 +18,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-import Chip from '@material-ui/core/Chip';
-import { Button } from '@material-ui/core';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -238,8 +235,7 @@ export default function EnhancedTable({items, onSelectItem, onCreateItem}) {
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => {
                   const isItemSelected = isSelected(item.displayName);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
+                 
                   return (
                     <TableRow
                       hover
