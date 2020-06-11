@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from 'react';
-import Search from '../../util/Search';
 import PropTypes from 'prop-types';
 import SubNav from '../users/UserSubNav';
 import { connect } from 'react-redux';
@@ -57,9 +56,7 @@ class UserPage extends Component {
      
           return (  
            <Fragment>
-             <SubNav />
-             <Search items={users}/>
-             <br />
+             <SubNav /> <br />
             <Grid container spacing={3}>
                 <Grid item sm={12} xs={3}> 
                     <Grid container spacing={3}>           

@@ -19,8 +19,6 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import Search from '../../util/Search';
-import Grid from '@material-ui/core/Grid';
-import { Typography } from '@material-ui/core';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -226,7 +224,7 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
       const searchTerm = query.toLowerCase();
       const newItems = searchItems.filter(item => {
         const name = item.name.toLowerCase();
-        if (name.startsWith(searchTerm)) {
+        if (name.includes(searchTerm)) {
           return item;
         }
       });

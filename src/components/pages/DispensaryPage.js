@@ -5,7 +5,6 @@ import { getDispensaryUsers, getDispensaries, selectDispensary, getTop50, update
 import Grid from '@material-ui/core/Grid';
 import EditDispensary from '../dispensaries/EditDispensary';
 import CreateDispensary from '../dispensaries/CreateDispensary';
-import Search from '../../util/Search';
 import DispensariesTable from '../dispensaries/DispensariesTable';
 import DispensariesMetrics from '../dispensaries/DispensariesMetrics';
 
@@ -59,12 +58,9 @@ class DispensaryPage extends Component {
                 <Grid item sm={12} xs={3}> 
                 {
                   !loading && dispensaries !== null ? (
-                    <div>
+           
                     <DispensariesMetrics dispensaries={dispensaries} />
-                   
-                    <Search items={dispensaries}/>
-                    </div>
-               
+     
                   ) : (<></>)
                 }
                

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -21,6 +21,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import Chip from '@material-ui/core/Chip';
 import { Button } from '@material-ui/core';
+import Search from '../../util/Search';
 
 
 function descendingComparator(a, b, orderBy) {
@@ -123,7 +124,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem, onFilter}) => {
+const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -132,6 +133,9 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onFilter}) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
+
+      <Search onSearchUpdate={onSearch} />
+
       {numSelected > 0 ? (
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected
@@ -195,15 +199,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}) {
+const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
 
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('firstName');
-  const [selected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(-1);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('firstName');
+  const [selected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(-1);
+  const [searchItems, setSearchItems] = useState([]);
+
+  useEffect(() => {
+    if (searchItems.length === 0) {
+      setSearchItems(dispensaries);
+    }
+  })
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -229,6 +240,20 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
     setDense(event.target.checked);
   };
 
+  const handleSearchQuery = (query) => {
+    if(query === '') {
+      setSearchItems(dispensaries);
+    } else {
+      const searchTerm = query.toLowerCase();
+      const newItems = searchItems.filter(item => {
+        const name = item.displayName.toLowerCase();
+        if (name.includes(searchTerm)) {
+          return item;
+        }
+      });
+      setSearchItems(newItems);
+    }
+  }
   const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, dispensaries.length - page * rowsPerPage);
 
@@ -243,7 +268,7 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem}/>
+        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} onSearch={handleSearchQuery} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -260,7 +285,7 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
               rowCount={dispensaries.length}
             />
             <TableBody>
-              {stableSort(dispensaries, getComparator(order, orderBy))
+              {stableSort(searchItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((dispensary, index) => {
                   const isItemSelected = isSelected(dispensary.displayName);
@@ -314,3 +339,5 @@ export default function EnhancedTable({dispensaries, onSelectItem, onCreateItem}
     </div>
   );
 }
+
+export default DispensariesTable;

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
+import Search from '../../util/Search';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -122,7 +123,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({users, numSelected, onAddClick}) => {
+const EnhancedTableToolbar = ({numSelected, onAddClick, onSearch}) => {
   const classes = useToolbarStyles();
 
   return (
@@ -131,14 +132,14 @@ const EnhancedTableToolbar = ({users, numSelected, onAddClick}) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
+      <Search onSearchUpdate={onSearch} />
+
       {numSelected > 0 ? (
         <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
           {numSelected} selected
         </Typography>
       ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          All Users
-        </Typography>
+        <div></div>
       )}
 
       {numSelected > 0 ? (
@@ -186,7 +187,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCreateItem}) {
+const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
 
     const timestamp = (createdAt) => {
       if(createdAt !== undefined) {
@@ -195,14 +196,20 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCre
      
     }
 
-
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('firstName');
-  const [selected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(-1);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('firstName');
+  const [selected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [searchItems, setSearchItems] = useState([]);
+
+  useEffect(() => {
+    if (searchItems.length === 0) {
+      setSearchItems(users);
+    }
+  })
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -237,13 +244,31 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCre
       }
       return "n/a";
   }
+  const handleSearchQuery = (query) => {
+    if(query === '') {
+      setSearchItems(users);
+    } else {
+      const searchTerm = query.toLowerCase();
+      const newItems = searchItems.filter(item => {
+        if (item.firstName.startsWith(searchTerm) ||
+            item.lastName.startsWith(searchTerm) ||
+            item.email.startsWith(searchTerm) ) {
+          return item;
+        }
+      });
+
+      console.log('newItems = ' +newItems.length);
+   
+      setSearchItems(newItems);
+    }
+  }
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, users.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onAddClick={onCreateItem} />
+        <EnhancedTableToolbar numSelected={selected.length} onAddClick={onCreateItem} onSearch={handleSearchQuery} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -260,7 +285,7 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCre
               rowCount={users.length}
             />
             <TableBody>
-              {stableSort(users, getComparator(order, orderBy))
+              {stableSort(searchItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => {
                   const isItemSelected = isSelected(user.name);
@@ -277,14 +302,14 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCre
                       <TableCell id="name" scope="name"  align='left' padding='default'>
                         <span>{user.firstName !== '' ? name(user.firstName, user.lastName) : 'n/a'}</span>
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
-                      <TableCell align='left' padding='default' scope='dispensary'>{user.dispensary !== '' && user.dispensary !== undefined ? user.dispensary : 'unknown'}</TableCell>
-                      <TableCell align='left' padding='default' scope='zip'>{user.zip !== '' && user.zip !== undefined ? user.zip : 'unknown'}</TableCell>
-                      <TableCell align='left' padding='default' scope='badgeState' onClick={onSelectBadge}>{user.badgeState !== null && user.badgeState !== undefined ? user.badgeState : 'unknown'}</TableCell>
-                      <TableCell align='left' padding='default' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
-                      <TableCell align='left' padding='default' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
-                      <TableCell align='left' padding='default' scope='locationEnabled'>{user.locationEnabled !== undefined  && user.locationEnabled === true ? 'true' : 'false'}</TableCell>
-                      <TableCell align='left' padding='default' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
+                      <TableCell align='left' padding='default' name='role' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' name='dispensary' scope='dispensary'>{user.dispensary !== '' && user.dispensary !== undefined ? user.dispensary : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' name='zip' scope='zip'>{user.zip !== '' && user.zip !== undefined ? user.zip : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' name='badgeState' scope='badgeState' onClick={onSelectBadge}>{user.badgeState !== null && user.badgeState !== undefined ? user.badgeState : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' name='platform' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
+                      <TableCell align='left' padding='default' name='version' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
+                      <TableCell align='left' padding='default' name='locationEnabled' scope='locationEnabled'>{user.locationEnabled !== undefined  && user.locationEnabled === true ? 'true' : 'false'}</TableCell>
+                      <TableCell align='left' padding='default' name='createdAt' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -313,3 +338,5 @@ export default function EnhancedTable({users, onSelectUser, onSelectBadge, onCre
     </div>
   );
 }
+
+export default UsersTable;
