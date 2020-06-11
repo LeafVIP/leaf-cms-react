@@ -16,7 +16,7 @@ class DispensaryPage extends Component {
   }
 
     componentDidMount() {
-        this.props.getDispensaries();
+        this.props.getTop50();
     }
 
     createSortHandler = () => () => {

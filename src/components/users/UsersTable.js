@@ -56,7 +56,6 @@ const headCells = [
   { id: 'platform', numeric: true, disablePadding: false, label: 'Platform' },
   { id: 'version', numeric: true, disablePadding: false, label: 'Version' },
   { id: 'locationEnabled', numeric: false, disablePadding: false, label: 'Location Enabled' },
-  { id: 'authUid', numeric: false, disablePadding: false, label: 'Firebase ID' },
   { id: 'createdAt', numeric: false, disablePadding: false, label: 'Member Since' },
 ];
 
@@ -305,9 +304,6 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
               {stableSort(searchItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((user, index) => {
-                  const isItemSelected = isSelected(user.name);
-                  const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
                     <TableRow
                       hover
@@ -326,7 +322,6 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
                       <TableCell align='left' padding='default' name='platform' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' name='version' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
                       <TableCell align='left' padding='default' name='locationEnabled' scope='locationEnabled'>{user.locationEnabled !== undefined  && user.locationEnabled === true ? 'true' : 'false'}</TableCell>
-                      <TableCell align='left' padding='default' name='authUid' scope='authUid'>{user.authUid !== undefined  ? user.authUid : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' name='createdAt' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
                     </TableRow>
                   );
