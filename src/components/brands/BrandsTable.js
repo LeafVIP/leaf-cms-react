@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { lighten, makeStyles } from '@material-ui/core/styles';
@@ -18,7 +18,9 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-
+import Search from '../../util/Search';
+import Grid from '@material-ui/core/Grid';
+import { Typography } from '@material-ui/core';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -116,8 +118,12 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
+const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearchItem}) => {
   const classes = useToolbarStyles();
+
+  const onSearch = (query) => {
+      onSearchItem(query);
+  }
 
   return (
     <Toolbar
@@ -125,9 +131,7 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem}) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-        <div>
-          Brands 
-        </div>
+       <Search onSearchUpdate={onSearch}/>
 
       {numSelected > 0 ? (
         <Tooltip title="Delete">
@@ -174,15 +178,22 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable({items, onSelectItem, onCreateItem}) {
+const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
 
   const classes = useStyles();
-  const [order, setOrder] = React.useState('asc');
-  const [orderBy, setOrderBy] = React.useState('firstName');
-  const [selected] = React.useState([]);
-  const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(-1);
+  const [order, setOrder] = useState('asc');
+  const [orderBy, setOrderBy] = useState('firstName');
+  const [selected] = useState([]);
+  const [page, setPage] = useState(0);
+  const [dense, setDense] = useState(false);
+  const [searchItems, setSearchItems] = useState([]);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
+
+  useEffect(() => {
+   if (searchItems.length === 0) {
+       setSearchItems(items);
+   }
+  });
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -208,13 +219,28 @@ export default function EnhancedTable({items, onSelectItem, onCreateItem}) {
     setDense(event.target.checked);
   };
 
+  const handleSearchQuery = (query) => {
+    if(query === '') {
+      setSearchItems(items);
+    } else {
+      const searchTerm = query.toLowerCase();
+      const newItems = searchItems.filter(item => {
+        const name = item.name.toLowerCase();
+        if (name.startsWith(searchTerm)) {
+          return item;
+        }
+      });
+      setSearchItems(newItems);
+    }
+  }
+
   const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, items.length - page * rowsPerPage);
 
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem}/>
+        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} onSearchItem={handleSearchQuery}/>
         <TableContainer>
           <Table
             className={classes.table}
@@ -231,7 +257,7 @@ export default function EnhancedTable({items, onSelectItem, onCreateItem}) {
               rowCount={items.length}
             />
             <TableBody>
-              {stableSort(items, getComparator(order, orderBy))
+              {stableSort(searchItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((item, index) => {
                   const isItemSelected = isSelected(item.displayName);
@@ -281,3 +307,4 @@ export default function EnhancedTable({items, onSelectItem, onCreateItem}) {
     </div>
   );
 }
+ export default BrandsTable;

@@ -1,30 +1,30 @@
 import React, {Component} from 'react'
 import '../Search.css'
+import { useMediaQuery } from '@material-ui/core';
 
 class Search extends Component {
 
+	state = {
+		query: '',
+		results: {},
+		loading: false,
+		message: '',
+	};
+
     constructor( props ) {
 		super( props );
-        this.state = {
-            query: '',
-            results: {},
-            loading: false,
-            message: '',
-		};
+ 
     }
-	
-	handleOnInputChange = (event) => {
-		const query = event.target.value;
-		this.setState({query: query, loading: true, message: ''});
-		console.warn(this.state);
-	}
 
-	fetchedSearchResults = (page, query) => {
-
-	}
-    
     render() {
 		const {query} = this.state;
+		const {onSearchUpdate} = this.props;
+
+		const handleInputChange = (event) => {
+			const query = event.target.value;
+			onSearchUpdate(query);
+			this.setState({query: query});
+		}
 		return (
 			<div className="container">
 				<label className="search-label" htmlFor="search-input">
@@ -34,7 +34,7 @@ class Search extends Component {
 						id="search-input"
 						name="query"
 						placeholder="Search..."
-						onChange={this.handleOnInputChange}
+						onChange={handleInputChange}
 					/>
 					<i className="fa fa-search search-icon"/>
 				</label>

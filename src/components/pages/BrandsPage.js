@@ -7,7 +7,6 @@ import {createBrand, updateBrand, deleteBrand, getBrands} from '../../redux/acti
 import BrandsTable from '../brands/BrandsTable';
 import EditBrand from '../brands/EditBrand';
 import CreateBrand from '../brands/CreateBrand';
-import Search from '../../util/Search';
 
 class BrandsPage extends Component {
 
@@ -52,18 +51,6 @@ class BrandsPage extends Component {
         return (
             <Fragment>
                 <Grid container spacing={3}>
-                    <Grid item sm={12} xs={3}>
-                        {
-                            !loading && brands !== null ? 
-                            (
-                                <Search items={brands} />
-                            ) : 
-                            (
-                                <></>
-                            )
-                        }
-                    </Grid>
-
                     <Grid item sm={12} xs={3}>
                         {
                             !loading && brands !== null ?
