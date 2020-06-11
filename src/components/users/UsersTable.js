@@ -56,6 +56,7 @@ const headCells = [
   { id: 'platform', numeric: true, disablePadding: false, label: 'Platform' },
   { id: 'version', numeric: true, disablePadding: false, label: 'Version' },
   { id: 'locationEnabled', numeric: false, disablePadding: false, label: 'Location Enabled' },
+  { id: 'authUid', numeric: false, disablePadding: false, label: 'Firebase ID' },
   { id: 'createdAt', numeric: false, disablePadding: false, label: 'Member Since' },
 ];
 
@@ -250,11 +251,27 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
     } else {
       const searchTerm = query.toLowerCase();
       const newItems = searchItems.filter(item => {
-        if (item.firstName.startsWith(searchTerm) ||
-            item.lastName.startsWith(searchTerm) ||
-            item.email.startsWith(searchTerm) ) {
-          return item;
+        const containsEmail = item.email !== null;
+        const containsFirstName = item.firstName !== null;
+        const containsLastName = item.lastName !== null;
+        const containsAuthUid = item.authUid !== null;
+  
+        if (containsEmail) {
+          return item.email.toLowerCase().includes(searchTerm);
         }
+
+        if (containsFirstName) {
+          return item.firstName.toLowerCase().includes(searchTerm);
+        }
+
+        if (containsLastName) {
+          return item.lastName.toLowerCase().includes(searchTerm);
+        }
+
+        if (containsAuthUid) {
+          return item.authUid.toLowerCase().includes(searchTerm);
+        }
+      
       });
 
       console.log('newItems = ' +newItems.length);
@@ -299,7 +316,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
                       key={user.email}
                     >
                    
-                      <TableCell id="name" scope="name"  align='left' padding='default'>
+                      <TableCell name="name" scope="name"  align='left' padding='default'>
                         <span>{user.firstName !== '' ? name(user.firstName, user.lastName) : 'n/a'}</span>
                       </TableCell>
                       <TableCell align='left' padding='default' name='role' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
@@ -309,6 +326,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
                       <TableCell align='left' padding='default' name='platform' scope='platform'>{user.platform !== '' && user.platform !== undefined ? user.platform : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' name='version' scope='version'>{user.version !== '' && user.version !== undefined ? user.version : 0.0}</TableCell>
                       <TableCell align='left' padding='default' name='locationEnabled' scope='locationEnabled'>{user.locationEnabled !== undefined  && user.locationEnabled === true ? 'true' : 'false'}</TableCell>
+                      <TableCell align='left' padding='default' name='authUid' scope='authUid'>{user.authUid !== undefined  ? user.authUid : 'unknown'}</TableCell>
                       <TableCell align='left' padding='default' name='createdAt' scope='createdAt'>{timestamp(user.createdAt)}</TableCell>
                     </TableRow>
                   );
