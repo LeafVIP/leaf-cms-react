@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getOffers, createOffer, deleteOffer, updateOffer, uploadImage } from '../../redux/actions/dataActions';
+import { getOffers, createOffer, deleteOffer, updateOffer, uploadOfferImage } from '../../redux/actions/dataActions';
 import OffersTable from '../offers/OffersTable';
 import EditOffer from '../offers/EditOffer';
 import Search from '../../util/Search';
@@ -44,8 +44,8 @@ class OfferPage extends Component {
         }
 
         const updateThumbnail = (id, data) => {
-            console.log(`OffersPage.updateThumbnail: offer - ${id}, ${data}`);
-            this.props.uploadImage(id, data);
+            console.log(`OffersPage.updateThumbnail: ${id} - ${data}`);
+            this.props.uploadOfferImage(id, data);
         }
         const deleteOffer = (id) => {
             this.props.deleteOffer(id);
@@ -106,7 +106,7 @@ OfferPage.propTypes = {
     createOffer: PropTypes.func.isRequired,
     deleteOffer: PropTypes.func.isRequired,
     updateOffer: PropTypes.func.isRequired,
-    uploadImage: PropTypes.func.isRequired,
+    uploadOfferImage: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
@@ -119,7 +119,7 @@ const mapActionsToProps = {
     createOffer,
     deleteOffer,
     updateOffer,
-    uploadImage
+    uploadOfferImage
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(OfferPage);

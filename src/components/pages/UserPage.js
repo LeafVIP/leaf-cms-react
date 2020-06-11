@@ -8,7 +8,6 @@ import Grid from '@material-ui/core/Grid';
 import UsersTable from '../users/UsersTable'
 import EditUser from '../users/EditUser';
 import CreateUser from '../users/CreateUser';
-import { uploadImage } from '../../redux/actions/dataActions';
 
 
 class UserPage extends Component {
@@ -103,7 +102,6 @@ UserPage.propTypes = {
     getUserData: PropTypes.func.isRequired,
     updateUser: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
-    uploadImage: PropTypes.func.isRequired,
     createUser: PropTypes.func.isRequired,
     user: PropTypes.object,
     data: PropTypes.object.isRequired
@@ -118,7 +116,6 @@ const mapDispatchToProps = {
   getUserData,
   updateUser,
   deleteUser,
-  uploadImage,
   createUser
 }
 

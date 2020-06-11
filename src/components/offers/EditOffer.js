@@ -17,9 +17,10 @@ import Switch from '@material-ui/core/Switch';
 import JobTypeTransferList from '../../util/JobTypeTransferList';
 import Grid from '@material-ui/core/Grid';
 import EditIcon from '@material-ui/icons/Edit';
+import MyButton from '../../util/MyButton';
 
 const devStorageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
-const prodStorageBucket = 'https://leafvip-c42db.appspot.com';
+const prodStorageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -55,7 +56,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     const classes = useStyles();
 
 
-    const [isActive, setActive] = useState(offer.isActive);
+    // const [isActive, setActive] = useState(offer.isActive);
     const [displayState, setDisplayState] = useState('view');
 
     const state = {
@@ -92,11 +93,10 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
 
     const handleImageChange = (event) => {
         const image = event.target.files[0];
-     
         const formData = new FormData();
         formData.append('image', image, image.name);
-        console.log('handleImageChange: ' +formData.image);
-        onUploadThumbnail(formData);
+        formData.append('Access-Control-Allow-Origin', '*')
+        onUploadThumbnail(state.id, formData);
       };
 
     const handleSave = () => {
@@ -134,11 +134,12 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     };
 
     const toggleActive = () => {
-        setActive(!isActive);
+        offer.isActive = !offer.isActive
     }
 
     const handleDelete = () => {
         onDelete(state.id);
+        handleClose();
     }
 
     const handleCancel = () => {
@@ -211,11 +212,11 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                         ) : (
 
                             <div>
-                                <ListItemText primary="Offer Status" secondary={isActive ? "Active" : "Inactive"} /> 
+                                <ListItemText primary="Offer Status" secondary={state.isActive ? "Active" : "Inactive"} /> 
                                 <Switch
-                                    checked={isActive}
+                                    checked={offer.isActive}
                                     onClick={handleChange}
-                                    value={isActive}
+                                    value={offer.isActive}
                                     name="isActive"
                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                 />
@@ -231,7 +232,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                         <ListItemText primary="Video Thumbnail" />
                     </ListItem>
                     <ListItem>
-                        <Button onClick={handleEditThumbnail}>
+                  
                             <img src={`${devStorageBucket}${state.imagePath}?alt=media`} alt={state.productName} />
                             <input
                                 type="file"
@@ -239,7 +240,15 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                                 hidden="hidden"
                                 onChange={handleImageChange} />
                        
-                        </Button>
+            
+
+                        <MyButton
+                            tip="Edit profile picture"
+                            onClick={handleEditThumbnail}
+                            btnClassName="button"
+                        >
+                            <EditIcon color="secondary" />
+                        </MyButton>
                     </ListItem>
             
                     <Divider />

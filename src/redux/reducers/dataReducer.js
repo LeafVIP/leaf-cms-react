@@ -111,15 +111,20 @@ import {
                     offers: action.payload
                 }
             case DELETE_OFFER:
+                const offerId = action.payload;
+                const activeOffers = state.brands.filter(function(entity) {
+                    return entity.id !== id;
+                })
                 return {
                     ...state,
                     loading: false,
-                    offer: action.payload
+                    offers: activeOffers
                 }
             case UPDATE_OFFER:
                 return {
                     ...state,
                     loading: false,
+                    offer: action.payload
                 }
             case CREATE_OFFER:
                 const newOffers =[action.payload, ...state.offers];

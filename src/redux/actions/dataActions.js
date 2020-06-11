@@ -15,8 +15,6 @@ import {
     UPDATE_OFFER,
     DELETE_OFFER
 } from '../types';
-import { updateUser } from './userActions';
-
 
 export const getUsers = () => (dispatch) => {
     dispatch({
@@ -161,8 +159,7 @@ export const updateOffer = (offerId, data) => (dispatch) => {
     axios
         .post('/updateOffer', {offerId, data})
         .then(res => {
-            dispatch({type: CLEAR_ERRORS});
-            dispatch({type: UPDATE_OFFER, payload: res.data});
+            dispatch({type: UPDATE_OFFER, payload: res.data})
         })
         .catch(err => {
             dispatch({
@@ -181,9 +178,10 @@ export const deleteOffer = (offerId) => (dispatch) => {
     axios
         .post('/deleteOffer', {offerId})
         .then(res => {
+            dispatch({type: CLEAR_ERRORS});
             dispatch({
                 type: DELETE_OFFER,
-                payload: offerId
+                payload: res.data
             })
         })
         .catch(err => {
@@ -214,19 +212,17 @@ export const getOffers = () => (dispatch) => {
         })
 }
 
-export const uploadImage = (data) => (dispatch) => {
+export const uploadOfferImage = (offerId, formData) => (dispatch) => {
+    console.log(`uploadOfferImage for offer: ${offerId}`);
     dispatch({
         type: LOADING_DATA
     });
 
     axios
-        .post('/uploadImage', data)
-        .cors({origin: true})
+        .post('/uploadOfferImage', formData)
         .then(res => {
-            console.log(res);
-            dispatch({
-                type: CLEAR_ERRORS
-            });
+            console.log(res.data);
+            dispatch(updateOffer(offerId, {imagePath: res.data}));
         })
         .catch(err => {
             console.log(err);
