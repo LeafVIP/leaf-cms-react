@@ -59,7 +59,6 @@ const headCells = [
   { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
   { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
   { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
-  // { id: 'createdAt', numeric: false, disablePadding: false, label: 'Joined On' },
 ];
 
 function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
@@ -289,10 +288,8 @@ const DispensariesTable = ({
     }
 
     setSelected(newSelected);
-    onCheckItem(selected);
-
-    
-
+    console.log('newSelected = ' +newSelected);
+    onCheckItem(newSelected);
 
   }
   const handleSelectItem = (dispensary) => {

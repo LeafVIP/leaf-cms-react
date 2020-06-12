@@ -23,8 +23,7 @@ const useStyles = makeStyles((theme) => ({
       flex: 1,
     },
     img: {
-        maxWidth: 400,
-        maxHeight: 300
+        maxWidth: 160
     }
   }));
 

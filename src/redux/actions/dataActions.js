@@ -152,7 +152,7 @@ export const createOffer = (newOffer) => (dispatch) => {
 
 export const updateOffer = (offerId, data) => (dispatch) => {
     dispatch({
-        type: LOADING_UI
+        type: LOADING_DATA
     });
 
     console.log('in update offer ' + offerId);

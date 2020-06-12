@@ -21,7 +21,7 @@ class DispensaryPage extends Component {
   }
 
     componentDidMount() {
-        this.props.getTop50();
+        this.props.getDispensaries();
         this.props.getOffers();
     }
 
@@ -60,16 +60,23 @@ class DispensaryPage extends Component {
 
 
         const onDispensaryChecked = (dispensaries) => {
-          console.log("onDispensaryChecked: " +dispensaries);
+    
+          let currentDispensaries = this.state.selectedDispensaries;
+          currentDispensaries.push()
           this.setState({selectedDispensaries: dispensaries})
-          // console.log('dispensaries = ' +this.state.selectedDispensaries);
+          console.log('dispensaries = ' +this.state.selectedDispensaries.length);
         }
 
         const onAddToOffer = (offer) => {
-          console.log('onAddToOffer: ' +offer.productName);
-          this.props.updateOffer(offer.id, {
-            dispensaries: this.state.selectedDispensaries
+          console.log('add to offer');
+          const ids = this.state.selectedDispensaries.map(dispo => {
+            return dispo.id;
           })
+
+          this.props.updateOffer(offer.id, {
+            dispensaries: ids,
+            dispensaryObjects: this.state.selectedDispensaries
+          });
         }
 
           return (

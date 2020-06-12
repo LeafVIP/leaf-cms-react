@@ -31,8 +31,7 @@ const useStyles = makeStyles((theme) => ({
       flex: 1,
     },
     img: {
-        maxWidth: 400,
-        maxHeight: 300
+        maxWidth:320
     },
     saveBtn: {
         background: '#0389ff'
@@ -73,7 +72,9 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         surveyId: offer.surveyId,
         campaignName: offer.campaignName,
         isActive: offer.isActive,
-        imagePath: offer.imagePath
+        imagePath: offer.imagePath,
+        dispensaries: offer.dispensaries,
+        dispensaryObjects: offer.dispensaryObjects
     };
 
 
@@ -155,27 +156,18 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                             <CloseIcon />
                         </IconButton>
                        
-                                {
-                                    displayState === 'view' ? (
-                                        <Typography variant="h6" className={classes.title}>
-                                            {state.productName}
-                                         </Typography>  
-                                    ) : (
-                                        <Typography variant="h6" className={classes.title}>
-                                            Update Offer
-                                        </Typography>  
-
-                                    )
-                                }
+                                <Typography variant="h6" className={classes.title}>
+                                    {state.productName}
+                                 </Typography>  
                      
                      
                                 { displayState === 'view' ?(
                                     <Button autoFocus color="inherit"  onClick={handleEdit}>
-                                         Edit
+                                         edit
                                      </Button>
                                 ) : (<div>
-                                    <Button autoFocus color="inherit"  onClick={handleCancel}>
-                                         cancel
+                                    <Button autoFocus color="inherit"  onClick={handleSave}>
+                                         save
                                      </Button>
                                 </div>) }
                                 
@@ -233,7 +225,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     </ListItem>
                     <ListItem>
                   
-                            <img src={`${devStorageBucket}${state.imagePath}?alt=media`} alt={state.productName} />
+                            <img  className={classes.img} src={`${devStorageBucket}${state.imagePath}?alt=media`} alt={state.productName} />
                             <input
                                 type="file"
                                 id="imageInput"
@@ -337,7 +329,10 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     <Divider />
 
                     <ListItem button>
-                        <ListItemText primary="Dispensaries" secondary={state.dispensaries} />
+                        { 
+                            state.dispensaries ? ( <ListItemText primary={`Dispensaries (${state.dispensaries.length})`} secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />) : ( <ListItemText primary="Dispensaries" secondary='none' />)
+                        }
+                       
                     </ListItem>
 
                     {

@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import { makeStyles } from '@material-ui/core/styles';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { Menu } from '@material-ui/core';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +40,7 @@ const SimpleSelect = (props) => {
       onChange={handleChange}
     >
         {props.items.map(item => {
-            return <MenuItem value={item}>{item.productName}</MenuItem>
+            return <MenuItem key={item.productName} value={item}>{item.productName}</MenuItem>
         })}
 
     </Select>
