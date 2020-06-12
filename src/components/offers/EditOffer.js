@@ -57,6 +57,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
 
     // const [isActive, setActive] = useState(offer.isActive);
     const [displayState, setDisplayState] = useState('view');
+    const [isActive, setIsActive] = useState(offer.isActive);
 
     const state = {
         open: false,
@@ -71,7 +72,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         surveyCode: offer.surveyCode,
         surveyId: offer.surveyId,
         campaignName: offer.campaignName,
-        isActive: offer.isActive,
+        isActive: isActive,
         imagePath: offer.imagePath,
         dispensaries: offer.dispensaries,
         dispensaryObjects: offer.dispensaryObjects
@@ -131,20 +132,17 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     }
 
     const handleChange = (event) => {
+        console.log('handleChange: ' +event.target.name + ' - ' +event.target.value);
         state[event.target.name] = event.target.value;
     };
 
-    // const toggleActive = () => {
-    //     offer.isActive = !offer.isActive
-    // }
+    const toggleActive = (event) => {
+         setIsActive(!event.target.value);
+    };
 
     const handleDelete = () => {
         onDelete(state.id);
         handleClose();
-    }
-
-    const handleCancel = () => {
-        setDisplayState('view');
     }
 
     return (
@@ -206,10 +204,10 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                             <div>
                                 <ListItemText primary="Offer Status" secondary={state.isActive ? "Active" : "Inactive"} /> 
                                 <Switch
-                                    checked={offer.isActive}
-                                    onClick={handleChange}
-                                    value={offer.isActive}
                                     name="isActive"
+                                    checked={isActive}
+                                    onClick={toggleActive}
+                                    value={isActive}
                                     inputProps={{ 'aria-label': 'secondary checkbox' }}
                                 />
                             </div>
@@ -223,25 +221,34 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     <ListItem>
                         <ListItemText primary="Video Thumbnail" />
                     </ListItem>
-                    <ListItem>
-                  
-                            <img  className={classes.img} src={`${devStorageBucket}${state.imagePath}?alt=media`} alt={state.productName} />
-                            <input
-                                type="file"
-                                id="imageInput"
-                                hidden="hidden"
-                                onChange={handleImageChange} />
-                       
-            
 
-                        <MyButton
-                            tip="Edit profile picture"
-                            onClick={handleEditThumbnail}
-                            btnClassName="button"
-                        >
-                            <EditIcon color="secondary" />
-                        </MyButton>
-                    </ListItem>
+                    { 
+                        displayState === 'view' ? (
+                            <ListItem>
+                                    <img 
+                                    className={classes.img} 
+                                    alt={state.productName}
+                                    src={`${devStorageBucket}${state.imagePath}?alt=media`} />
+                            </ListItem>
+                        ) : (
+                            <ListItem 
+                                button 
+                                onClick={handleEditThumbnail}>
+                               
+                                <img 
+                                    className={classes.img} 
+                                    alt={state.productName}
+                                    src={`${devStorageBucket}${state.imagePath}?alt=media`} />
+                            
+                                <input
+                                    type="file"
+                                    id="imageInput"
+                                    hidden="hidden"
+                                    onChange={handleImageChange} />
+                            </ListItem>
+                        )
+                    }
+             
             
                     <Divider />
                
@@ -263,7 +270,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                       
                     </ListItem>
                     <Divider />
-                    <ListItem button>
+                    <ListItem>
 
                         {displayState === 'view' ? (
                             <ListItemText primary="Reward" secondary={state.rewardAmount} />
@@ -328,9 +335,17 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     </ListItem>
                     <Divider />
 
-                    <ListItem button>
+                    <ListItem>
                         { 
-                            state.dispensaries ? ( <ListItemText primary={`Dispensaries (${state.dispensaries.length})`} secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />) : ( <ListItemText primary="Dispensaries" secondary='none' />)
+                            state.dispensaries ? ( 
+                                <ListItemText 
+                                    primary={`Dispensaries (${state.dispensaries.length})`} 
+                                    secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />) 
+                                : ( 
+                                    <ListItemText 
+                                        primary="Dispensaries"
+                                             secondary='none' />
+                                )
                         }
                        
                     </ListItem>

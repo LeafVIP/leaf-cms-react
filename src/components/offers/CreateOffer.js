@@ -39,40 +39,90 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 export default function CreateOffer({open, onClose, onSave}) {
     
     const classes = useStyles();
-    
-    const [productName] = useState('');
-    const [brand] = useState({});
-    const [originalQuantity] = useState(10);
-    const [rewardAmount] = useState(5);
-    const [campaignName] = useState('');
-    const [productDescription] = useState('');
-    const [surveyCode] = useState('');
-    const [surveyId] = useState('');
+
+    const state = {
+        campaignName: '',
+        brandId: '',
+        brandName: '',
+        brandLicense: '',
+        originalQuantity: 20,
+        rewardAmount: 5,
+        productName: '',
+        productDescription: '',
+        surveyCode: '',
+        surveyID: ''
+    }
 
     const handleChange = (event) => {
         console.log(`handleChange: ${event.target.name}: ${event.target.value}`)
-        setState([event.target.name], event.target.value);
+        state[event.target.name] = event.target.value
     }
 
+    
+    /*
+    const [campaignName, setCampaign] = useState('');
+    const [brandId, setBrandId] = useState('');
+    const [brandName, setBrandName] = useState('');
+    const [brandLicense, setBrandLicense] = useState('');
+    const [originalQuantity, setQuantity] = useState(10);
+    const [rewardAmount, setReward] = useState(5);
+    const [productName, setProductName] = useState('')
+    const [productDescription, setProductDescription] = useState('');
+    const [surveyCode, setSurveyCode] = useState('');
+    const [surveyId, setSruveyId] = useState('');
+
+
+    const handleCampaign = (event) => {
+        setCampaign(event.target.value);
+    }
+    const handleBrandId = (event) => {
+        setBrandId(event.target.value);
+    }
+    const handleBrandName = (event) => {
+        setBrandName(event.target.value);
+    }
+    const handleBrandLicense = (event) => {
+        setBrandLicense(event.target.value);
+    }
+    const handleQuantity = (event) => {
+        setQuantity(event.target.value);
+    }
+    const handleReward = (event) => {
+        setCampaign(event.target.value);
+    }
+    const handleCampaign = (event) => {
+        setCampaign(event.target.value);
+    }
+    const handleCampaign = (event) => {
+        setCampaign(event.target.value);
+    }
+    */
     const handleClose = () => {
         onClose();
     }
 
     const handleSave = () => {
-        const brandId = brand.id;
-        const brandName = brand.name;
-        const brandLicense = brand.license;
+        const campaignName = state.campaignName;
+        const productName = state.productName;
+        const brandId = state.brandId;
+        const brandName = state.brandName;
+        const brandLicense = state.brandLicense;
+        const originalQuantity = state.originalQuantity;
+        const rewardAmount = state.rewardAmount;
+        const productDescription = state.productDescription;
+        const surveyCode = state.surveyCode;
+        const surveyId = state.surveyId;
 
         const newOffer = {
+            campaignName,
             productName,
             brandId,
             brandName,
             brandLicense,
             originalQuantity,
             rewardAmount,
-            campaignName,
             productDescription,
-            surveyCode, 
+            surveyCode,
             surveyId
         }
 
@@ -92,18 +142,122 @@ export default function CreateOffer({open, onClose, onSave}) {
                 </AppBar>
 
                 <List>
+                <ListItem>
+                      <TextField 
+                            name="campaignName"
+                            label="Campaign"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.campaignName}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
                     <ListItem>
                       <TextField 
                             name="productName"
                             label="Product Name"
                             type="text"
                             className={classes.textField}
-                            placeholder={productName}
+                            placeholder={state.productName}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                      <TextField 
+                            name="brandId"
+                            label="Brand - ID"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.brandId}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                      <TextField 
+                            name="brandName"
+                            label="Brand - Name"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.brandName}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                      <TextField 
+                            name="brandLicense"
+                            label="Brand - License"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.brandLicense}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                      <TextField 
+                            name="originalQuantity"
+                            label="Quantity"
+                            type="number"
+                            className={classes.textField}
+                            placeholder={state.originalQuantity}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                      <TextField 
+                            name="rewardAmount"
+                            label="Reward"
+                            type="number"
+                            className={classes.textField}
+                            placeholder={state.rewardAmount}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+                    <ListItem>
+                      <TextField 
+                            name="productDescription"
+                            label="Description"
+                            type="text"
+                            multiline
+                            className={classes.textField}
+                            placeholder={state.productDescription}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+                    <ListItem>
+                      <TextField 
+                            name="surveyCode"
+                            label="Survey Code"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.surveyCode}
+                            onChange={handleChange} />
+                    </ListItem>
+                    <Divider />
+
+                    <ListItem>
+                      <TextField 
+                            name="surveyId"
+                            label="Survey ID"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.surveyId}
                             onChange={handleChange} />
                     </ListItem>
                     <Divider />
                     <ListItem button>
-                        <ListItemText primary='Brand' secondary={brand.name} />
                     </ListItem>
                     <ListItem>
                           <Button className={classes.saveBtn} onClick={handleSave}>
