@@ -50,7 +50,8 @@ export default function CreateOffer({open, onClose, onSave}) {
         productName: '',
         productDescription: '',
         surveyCode: '',
-        surveyID: ''
+        surveyID: '',
+        videoUrl: ''
     }
 
     const handleChange = (event) => {
@@ -58,45 +59,7 @@ export default function CreateOffer({open, onClose, onSave}) {
         state[event.target.name] = event.target.value
     }
 
-    
-    /*
-    const [campaignName, setCampaign] = useState('');
-    const [brandId, setBrandId] = useState('');
-    const [brandName, setBrandName] = useState('');
-    const [brandLicense, setBrandLicense] = useState('');
-    const [originalQuantity, setQuantity] = useState(10);
-    const [rewardAmount, setReward] = useState(5);
-    const [productName, setProductName] = useState('')
-    const [productDescription, setProductDescription] = useState('');
-    const [surveyCode, setSurveyCode] = useState('');
-    const [surveyId, setSruveyId] = useState('');
 
-
-    const handleCampaign = (event) => {
-        setCampaign(event.target.value);
-    }
-    const handleBrandId = (event) => {
-        setBrandId(event.target.value);
-    }
-    const handleBrandName = (event) => {
-        setBrandName(event.target.value);
-    }
-    const handleBrandLicense = (event) => {
-        setBrandLicense(event.target.value);
-    }
-    const handleQuantity = (event) => {
-        setQuantity(event.target.value);
-    }
-    const handleReward = (event) => {
-        setCampaign(event.target.value);
-    }
-    const handleCampaign = (event) => {
-        setCampaign(event.target.value);
-    }
-    const handleCampaign = (event) => {
-        setCampaign(event.target.value);
-    }
-    */
     const handleClose = () => {
         onClose();
     }
@@ -112,6 +75,7 @@ export default function CreateOffer({open, onClose, onSave}) {
         const productDescription = state.productDescription;
         const surveyCode = state.surveyCode;
         const surveyId = state.surveyId;
+        const videoUrl = state.videoUrl;
 
         const newOffer = {
             campaignName,
@@ -123,7 +87,8 @@ export default function CreateOffer({open, onClose, onSave}) {
             rewardAmount,
             productDescription,
             surveyCode,
-            surveyId
+            surveyId,
+            videoUrl
         }
 
         onSave(newOffer);
@@ -245,6 +210,19 @@ export default function CreateOffer({open, onClose, onSave}) {
                             placeholder={state.surveyCode}
                             onChange={handleChange} />
                     </ListItem>
+                    <Divider />
+
+
+                    <ListItem>
+                        <TextField 
+                            name="videoUrl"
+                            label="Video URL"
+                            type="text"
+                            className={classes.textField}
+                            placeholder={state.videoUrl}
+                            onChange={handleChange} />
+                        </ListItem>
+
                     <Divider />
 
                     <ListItem>

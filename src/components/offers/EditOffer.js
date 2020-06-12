@@ -52,10 +52,8 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditOffer({offer, open, onClose, onSave, onDelete, onUploadThumbnail}) {
 
+    
     const classes = useStyles();
-
-
-    // const [isActive, setActive] = useState(offer.isActive);
     const [displayState, setDisplayState] = useState('view');
     const [isActive, setIsActive] = useState(offer.isActive);
 
@@ -72,13 +70,12 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         surveyCode: offer.surveyCode,
         surveyId: offer.surveyId,
         campaignName: offer.campaignName,
-        isActive: isActive,
+        isActive: offer.isActive,
         imagePath: offer.imagePath,
+        videoUrl: offer.videoUrl,
         dispensaries: offer.dispensaries,
         dispensaryObjects: offer.dispensaryObjects
     };
-
-
 
     const handleClose = () => {
       setDisplayState('view');
@@ -112,7 +109,6 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         const jobTypes = state.jobTypes;
         const dispensaries = state.dispensaries;
         const surveyCode = state.surveyCode;
-        const isActive = state.isActive;
 
         const newOffer = {
             productName,
@@ -127,6 +123,8 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
             surveyCode,
             isActive
         }
+
+        console.log('save offer: active = ' +isActive);
         onSave(state.id, newOffer);
         setDisplayState('edit');
     }
@@ -196,13 +194,13 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     {
                         displayState === 'view' ? (
                             <div>
-                                <ListItemText primary="Offer Status" secondary={state.isActive ? "Active" : "Inactive"} />    
+                                <ListItemText primary="Offer Status" secondary={offer.isActive ? "Active" : "Inactive"} />    
                             </div>
                             
                         ) : (
 
                             <div>
-                                <ListItemText primary="Offer Status" secondary={state.isActive ? "Active" : "Inactive"} /> 
+                                <ListItemText primary="Offer Status" secondary={isActive ? "Active" : "Inactive"} /> 
                                 <Switch
                                     name="isActive"
                                     checked={isActive}
@@ -219,7 +217,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     </ListItem>
                     <Divider />
                     <ListItem>
-                        <ListItemText primary="Video Thumbnail" />
+                        <ListItemText primary="Thumbnail" />
                     </ListItem>
 
                     { 
@@ -251,6 +249,28 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
              
             
                     <Divider />
+
+                    { 
+                        displayState === 'view' ? (
+                            <ListItem>
+                                   <ListItemText primary="Video URL" secondary={state.videoUrl} />
+                            </ListItem>
+                        ) : (
+                            <ListItem>
+                                <TextField 
+                                    name="videoUrl"
+                                    label="Video URL"
+                                    type="text"
+                                    className={classes.textField}
+                                    placeholder={state.videoUrl}
+                                    onChange={handleChange} />
+                            </ListItem>
+                        )
+                    }
+             
+            
+                    <Divider />
+
                
                     <ListItem>
                         {
