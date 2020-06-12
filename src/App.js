@@ -5,8 +5,8 @@ import jwtDecode from 'jwt-decode';
 import axios from 'axios';
 
 // Mui
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-
+import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
+import { ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles';
 // Redux
 import { Provider } from 'react-redux';
 import store from './redux/store';
@@ -24,8 +24,8 @@ import PushNotificationsPage from './components/pages/PushNotificationsPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';
 
-// axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net";
-axios.defaults.baseURL = "https://us-central1-leafvip-dev.cloudfunctions.net"
+axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net";
+// axios.defaults.baseURL = "https://us-central1-leafvip-dev.cloudfunctions.net"
 
 const theme = createMuiTheme(themeFile);
 const token = localStorage.FBIdToken;
@@ -47,7 +47,7 @@ if (token) {
 
  function App() {
     return (
-      <ThemeProvider theme={theme}>
+      <MuiThemeProvider theme={theme}>
         <Provider store={store}>
           <Router>
             <NavBar />
@@ -64,7 +64,7 @@ if (token) {
             </div>
           </Router>
         </Provider> 
-      </ThemeProvider>
+      </MuiThemeProvider>
     )
   }
 

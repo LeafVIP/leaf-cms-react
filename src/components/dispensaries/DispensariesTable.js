@@ -17,12 +17,14 @@ import IconButton from '@material-ui/core/IconButton';
 import Tooltip from '@material-ui/core/Tooltip';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import DeleteIcon from '@material-ui/icons/Delete';
+import Grid from '@material-ui/core/Grid';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import Chip from '@material-ui/core/Chip';
 import { Button } from '@material-ui/core';
 import Search from '../../util/Search';
-
+import Checkbox from '@material-ui/core/Checkbox';
+import MyButton from '../../util/MyButton';
+import SimpleSelect from '../../util/SimpleSelect';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -69,6 +71,8 @@ function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
   return (
     <TableHead>
       <TableRow>
+      <TableCell padding="checkbox">
+        </TableCell>
         {headCells.map((headCell) => (
           <TableCell
             key={headCell.id}
@@ -124,8 +128,18 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch}) => {
+const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offers}) => {
   const classes = useToolbarStyles();
+
+  const [currentOffer, setCurrentOffer] = React.useState({});
+
+  const changeOffer = (offer) => {
+    setCurrentOffer(offer);
+  }
+
+  const handleAdd = () => {
+    onAdd(currentOffer);
+  }
 
   return (
     <Toolbar
@@ -133,13 +147,44 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch}) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
+      <Grid container spacing={3}>
+        <Grid item sm={12} xs={3}>
+          <Search className={classes.root} onSearchUpdate={onSearch} />
+        </Grid>
 
-      <Search onSearchUpdate={onSearch} />
-
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
+        <Grid item sm={12} xs={3}>
+        {numSelected > 0 ? (
+          <>
+          <Grid item xs={6}>
+               <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+                  {numSelected} selected
+                </Typography>
+          </Grid>
+          <Grid item xs={6}>
+              {
+                offers.length > 0 ? (
+                  <div>
+                      <Grid item>
+                      <SimpleSelect items={offers} onChange={changeOffer}/>
+                        <MyButton
+                        tip="add to offer"
+                        onClick={handleAdd}
+                        >
+                        
+                          <AddCircleOutlinedIcon />
+                        </MyButton>
+                      </Grid>
+                    
+                </div>
+                ) : (
+                  <div></div>
+                )
+              
+              }
+           
+            </Grid>
+          </>
+     
       ) : (
         <div>
           <Button>
@@ -153,13 +198,10 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch}) => {
         </div>
         
       )}
-
+        </Grid>
+      </Grid>
       {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
+        <div></div>
       ) : (
         <Tooltip title='new dispensary'>
           <IconButton aria-label="new dispensary" onClick={onCreateItem}>
@@ -173,6 +215,7 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch}) => {
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -199,33 +242,62 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
+const DispensariesTable = ({
+  dispensaries, 
+  offers,
+  onSelectItem, 
+  onCreateItem, 
+  onAddClicked,
+  onCheckItem
+}) => {
 
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
   const [orderBy, setOrderBy] = useState('firstName');
-  const [selected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(-1);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
   const [searchItems, setSearchItems] = useState([]);
+  const [selected, setSelected] = useState([]);
 
   useEffect(() => {
     if (searchItems.length === 0) {
       setSearchItems(dispensaries);
     }
-  })
+  },[searchItems.length, dispensaries])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  const handleCheck = (event, dispensary) => {
+    const selectedIndex = selected.indexOf(dispensary);
+    let newSelected = [];
 
-  const handleClick = (event, dispensary) => {
-    console.log('handleClick: ' +dispensary.id);
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(selected, dispensary);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(selected.slice(1));
+    } else if (selectedIndex === selected.length - 1) {
+      newSelected = newSelected.concat(selected.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        selected.slice(0, selectedIndex),
+        selected.slice(selectedIndex + 1),
+      );
+    }
+
+    setSelected(newSelected);
+    onCheckItem(selected);
+
+    
+
+
+  }
+  const handleSelectItem = (dispensary) => {
     onSelectItem(dispensary);
-  };
+  }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -250,6 +322,7 @@ const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
         if (name.includes(searchTerm)) {
           return item;
         }
+        return null;
       });
       setSearchItems(newItems);
     }
@@ -268,7 +341,7 @@ const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} onSearch={handleSearchQuery} />
+        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} onSearch={handleSearchQuery} onAdd={onAddClicked} offers={offers}/>
         <TableContainer>
           <Table
             className={classes.table}
@@ -288,29 +361,41 @@ const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
               {stableSort(searchItems, getComparator(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map((dispensary, index) => {
-                  const isItemSelected = isSelected(dispensary.displayName);
+                  const isItemSelected = isSelected(dispensary);
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
                     <TableRow
                       hover
-                      onClick={(event) => handleClick(event, dispensary)}
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={dispensary.id}
                       selected={isItemSelected}
                     >
-
-                      <TableCell component="th" id={labelId} scope="displayName"  align='left' padding='default'>
-                        <span> {dispensary.displayName}</span>
+                       <TableCell padding="checkbox">
+                        <Checkbox
+                          onClick={(event) => handleCheck(event, dispensary)}
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
-                      <TableCell align='left' padding='default' scope='cmId'>{dispensary.cmId}</TableCell>
-                      <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
-                      <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
-                      <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
-
+                    
+                        <TableCell 
+                          component="th" 
+                          id={labelId} 
+                          scope="displayName" 
+                          align='left' 
+                          padding='default'
+                          onClick={(event) => handleSelectItem(dispensary)}>
+                              <span> {dispensary.displayName}</span>
+                        </TableCell>
+                        <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
+                        <TableCell align='left' padding='default' scope='cmId'>{dispensary.cmId}</TableCell>
+                        <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
+                        <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
+                        <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
+                     
                     </TableRow>
                   );
                 })}
@@ -338,6 +423,10 @@ const DispensariesTable = ({dispensaries, onSelectItem, onCreateItem}) => {
       />
     </div>
   );
+}
+
+DispensariesTable.propTypes = {
+  offers: PropTypes.array.isRequired
 }
 
 export default DispensariesTable;

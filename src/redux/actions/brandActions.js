@@ -3,7 +3,6 @@ import {
     CREATE_BRAND,
     UPDATE_BRAND,
     DELETE_BRAND,
-    SET_BRAND,
     SET_BRANDS,
     LOADING_UI,
     CLEAR_ERRORS,

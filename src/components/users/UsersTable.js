@@ -209,7 +209,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
     if (searchItems.length === 0) {
       setSearchItems(users);
     }
-  })
+  },[searchItems.length, users])
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -235,8 +235,6 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
   const handleChangeDense = (event) => {
     setDense(event.target.checked);
   };
-
-  const isSelected = (name) => selected.indexOf(name) !== -1;
 
   const name = (firstName, lastName) => {
       if(firstName !== undefined) {
@@ -270,12 +268,17 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
         if (containsAuthUid) {
           return item.authUid.toLowerCase().includes(searchTerm);
         }
+
+        return null;
       
       });
 
       console.log('newItems = ' +newItems.length);
    
       setSearchItems(newItems);
+
+
+      
     }
   }
 

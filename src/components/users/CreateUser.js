@@ -1,4 +1,4 @@
-import React, { useState, getState } from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import ListItem from '@material-ui/core/ListItem';
@@ -47,7 +47,6 @@ export default function CreateUser({open, onClose, onSave}) {
     const [password, setPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
     const [zip, setZip] = useState('');
-    const [dispensary, setDispensary] = useState({});
     const [payPalPayoutReceiver, setPayPalPayoutReceiver] = useState('');
     const [platform, setPlatform] = useState('');
     

@@ -20,7 +20,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import MyButton from '../../util/MyButton';
 
 const devStorageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
-const prodStorageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
+// const prodStorageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -133,9 +133,9 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         state[event.target.name] = event.target.value;
     };
 
-    const toggleActive = () => {
-        offer.isActive = !offer.isActive
-    }
+    // const toggleActive = () => {
+    //     offer.isActive = !offer.isActive
+    // }
 
     const handleDelete = () => {
         onDelete(state.id);

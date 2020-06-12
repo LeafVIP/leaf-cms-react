@@ -191,7 +191,7 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
    if (searchItems.length === 0) {
        setSearchItems(items);
    }
-  });
+  }, [searchItems.length, items]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -227,6 +227,7 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
         if (name.includes(searchTerm)) {
           return item;
         }
+        return null;
       });
       setSearchItems(newItems);
     }

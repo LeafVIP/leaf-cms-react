@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import '../Search.css'
-import { useMediaQuery } from '@material-ui/core';
 
 class Search extends Component {
 
@@ -10,11 +9,6 @@ class Search extends Component {
 		loading: false,
 		message: '',
 	};
-
-    constructor( props ) {
-		super( props );
- 
-    }
 
     render() {
 		const {query} = this.state;

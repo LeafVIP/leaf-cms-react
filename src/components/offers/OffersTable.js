@@ -19,7 +19,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-import { createOffer } from '../../redux/actions/dataActions';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {

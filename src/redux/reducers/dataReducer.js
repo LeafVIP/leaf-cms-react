@@ -111,7 +111,6 @@ import {
                     offers: action.payload
                 }
             case DELETE_OFFER:
-                const offerId = action.payload;
                 const activeOffers = state.brands.filter(function(entity) {
                     return entity.id !== id;
                 })
