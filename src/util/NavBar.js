@@ -31,6 +31,10 @@ class NavBar extends Component {
         const push = () => {
             window.location = '/notifications';
         }
+         
+        const surveys = () => {
+            window.location = '/surveys';
+        }
        
         return (
             <>
@@ -42,6 +46,7 @@ class NavBar extends Component {
                         <Button color="inherit" onClick={dispensaries}>dispensaries</Button>
                         <Button color="inherit" onClick={brands}>brands</Button>
                         <Button color="inherit" onClick={offers}>offers</Button>
+                        <Button color="inherit" onClick={surveys}>surveys</Button>
                         <Button color="inherit" onClick={push}>notifications</Button>
                     </Toolbar>
                 </AppBar >

@@ -16,11 +16,12 @@ import TextField from '@material-ui/core/TextField';
 import Switch from '@material-ui/core/Switch';
 import JobTypeTransferList from '../../util/JobTypeTransferList';
 import Grid from '@material-ui/core/Grid';
-import EditIcon from '@material-ui/icons/Edit';
-import MyButton from '../../util/MyButton';
 
-const devStorageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
-// const prodStorageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
+// DEV
+// const storageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
+
+// PROD
+const storageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {
@@ -226,7 +227,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                                     <img 
                                     className={classes.img} 
                                     alt={state.productName}
-                                    src={`${devStorageBucket}${state.imagePath}?alt=media`} />
+                                    src={`${storageBucket}${state.imagePath}?alt=media`} />
                             </ListItem>
                         ) : (
                             <ListItem 
@@ -236,7 +237,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                                 <img 
                                     className={classes.img} 
                                     alt={state.productName}
-                                    src={`${devStorageBucket}${state.imagePath}?alt=media`} />
+                                    src={`${storageBucket}${state.imagePath}?alt=media`} />
                             
                                 <input
                                     type="file"

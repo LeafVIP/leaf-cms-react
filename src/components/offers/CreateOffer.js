@@ -1,4 +1,4 @@
-import React, { useState, setState } from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Dialog from '@material-ui/core/Dialog';
 import ListItem from '@material-ui/core/ListItem';
@@ -11,7 +11,6 @@ import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
 import Slide from '@material-ui/core/Slide';
 import TextField from '@material-ui/core/TextField';
-import { ListItemText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     appBar: {

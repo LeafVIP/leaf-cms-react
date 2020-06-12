@@ -20,9 +20,17 @@ class DispensaryPage extends Component {
        selectedDispensaries: []}
   }
 
+  componentDidUpdate(prevProps) {
+    
+   if(prevProps.data.dispensaries !== this.props.data.dispensaries && this.props.data.dispensaries.length > 0) {
+       this.props.getOffers();
+   }
+  }
+
     componentDidMount() {
-        this.props.getDispensaries();
-        this.props.getOffers();
+      if(this.props.data.dispensaries.length === 0) {
+        this.props.getTop50();
+      }
     }
 
     createSortHandler = () => () => {

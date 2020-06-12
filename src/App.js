@@ -21,11 +21,13 @@ import LoginPage from './components/pages/LoginPage';
 import OffersPage from './components/pages/OffersPage';
 import BrandsPage from './components/pages/BrandsPage';
 import PushNotificationsPage from './components/pages/PushNotificationsPage';
+import SurveyPage from './components/pages/SurveyPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';
 
-// axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net";
-axios.defaults.baseURL = "https://us-central1-leafvip-dev.cloudfunctions.net"
+
+axios.defaults.baseURL = "https://us-central1-leafvip-c42db.cloudfunctions.net";
+// axios.defaults.baseURL = "https://us-central1-leafvip-dev.cloudfunctions.net"
 
 const theme = createMuiTheme(themeFile);
 const token = localStorage.FBIdToken;
@@ -58,6 +60,7 @@ if (token) {
                  <Route exact path="/brands" component={BrandsPage} />
                  <Route exact path="/dispensaries" component={DispensaryPage} />
                  <Route exact path="/offers" component={OffersPage} />
+                 <Route exact path="/surveys" component={SurveyPage} />
                  <Route exact path="/notifications" component={PushNotificationsPage} />
                  <Route component={PageNotFound} />
               </Switch>
