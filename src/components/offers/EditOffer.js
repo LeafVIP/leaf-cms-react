@@ -99,13 +99,15 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     };
 
     const handleEdit = () => {
-        console.log('handleEdit: jobTypes = ' +state.jobTypes);
-        setBudtender(state.jobTypes.indexOf('budtender') >= 0)
-        setManager(state.jobTypes.indexOf('manager') >= 0)
-        setBuyer(state.jobTypes.indexOf('buyer') >= 0)
-        setFrontdesk(state.jobTypes.indexOf('frontdesk') >= 0)
-        setSecurity(state.jobTypes.indexOf('security') >= 0)
-        setBrand(state.jobTypes.indexOf('brand') >= 0)
+       if(state.jobTypes !== null && state.jobTypes !== undefined  && state.jobTypes !== []) { 
+           console.log('jobTypes = ' +state.jobTypes);
+            setBudtender(state.jobTypes.indexOf('budtender') >= 0)
+            setManager(state.jobTypes.indexOf('manager') >= 0)
+            setBuyer(state.jobTypes.indexOf('buyer') >= 0)
+            setFrontdesk(state.jobTypes.indexOf('frontdesk') >= 0)
+            setSecurity(state.jobTypes.indexOf('security') >= 0)
+            setBrand(state.jobTypes.indexOf('brand') >= 0)
+       }
 
         setDisplayState('edit');
     }
@@ -425,10 +427,11 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     <ListItem>
                      
                         { 
-                            displayState === 'view' && state.jobTypes ? (
-
+                            displayState === 'view' ? (
                                 <div>
-                                    <ListItemText primary="Job Types" secondary={state.jobTypes.map(job => { return job +", "})} />
+                                    <ListItemText 
+                                        primary="Job Types" 
+                                        secondary={state.jobTypes !== undefined || state.jobTypes === [] ?(state.jobTypes.map(job => { return job +", "})) : <div>none</div>} />
                                 </div>
                             ) : (
                                 <div>

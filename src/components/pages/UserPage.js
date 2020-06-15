@@ -2,7 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import SubNav from '../users/UserSubNav';
 import { connect } from 'react-redux';
-import { getUserData, updateUser, deleteUser, createUser } from '../../redux/actions/userActions';
+import { getUserData, updateUser, deleteUser, createUser, uploadBadgeImage } from '../../redux/actions/userActions';
 import Grid from '@material-ui/core/Grid';
 import UsersTable from '../users/UsersTable'
 import EditUser from '../users/EditUser';
@@ -52,6 +52,7 @@ class UserPage extends Component {
 
         const uploadBadgeImage = (userId, data) => {
           console.log(`upload badge image ${userId} - ${data}`);
+          this.props.uploadBadgeImage(userId, data);
         }
 
  
@@ -63,7 +64,7 @@ class UserPage extends Component {
                     <Grid container spacing={3}>           
                             {
                               !loading && users !== null ? (
-                                <UsersTable users={user}
+                                <UsersTable users={users}
                                  onSelectUser={showUserDetails} 
                                  onCreateItem={showNewUser}/>
                               
@@ -81,7 +82,7 @@ class UserPage extends Component {
                         onClose={hideModal}
                         onDelete={deleteUserDetails}
                         onBadgeClick={toggleBadgeState}
-                        onUploadBadge={uploadBadgeImage} />
+                        onUploadBadgeImage={uploadBadgeImage} />
 
                     <CreateUser 
                         open={this.state.create} 
@@ -101,6 +102,7 @@ UserPage.propTypes = {
     updateUser: PropTypes.func.isRequired,
     deleteUser: PropTypes.func.isRequired,
     createUser: PropTypes.func.isRequired,
+    uploadBadgeImage: PropTypes.func.isRequired,
     user: PropTypes.object,
     data: PropTypes.object.isRequired
 };
@@ -114,7 +116,8 @@ const mapDispatchToProps = {
   getUserData,
   updateUser,
   deleteUser,
-  createUser
+  createUser,
+  uploadBadgeImage
 }
 
   export default connect(

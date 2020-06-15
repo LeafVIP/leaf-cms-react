@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function EditUser({user, open, onClose, onBadgeClick}) {
+export default function EditUser({user, open, onClose, onBadgeClick, onUploadBadgeImage}) {
 
     const classes = useStyles();
     
@@ -41,6 +41,19 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
       onClose()
     };
 
+    const handleEditThumbnail = () => {
+        const fileInput = document.getElementById('imageInput');
+        fileInput.click();
+    }
+
+    const handleImageChange = (event) => {
+        const image = event.target.files[0];
+        const formData = new FormData();
+        formData.append('image', image, image.name);
+        formData.append('Access-Control-Allow-Origin', '*')
+        onUploadBadgeImage(user.authUid, formData);
+      };
+      
     return (
         <div>
              <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
@@ -95,9 +108,21 @@ export default function EditUser({user, open, onClose, onBadgeClick}) {
                         <ListItemText primary="Badge State" secondary={user.badgeState} />
                     </ListItem>
                     <Divider />
-                    <ListItem>
+                    <ListItem
+                        button
+                        onClick={handleEditThumbnail}>
 
-                        <img  className={classes.img} src={user.badgeFrontUrl} alt={user.authUid} />
+                        <img 
+                            className={classes.img} 
+                            src={user.badgeFrontUrl} 
+                            alt={user.authUid} />
+
+                         <input
+                            type="file"
+                            id="imageInput"
+                            hidden="hidden"
+                            onChange={handleImageChange} />
+
                     </ListItem>
                 </List>
             </Dialog>

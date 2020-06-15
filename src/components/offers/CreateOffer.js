@@ -50,7 +50,9 @@ export default function CreateOffer({open, onClose, onSave}) {
         productDescription: '',
         surveyCode: '',
         surveyID: '',
-        videoUrl: ''
+        videoUrl: '',
+        jobTypes: [],
+        dispensaries: []
     }
 
     const handleChange = (event) => {
@@ -87,7 +89,9 @@ export default function CreateOffer({open, onClose, onSave}) {
             productDescription,
             surveyCode,
             surveyId,
-            videoUrl
+            videoUrl,
+            dispensaries: [],
+            jobTypes: []
         }
 
         onSave(newOffer);

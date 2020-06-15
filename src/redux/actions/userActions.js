@@ -17,12 +17,12 @@ export const deleteUser = (userId) => (dispatch) => {
         });
 }
 
-export const uploadBadgeImage = (formData, authId) => (dispatch) => {
+export const uploadBadgeImage = (id, data) => (dispatch) => {
     dispatch({ type: LOADING_USER });
     axios
         .post('/uploadBadgeImage', {
-            formData: formData,
-            userId: authId
+            formData: data,
+            userId: id
         })
         .then(() => {
             dispatch({type: CLEAR_ERRORS});

@@ -61,7 +61,7 @@ const headCells = [
   { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
 ];
 
-function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
+function EnhancedTableHead({classes, order, orderBy, onRequestSort, numSelected, rowCount, onSelectAllClick}) {
   
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -70,7 +70,13 @@ function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
   return (
     <TableHead>
       <TableRow>
-      <TableCell padding="checkbox">
+        <TableCell padding="checkbox">
+          <Checkbox
+            indeterminate={numSelected > 0 && numSelected < rowCount}
+            checked={rowCount > 0 && numSelected === rowCount}
+            onChange={onSelectAllClick}
+            inputProps={{ 'aria-label': 'select all desserts' }}
+          />
         </TableCell>
         {headCells.map((headCell) => (
           <TableCell

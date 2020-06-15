@@ -37,9 +37,6 @@ export const getUsers = () => (dispatch) => {
         });
 }
 
-
-
-
 export const getCompletedOffers = (authId) => (dispatch) => {
     dispatch({type: LOADING_DATA});
     axios
@@ -136,12 +133,9 @@ export const createOffer = (newOffer) => (dispatch) => {
     axios
         .post('/createOffer', newOffer)
         .then(res => {
-            dispatch({
-                type: CREATE_OFFER,
-                payload: res.data
-            });
-            dispatch(clearErrors());
-            dispatch(getOffers());
+            dispatch({type: CLEAR_ERRORS})
+            dispatch({type: CREATE_OFFER, payload: res.data});
+
         })
         .catch(err => {
             dispatch({
@@ -156,11 +150,13 @@ export const updateOffer = (offerId, data) => (dispatch) => {
         type: LOADING_DATA
     });
 
-    console.log('in update offer ' + offerId);
+    console.log('IN UPDATE OFFER: ' +offerId +' - ' +data);
     axios
         .post('/updateOffer', {offerId, data})
         .then(res => {
-            dispatch({type: UPDATE_OFFER, payload: res.data})
+            dispatch({type: CLEAR_ERRORS});
+            dispatch({type: UPDATE_OFFER, payload: res.data});
+            dispatch(getOffers());
         })
         .catch(err => {
             dispatch({
@@ -180,10 +176,7 @@ export const deleteOffer = (offerId) => (dispatch) => {
         .post('/deleteOffer', {offerId})
         .then(res => {
             dispatch({type: CLEAR_ERRORS});
-            dispatch({
-                type: DELETE_OFFER,
-                payload: res.data
-            })
+            dispatch({type: DELETE_OFFER,payload: res.data});
         })
         .catch(err => {
             dispatch({
@@ -229,7 +222,6 @@ export const uploadOfferImage = (offerId, formData) => (dispatch) => {
     axios
         .post('/uploadOfferImage', formData)
         .then(res => {
-            console.log(res.data);
             dispatch(updateOffer(offerId, {imagePath: res.data}));
         })
         .catch(err => {

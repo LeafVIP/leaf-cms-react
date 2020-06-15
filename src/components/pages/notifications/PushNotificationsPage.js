@@ -4,7 +4,6 @@ import Grid from '@material-ui/core/Grid';
 import OfferNotification from './OfferNotification';
 
 class PushNotificationsPage extends Component {
-
     render() {
         return (
             <Grid container spacing={16}>
@@ -19,7 +18,5 @@ class PushNotificationsPage extends Component {
 PushNotificationsPage.propTypes = {
     classes: PropTypes.object.isRequired,
 }
-
-
 
 export default PushNotificationsPage;

@@ -35,8 +35,8 @@ class OfferPage extends Component {
         }
 
         const updateOffer = (offerId, newOffer) => {
-            console.log('calling update offer' +offerId);
             this.props.updateOffer(offerId, newOffer);
+            closeModal();
         }
 
         const createNewOffer = (newOffer) => {
@@ -44,8 +44,8 @@ class OfferPage extends Component {
         }
 
         const updateThumbnail = (id, data) => {
-            console.log(`OffersPage.updateThumbnail: ${id} - ${data}`);
             this.props.uploadOfferImage(id, data);
+            closeModal();
         }
         const deleteOffer = (id) => {
             this.props.deleteOffer(id);

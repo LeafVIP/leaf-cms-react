@@ -202,7 +202,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
   const [selected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(-1);
   const [searchItems, setSearchItems] = useState([]);
 
   useEffect(() => {
@@ -252,7 +252,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
         const containsFirstName = item.firstName !== null;
         const containsLastName = item.lastName !== null;
         const containsAuthUid = item.authUid !== null;
-  
+
         if (containsEmail) {
           return item.email.toLowerCase().includes(searchTerm);
         }
@@ -266,7 +266,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
         }
 
         if (containsAuthUid) {
-          return item.authUid.toLowerCase().includes(searchTerm);
+          return item.authUid.toLowerCase().includes(searchTerm.toLowerCase());
         }
 
         return null;
