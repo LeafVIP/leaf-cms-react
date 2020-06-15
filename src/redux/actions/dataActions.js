@@ -11,6 +11,7 @@ import {
     DELETE_BRAND,
     SET_BRANDS,
     SET_OFFERS,
+    SET_OFFER,
     CREATE_OFFER,
     UPDATE_OFFER,
     DELETE_OFFER
@@ -212,6 +213,13 @@ export const getOffers = () => (dispatch) => {
         })
 }
 
+export const setOffer = (offer) => (dispatch) => {
+    dispatch({
+        type: SET_OFFER,
+        payload: offer
+    });
+};
+
 export const uploadOfferImage = (offerId, formData) => (dispatch) => {
     console.log(`uploadOfferImage for offer: ${offerId}`);
     dispatch({
@@ -227,6 +235,89 @@ export const uploadOfferImage = (offerId, formData) => (dispatch) => {
         .catch(err => {
             console.log(err);
         })
+}
+
+export const notifyAll = (title, message) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios.post('/notifyAll', {
+        title,
+        message
+    })
+    .then(res => {
+        console.log(res.data);
+        dispatch({type: CLEAR_ERRORS});
+    })
+
+}
+
+export const notifyOffer = (title, message, dispensaries, jobTypes) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios.post('/notifyOffer', {
+        title, 
+        message,
+        dispensaries,
+        jobTypes
+    })
+    .then(res => {
+        console.log(res.data);
+        dispatch({type: CLEAR_ERRORS});
+    })
+    .catch(err => {
+        dispatch({
+            type: SET_ERRORS,
+            payload: err
+        })
+    })
+}
+
+export const notifyUser = (title, message, token) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+    axios.post('/notifyUser', {
+        title,
+        message,
+        token
+    })
+    .then(res => {
+        console.log(res.data);
+        dispatch({type: CLEAR_ERRORS});
+    })
+    .catch(err => {
+        dispatch({
+            type: SET_ERRORS,
+            payload: err
+        })
+    })
+
+}
+
+
+export const notifyDispensaries = (title, message, dispensaries) => (dispatch)  => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios.post('/notifyDispensaries', {
+        title,
+        message,
+        dispensaries
+    })
+    .then(res => {
+        console.log(res.data);
+        dispatch({type: CLEAR_ERRORS});
+    })
+    .catch(err => {
+        dispatch({
+            type: SET_ERRORS,
+            payload: err
+        })
+    })
 }
 
 

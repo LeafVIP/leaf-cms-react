@@ -53,7 +53,8 @@ class UserPage extends Component {
         const uploadBadgeImage = (userId, data) => {
           console.log(`upload badge image ${userId} - ${data}`);
         }
-     
+
+ 
           return (  
            <Fragment>
              <SubNav /> <br />
@@ -62,7 +63,7 @@ class UserPage extends Component {
                     <Grid container spacing={3}>           
                             {
                               !loading && users !== null ? (
-                                <UsersTable users={users}
+                                <UsersTable users={user}
                                  onSelectUser={showUserDetails} 
                                  onCreateItem={showNewUser}/>
                               

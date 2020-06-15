@@ -14,6 +14,7 @@ export const DELETE_BRAND = "DELETE_BRAND";
 
 // offer reducers
 export const SET_OFFERS = "SET_OFFERS";
+export const SET_OFFER = "SET_OFFER";
 export const CREATE_OFFER = "CREATE_OFFER";
 export const DELETE_OFFER = "DELETE_OFFER";
 export const UPDATE_OFFER = "UPDATE_OFFER";
@@ -26,6 +27,12 @@ export const UNAPPROVE_USER = "UNAPPROVE_USER";
 export const SELECT_USER = "SET_USER";
 export const DELETE_USER = "DELETE_USER";
 export const FILTER_USERS = "FILTER_USERS";
+
+// survey reducers
+export const SET_SURVEYS = "SET_SURVEYS";
+export const CREATE_SURVEY = "CREATE_SURVEY";
+export const UPDATE_SURVEY = "UPDATE_SURVEY";
+export const DELETE_SURVEY = "DELETE_SURVEY";
 
 
 

@@ -87,6 +87,13 @@ class DispensaryPage extends Component {
           });
         }
 
+        const onAllDispensaries = () => {
+          this.props.getDispensaries();
+        }
+
+        const onTop50 = () => {
+          this.props.getTop50();
+        }
           return (
               <Fragment>  
                 <Grid container spacing={3}>
@@ -111,7 +118,9 @@ class DispensaryPage extends Component {
                                   onSelectItem={showDispensaryDetails}
                                   onCreateItem={addNewDispensaryClicked} 
                                   onCheckItem={onDispensaryChecked}
-                                  onAddClicked={onAddToOffer}/> 
+                                  onAddClicked={onAddToOffer}
+                                  onAll={onAllDispensaries}
+                                  onTop50={onTop50}/> 
                               ) : (
                                 <div>Loading...</div>
                               )

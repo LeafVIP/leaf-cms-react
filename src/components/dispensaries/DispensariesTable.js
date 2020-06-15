@@ -127,7 +127,7 @@ const useToolbarStyles = makeStyles((theme) => ({
   },
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offers}) => {
+const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offers, allDispensaries, top50}) => {
   const classes = useToolbarStyles();
 
   const [currentOffer, setCurrentOffer] = React.useState({});
@@ -187,11 +187,11 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offer
       ) : (
         <div>
           <Button>
-              <Chip label="All Dispensaries"/>
+              <Chip onClick={allDispensaries} label="All Dispensaries"/>
           </Button>
 
           <Button>
-              <Chip label="Top50"/>
+              <Chip onClick={top50} label="Top50"/>
           </Button>
           
         </div>
@@ -247,7 +247,9 @@ const DispensariesTable = ({
   onSelectItem, 
   onCreateItem, 
   onAddClicked,
-  onCheckItem
+  onCheckItem,
+  onAll,
+  onTop50
 }) => {
 
   const classes = useStyles();
@@ -338,7 +340,14 @@ const DispensariesTable = ({
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onCreateItem={onCreateItem} onSearch={handleSearchQuery} onAdd={onAddClicked} offers={offers}/>
+        <EnhancedTableToolbar 
+          numSelected={selected.length} 
+          onCreateItem={onCreateItem} 
+          onSearch={handleSearchQuery} 
+          onAdd={onAddClicked} 
+          offers={offers}
+          allDispensaries={onAll}
+          top50={onTop50}/>
         <TableContainer>
           <Table
             className={classes.table}

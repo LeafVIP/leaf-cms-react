@@ -20,7 +20,7 @@ import DispensaryPage from './components/pages/DispensaryPage';
 import LoginPage from './components/pages/LoginPage';
 import OffersPage from './components/pages/OffersPage';
 import BrandsPage from './components/pages/BrandsPage';
-import PushNotificationsPage from './components/pages/PushNotificationsPage';
+import PushNotificationsPage from './components/pages/notifications/PushNotificationsPage';
 import SurveyPage from './components/pages/SurveyPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';

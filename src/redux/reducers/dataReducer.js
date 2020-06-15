@@ -9,10 +9,16 @@ import {
     APPROVE_USER,
     UNAPPROVE_USER, 
     SET_OFFERS,
+    SET_OFFER,
     SET_COMPLETED_OFFERS,
     DELETE_OFFER,
     UPDATE_OFFER,
-    SET_DISPENSARY_USERS, SET_BRANDS, CREATE_BRAND, UPDATE_BRAND, DELETE_BRAND, CREATE_OFFER} from '../types';
+    SET_DISPENSARY_USERS,
+    SET_BRANDS, 
+    CREATE_BRAND, 
+    UPDATE_BRAND, 
+    DELETE_BRAND, 
+    CREATE_OFFER} from '../types';
 
     const initialState = {
         users: [],
@@ -58,6 +64,13 @@ import {
                      user: action.payload
                 }
 
+            case SET_OFFER:
+                return {
+                    ...state,
+                    laoding: false,
+                    offer: action.payload
+                }
+
         case SET_COMPLETED_OFFERS:
             return {
                 ...state,
@@ -85,7 +98,6 @@ import {
                         loading: false,
                         dispensaries: action.payload,
                         dispensary: action.payload[0],
-                        dispensaryUsers: action.payload[0].users
                     }
                 case SELECT_DISPENSARY:
                     return {
