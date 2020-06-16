@@ -197,6 +197,10 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         handleClose();
     }
 
+    const handleClearDispensaries = () => {
+        state["dispensaries"] = [];
+        state["dispensaryObjects"] = []
+    }
     const handleBudtender = (event) => {
         setBudtender(event.target.checked);
     }
@@ -492,15 +496,32 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
 
                     <ListItem>
                         { 
+                         
                             state.dispensaries ? ( 
-                                <ListItemText 
-                                    primary={`Dispensaries (${state.dispensaries.length})`} 
-                                    secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />) 
-                                : ( 
+                                displayState === 'view' ? (
+                                    <ListItemText 
+                                        primary={`Dispensaries (${state.dispensaries.length})`} 
+                                        secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />
+                                ) : (
+                                    
+                                    <div>
+                                        <ListItemText 
+                                            primary={`Dispensaries (${state.dispensaries.length})`} 
+                                            secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />
+
+                                        <Typography
+                                         variant="button"
+                                         onClick={handleClearDispensaries}>CLEAR</Typography>
+                                    </div>
+                                            
+                                        
+                                    ) 
+                            ) : 
+                            ( 
                                     <ListItemText 
                                         primary="Dispensaries"
-                                             secondary='none' />
-                                )
+                                        secondary='none' />
+                            )
                         }
                        
                     </ListItem>

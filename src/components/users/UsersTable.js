@@ -202,7 +202,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
   const [selected] = useState([]);
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(-1);
+  const [rowsPerPage, setRowsPerPage] = useState(50);
   const [searchItems, setSearchItems] = useState([]);
 
   useEffect(() => {
@@ -338,7 +338,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25, {value: -1, label: 'All'}]}
+          rowsPerPageOptions={[50, 100, 250, {value: -1, label: 'All'}]}
           component="div"
           count={users.length}
           rowsPerPage={rowsPerPage}
