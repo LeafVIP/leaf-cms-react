@@ -26,6 +26,15 @@ import Checkbox from '@material-ui/core/Checkbox';
 import MyButton from '../../util/MyButton';
 import SimpleSelect from '../../util/SimpleSelect';
 
+const headCells = [
+  { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'license', numeric: false, disablePadding: false, label: 'License' },
+  { id: 'cmId', numeric: false, disablePadding: false, label: 'CMID' },
+  { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
+  { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
+  { id: 'saturation', numeric: true, disablePadding: false, label: '% Saturation' },
+];
+
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
@@ -52,16 +61,7 @@ function stableSort(array, comparator) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-const headCells = [
-  { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'license', numeric: false, disablePadding: false, label: 'License' },
-  { id: 'cmId', numeric: false, disablePadding: false, label: 'CMID' },
-  { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
-  { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
-  { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
-];
-
-function EnhancedTableHead({classes, order, orderBy, onRequestSort, numSelected, rowCount, onSelectAllClick}) {
+function EnhancedTableHead({classes, order, orderBy, onRequestSort, numSelected, rowCount, onSelectAll}) {
   
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
@@ -74,7 +74,7 @@ function EnhancedTableHead({classes, order, orderBy, onRequestSort, numSelected,
           <Checkbox
             indeterminate={numSelected > 0 && numSelected < rowCount}
             checked={rowCount > 0 && numSelected === rowCount}
-            onChange={onSelectAllClick}
+            onChange={onSelectAll}
             inputProps={{ 'aria-label': 'select all desserts' }}
           />
         </TableCell>
@@ -263,7 +263,7 @@ const DispensariesTable = ({
   const [orderBy, setOrderBy] = useState('firstName');
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(25);
+  const [rowsPerPage, setRowsPerPage] = useState(-1);
   const [searchItems, setSearchItems] = useState([]);
   const [selected, setSelected] = useState([]);
 
@@ -303,6 +303,16 @@ const DispensariesTable = ({
   const handleSelectItem = (dispensary) => {
     onSelectItem(dispensary);
   }
+
+  const handleSelectAll= (event) => {
+    if (!event.target.checked) {
+      setSelected([]);
+      return;
+    }
+
+    setSelected(searchItems);
+  };
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -363,6 +373,7 @@ const DispensariesTable = ({
           >
             <EnhancedTableHead
               classes={classes}
+              onSelectAll={handleSelectAll}
               numSelected={selected.length}
               order={order}
               orderBy={orderBy}
