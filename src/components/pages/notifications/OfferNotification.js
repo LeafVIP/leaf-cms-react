@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-import { getOffers, setOffer, notifyOffer, notifyAll} from '../../../redux/actions/dataActions';
+import { notifyOffer, notifyAll,  getOffers, setOffer } from '../../../redux/actions/dataActions';
 import { CircularProgress } from '@material-ui/core';
 
 

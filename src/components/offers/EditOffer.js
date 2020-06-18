@@ -51,7 +51,15 @@ const useStyles = makeStyles((theme) => ({
   });
   
 
-export default function EditOffer({offer, open, onClose, onSave, onDelete, onUploadThumbnail}) {
+export default function EditOffer(
+    {
+        offer, 
+        open, 
+        onClose, 
+        onSave, 
+        onDelete, 
+        onUploadThumbnail,
+        onClearDispensaries}) {
 
     const classes = useStyles();
 
@@ -69,8 +77,8 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         brandLicense: offer.brandLicense,
         brandName: offer.brandName,
         brandId: offer.brandId,
-        remainingQuantity: offer.remainingQuantity,
-        rewardAmount: offer.rewardAmount,
+        remainingQuantity: parseInt(offer.remainingQuantity),
+        rewardAmount: parseInt(offer.rewardAmount),
         productName: offer.productName,
         productDescription: offer.productDescription,
         surveyCode: offer.surveyCode,
@@ -79,6 +87,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         isActive: offer.isActive,
         imagePath: offer.imagePath,
         videoUrl: offer.videoUrl,
+        videoLength: offer.videoLength,
         dispensaries: offer.dispensaries,
         dispensaryObjects: offer.dispensaryObjects,
         jobTypes: offer.jobTypes
@@ -161,6 +170,9 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
         const remainingQuantity = state.remainingQuantity;
         const dispensaries = state.dispensaries;
         const surveyCode = state.surveyCode;
+        const surveyId = state.surveyId;
+        const videoUrl = state.videoUrl;
+        const videoLength = state.videoLength;
         const jobTypes = getJobTypes();
 
         const newOffer = {
@@ -174,12 +186,15 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
             jobTypes,
             dispensaries,
             surveyCode,
-            isActive
+            surveyId,
+            isActive,
+            videoLength,
+            videoUrl
         }
 
         console.log('save offer: active = ' +isActive);
         onSave(state.id, newOffer);
-        setDisplayState('edit');
+        setDisplayState('view');
     }
 
     const handleChange = (event) => {
@@ -198,8 +213,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     }
 
     const handleClearDispensaries = () => {
-        state["dispensaries"] = [];
-        state["dispensaryObjects"] = []
+        onClearDispensaries(state.id);
     }
     const handleBudtender = (event) => {
         setBudtender(event.target.checked);
@@ -221,6 +235,8 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
     }
 
     return (
+
+    
         <div>
              <Dialog fullScreen open={open} onClose={handleClose} TransitionComponent={Transition}>
                 <AppBar className={classes.appBar}>
@@ -327,6 +343,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
             
                     <Divider />
 
+
                     <ListItem>
                     { 
                         displayState === 'view' ? (
@@ -348,7 +365,31 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                         )
                     }
              
-                </ListItem>
+                    </ListItem>
+                    <Divider />
+
+                    <ListItem>
+                    { 
+                        displayState === 'view' ? (
+                
+                            <ListItemText primary="Video Length" secondary={state.videoLength} />
+    
+                        ) : (
+                            <div>
+                                <ListItemText primary="Video Length" />
+                                <TextField 
+                                    name="videoLength"
+                                    label="Video Length"
+                                    type="number"
+                                    className={classes.textField}
+                                    placeholder={state.videoLength}
+                                    onChange={handleChange} />
+                            </div>
+            
+                        )
+                    }
+             
+                    </ListItem>
                     <Divider />
 
                
@@ -416,7 +457,7 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                             <ListItemText primary="Survey Code" secondary={state.surveyCode} />
                             ) : (
                                 <div>
-                                    <ListItemText primary="Enter a survey codee" />
+                                    <ListItemText primary="Survey Code" />
                                     <TextField 
                                         name="surveyCode"
                                         label={state.surveyCode}
@@ -429,13 +470,31 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                     </ListItem>
                     <Divider />
                     <ListItem>
+                     {
+                        displayState === 'view' ? (
+                            <ListItemText primary="Survey ID" secondary={state.surveyCode} />
+                            ) : (
+                                <div>
+                                    <ListItemText primary="Survey ID" />
+                                    <TextField 
+                                        name="surveyId"
+                                        label={state.surveyId}
+                                        type="text"
+                                        className={classes.textField}
+                                        placeholder={state.surveyId}
+                                        onChange={handleChange} />
+                                </div>
+                            )}
+                    </ListItem>
+                    <Divider />
+                    <ListItem>
                      
                         { 
                             displayState === 'view' ? (
                                 <div>
                                     <ListItemText 
                                         primary="Job Types" 
-                                        secondary={state.jobTypes !== undefined || state.jobTypes === [] ?(state.jobTypes.map(job => { return job +", "})) : <div>none</div>} />
+                                        secondary={state.jobTypes !== undefined || state.jobTypes == [] ? (state.jobTypes.map(job => { return job +", "})) : <div>none</div>} />
                                 </div>
                             ) : (
                                 <div>
@@ -509,9 +568,15 @@ export default function EditOffer({offer, open, onClose, onSave, onDelete, onUpl
                                             primary={`Dispensaries (${state.dispensaries.length})`} 
                                             secondary={state.dispensaryObjects.map(dispo => {return dispo.displayName +', '})} />
 
-                                        <Typography
-                                         variant="button"
-                                         onClick={handleClearDispensaries}>CLEAR</Typography>
+                                        <Button
+                                            onClick={handleClearDispensaries}>
+                                                <Typography
+                                                    variant="button"
+                                                    onClick={handleClearDispensaries}>
+                                                        CLEAR
+                                                </Typography>
+                                            </Button>
+                               
                                     </div>
                                             
                                         

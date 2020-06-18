@@ -20,6 +20,8 @@ import Switch from '@material-ui/core/Switch';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
 import Search from '../../util/Search';
+import Chip from '@material-ui/core/Chip';
+import Grid from '@material-ui/core/Grid';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -121,10 +123,105 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+  chip: {
+    background: '#ddd',
+    color: '#000000'
+
+  },
+  chip_on: {
+    background: '#128710',
+    color: '#FFF'
+  }
 }));
 
-const EnhancedTableToolbar = ({numSelected, onAddClick, onSearch}) => {
+const EnhancedTableToolbar = ({users, numSelected, onAddClick, onSearch, onFilter, onClearFilter}) => {
   const classes = useToolbarStyles();
+
+  const [activeFilter, setActiveFilter] = useState('all');
+
+  const numberOfUsers = () => {
+    return (users !== undefined) ? users.length :  0;
+  }
+
+  const numberOfBadgeState = (badgeState) => {
+    return (users !== undefined) ? users.filter(user => user.badgeState === badgeState).length : 0;
+  }
+
+  const numberOfPlatformUsers = (platform) => {
+    return (users !== undefined) ? users.filter(user => user.platform === platform).length : 0;
+  }
+
+  const numberOfRoleUsers = (role) => {
+    return (users !== undefined) ? users.filter(user => user.role === role).length : 0;
+  }
+
+
+  const handleClear = () => {
+    onClearFilter();
+    setActiveFilter('all');
+  }
+
+  const handleInReview = () => {
+    const newUsers = users.filter(user => user.badgeState === 'inReview');
+    setActiveFilter('inReview');
+    onFilter(newUsers);
+  }
+
+  const handleApproved = () => {
+    const newUsers = users.filter(user => user.badgeState === 'approved');
+    setActiveFilter('approved');
+    onFilter(newUsers);
+  }
+
+  const handleIos = () => {
+    const newUsers = users.filter(user => user.platform === 'ios');
+    setActiveFilter('ios');
+    onFilter(newUsers);
+  }
+
+  const handleAndroid = () => {
+    const newUsers = users.filter(user => user.platform === 'android');
+    setActiveFilter('android');
+    onFilter(newUsers);
+  }
+
+  const handleBudtender = () => {
+    const newUsers = users.filter(user => user.role === 'budtender');
+    setActiveFilter('budtender');
+    onFilter(newUsers);
+  }
+
+  const handleBrand = () => {
+    const newUsers = users.filter(user => user.role === 'brand');
+    setActiveFilter('brand');
+    onFilter(newUsers);
+  }
+
+  const handleManager = () => {
+    const newUsers = users.filter(user => user.role === 'manager');
+    setActiveFilter('manager');
+    onFilter(newUsers);
+  }
+
+  const handleBuyer = () => {
+    const newUsers = users.filter(user => user.role === 'buyer');
+    setActiveFilter('buyer');
+    onFilter(newUsers);
+  }
+
+  const handleFrontdesk = () => {
+    const newUsers = users.filter(user => user.role === 'front desk');
+    setActiveFilter('frontdesk');
+    onFilter(newUsers);
+  }
+
+  const handleSecurity = () => {
+    const newUsers = users.filter(user => user.role === 'security');
+    setActiveFilter('security');
+    onFilter(newUsers);
+
+  }
+
 
   return (
     <Toolbar
@@ -132,29 +229,122 @@ const EnhancedTableToolbar = ({numSelected, onAddClick, onSearch}) => {
         [classes.highlight]: numSelected > 0,
       })}
     >
-      <Search onSearchUpdate={onSearch} />
+      <Grid container spacing={12}>
+        <Grid item sm={12}>
+        <Search onSearchUpdate={onSearch} />
+    
+    {numSelected > 0 ? (
+      <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+        {numSelected} selected
+      </Typography>
+    ) : (
+      <div></div>
+    )}
 
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <div></div>
-      )}
+    {numSelected > 0 ? (
+      <Tooltip title="Delete">
+        <IconButton aria-label="delete">
+          <DeleteIcon />
+        </IconButton>
+      </Tooltip>
+    ) : (
+      <Tooltip title="New User">
+        <IconButton aria-label="new user" onClick={onAddClick}>
+          <AddCircleOutlinedIcon />
+        </IconButton>
+      </Tooltip>
+    )
+}
+        </Grid>
 
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton aria-label="delete">
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="New User">
-          <IconButton aria-label="new user" onClick={onAddClick}>
-            <AddCircleOutlinedIcon />
-          </IconButton>
-        </Tooltip>
-      )}
+        <Grid item sm={12}>
+        <Chip 
+          id="all"
+          label={`total (${numberOfUsers()})`} 
+          onClick={handleClear}
+          className={activeFilter === 'all' ?  classes.chip_on : classes.chip}
+          clickable/>
+        <Chip 
+          id="badgeState"
+          value="inReview"
+          label={`in review (${numberOfBadgeState('inReview')})`} 
+          onClick={handleInReview}
+          className={activeFilter === 'inReview' ?  classes.chip_on : classes.chip}
+          clickable/>
+        <Chip 
+          id="badgeState"
+          value="approved"
+          label={`approved (${numberOfBadgeState('approved')})`} 
+          onClick={handleApproved}
+          className={activeFilter === 'approved' ?  classes.chip_on : classes.chip}
+          clickable />
+        <Chip 
+          id="platform"
+          value="ios"
+          label={`ios (${numberOfPlatformUsers('ios')})`} 
+          onClick={handleIos}
+          className={activeFilter === 'ios' ?  classes.chip_on : classes.chip}
+          clickable/>
+        <Chip 
+          id="platform"
+          value="android"
+          label={`android (${numberOfPlatformUsers('android')})`}
+          onClick={handleAndroid}
+          className={activeFilter === 'android' ?  classes.chip_on : classes.chip}
+          clickable/>
+        <Chip 
+          id="budtenders"
+          value="budtenders"
+          label={`budtenders (${numberOfRoleUsers('budtender')})`}
+          onClick={handleBudtender}
+          className={activeFilter === 'budtender' ?  classes.chip_on : classes.chip}
+          clickable/>
+
+        <Chip 
+          id="managers"
+          value="managers"
+          label={`managers (${numberOfRoleUsers('manager')})`}
+          onClick={handleManager}
+          className={activeFilter === 'manager' ?  classes.chip_on : classes.chip}
+          clickable/>
+
+        <Chip 
+          id="buyer"
+          value="buyer"
+          label={`buyer (${numberOfRoleUsers('buyer')})`}
+          onClick={handleBuyer}
+          className={activeFilter === 'buyer' ?  classes.chip_on : classes.chip}
+          clickable/>
+
+        <Chip 
+          id="frontdesk"
+          value="frontdesk"
+          label={`frontdesk (${numberOfRoleUsers('front desk')})`}
+          onClick={handleFrontdesk}
+          className={activeFilter === 'frontdesk' ?  classes.chip_on : classes.chip}
+          clickable/>
+
+        <Chip 
+          id="security"
+          value="security"
+          label={`security (${numberOfRoleUsers('security')})`}
+          onClick={handleSecurity}
+          className={activeFilter === 'security' ?  classes.chip_on : classes.chip}
+          clickable/>
+
+        <Chip 
+          id="brand"
+          value="brand"
+          label={`brand (${numberOfRoleUsers('brand')})`}
+          onClick={handleBrand  }
+          className={activeFilter === 'brand' ?  classes.chip_on : classes.chip}
+          clickable/>
+        </Grid>
+      </Grid>
+
+      )
+
+
     </Toolbar>
   );
 };
@@ -236,6 +426,15 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
     setDense(event.target.checked);
   };
 
+  const handleFilterUsers = (filteredUsers) => {
+
+    setSearchItems(filteredUsers);
+  }
+
+  const handleClearFilter = () => {
+    setSearchItems(users);
+  }
+
   const name = (firstName, lastName) => {
       if(firstName !== undefined) {
         return <span>{firstName} {lastName}</span>
@@ -287,7 +486,13 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
-        <EnhancedTableToolbar numSelected={selected.length} onAddClick={onCreateItem} onSearch={handleSearchQuery} />
+        <EnhancedTableToolbar 
+          users={users} 
+          numSelected={selected.length} 
+          onAddClick={onCreateItem} 
+          onSearch={handleSearchQuery}
+          onFilter={handleFilterUsers}
+          onClearFilter={handleClearFilter} />
         <TableContainer>
           <Table
             className={classes.table}
@@ -315,7 +520,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
                       key={user.email}
                     >
                    
-                      <TableCell name="name" scope="name"  align='left' padding='default'>
+                      <TableCell  scope="name"  align='left' padding='default'>
                         <span>{user.firstName !== '' ? name(user.firstName, user.lastName) : 'n/a'}</span>
                       </TableCell>
                       <TableCell align='left' padding='default' name='role' scope='role'>{user.role !== ''  && user.role !== undefined ? user.role :  'unknown'}</TableCell>
@@ -340,7 +545,7 @@ const UsersTable = ({users, onSelectUser, onSelectBadge, onCreateItem}) => {
         <TablePagination
           rowsPerPageOptions={[50, 100, 250, {value: -1, label: 'All'}]}
           component="div"
-          count={users.length}
+          count={searchItems.length}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={handleChangePage}

@@ -2,11 +2,11 @@ import React, { Component, Fragment } from 'react';
 import Grid from '@material-ui/core/Grid';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getOffers, createOffer, deleteOffer, updateOffer, uploadOfferImage } from '../../redux/actions/dataActions';
 import OffersTable from '../offers/OffersTable';
 import EditOffer from '../offers/EditOffer';
 import Search from '../../util/Search';
 import CreateOffer from '../offers/CreateOffer';
+import { getOffers, createOffer, deleteOffer, updateOffer, uploadOfferImage, deleteDispensaries } from '../../redux/actions/dataActions';
 
 class OfferPage extends Component {
 
@@ -51,6 +51,10 @@ class OfferPage extends Component {
             this.props.deleteOffer(id);
         }
 
+        const handleClearDispensaries = (id) => {
+            this.props.deleteDispensaries(id);
+        }
+
         return(
             <Fragment>
             <Search items={offers}/>
@@ -81,7 +85,8 @@ class OfferPage extends Component {
                                     onClose={closeModal}
                                     onSave={updateOffer}
                                     onDelete={deleteOffer}
-                                    onUploadThumbnail={updateThumbnail} />
+                                    onUploadThumbnail={updateThumbnail}
+                                    onClearDispensaries={handleClearDispensaries} />
 
                                 <CreateOffer
                                     open={this.state.create}
@@ -107,6 +112,7 @@ OfferPage.propTypes = {
     deleteOffer: PropTypes.func.isRequired,
     updateOffer: PropTypes.func.isRequired,
     uploadOfferImage: PropTypes.func.isRequired,
+    deleteDispensaries: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired
 };
 
@@ -119,7 +125,8 @@ const mapActionsToProps = {
     createOffer,
     deleteOffer,
     updateOffer,
-    uploadOfferImage
+    uploadOfferImage,
+    deleteDispensaries
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(OfferPage);

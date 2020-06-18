@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import SubNav from '../users/UserSubNav';
+// import SubNav from '../users/UserSubNav';
 import { connect } from 'react-redux';
 import { getUserData, updateUser, deleteUser, createUser, uploadBadgeImage } from '../../redux/actions/userActions';
 import Grid from '@material-ui/core/Grid';
@@ -9,11 +9,18 @@ import EditUser from '../users/EditUser';
 import CreateUser from '../users/CreateUser';
 
 
+// DEV
+// const storageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
+
+// PROD
+const storageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
+
+
 class UserPage extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: false, create: false, user: undefined}
+    this.state = {open: false, create: false, user: undefined, filteredUsers: undefined}
   }
 
     componentDidMount() {
@@ -22,6 +29,8 @@ class UserPage extends Component {
    
     render() {
         const  { users, user, loading } = this.props.data;
+        const { filteredUsers} = this.state;
+       
 
         const showUserDetails = (user) => {
           console.log('showUserDetails: user.authUid: ' +user.authUid); 
@@ -50,21 +59,30 @@ class UserPage extends Component {
           this.props.updateUser(user.authUid, {badgeState: newBadgState})
         }
 
+        // const sanitizeUsers = () => {
+        //   if (users !== undefined) {
+        //     const newUsers = users.filter(user => {
+        //       return user.firstName !== undefined;
+        //     })
+
+        //     users = newUsers;
+        //   }
+        // }
+
         const uploadBadgeImage = (userId, data) => {
-          console.log(`upload badge image ${userId} - ${data}`);
-          this.props.uploadBadgeImage(userId, data);
+          console.log(`UserPage.upload badge image ${userId} - ${data}`);
+          // this.props.uploadBadgeImage(userId, data);
         }
 
- 
           return (  
            <Fragment>
-             <SubNav /> <br />
+
             <Grid container spacing={3}>
                 <Grid item sm={12} xs={3}> 
                     <Grid container spacing={3}>           
                             {
                               !loading && users !== null ? (
-                                <UsersTable users={users}
+                                <UsersTable users={this.state.filteredUsers ?? users}
                                  onSelectUser={showUserDetails} 
                                  onCreateItem={showNewUser}/>
                               

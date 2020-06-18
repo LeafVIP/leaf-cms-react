@@ -18,22 +18,24 @@ export const SET_OFFER = "SET_OFFER";
 export const CREATE_OFFER = "CREATE_OFFER";
 export const DELETE_OFFER = "DELETE_OFFER";
 export const UPDATE_OFFER = "UPDATE_OFFER";
+export const DELETE_DISPENSARIES  = " DELETE_DISPENSARIES";
 
 // data reducers
 export const LOADING_DATA = "LOADING_DATA";
 export const SET_USERS = "SET_USERS";
 export const APPROVE_USER = "APPROVE_USER";
 export const UNAPPROVE_USER = "UNAPPROVE_USER";
+export const UPDATE_USER = "UPDATE_USER";
 export const SELECT_USER = "SET_USER";
 export const DELETE_USER = "DELETE_USER";
 export const FILTER_USERS = "FILTER_USERS";
 
 // survey reducers
 export const SET_SURVEYS = "SET_SURVEYS";
+export const SET_SURVEY = "SET_SURVEY";
 export const CREATE_SURVEY = "CREATE_SURVEY";
 export const UPDATE_SURVEY = "UPDATE_SURVEY";
 export const DELETE_SURVEY = "DELETE_SURVEY";
-
 
 
 // Dispensary Reducers

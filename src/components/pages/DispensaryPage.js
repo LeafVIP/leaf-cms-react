@@ -29,7 +29,7 @@ class DispensaryPage extends Component {
 
     componentDidMount() {
       if(this.props.data.dispensaries.length === 0) {
-        this.props.getTop50();
+        this.props.getDispensaries();
       }
     }
 
@@ -39,11 +39,11 @@ class DispensaryPage extends Component {
    
     render() {
 
-        const { dispensaries, dispensary, loading, offers } = this.props.data;
-
-        const showDispensaryDetails = (dispensary) => {
-            this.dispensary = dispensary;
-            this.setState({open: true, add: false, create: false, dispensary: dispensary});
+        const { dispensaries, dispensary, offers, loading } = this.props.data;
+       
+        const showDispensaryDetails = (dispo) => {
+            // this.props.selectDispensary(dispo);
+            this.setState({open: true, add: false, create: false, dispensary: dispo});
           };
 
         const closeModal = () => {
@@ -166,6 +166,7 @@ DispensaryPage.propTypes = {
     getTop50: PropTypes.func.isRequired,
     updateOffer: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
+    offer: PropTypes.object,
     dispensaries: PropTypes.array
 };
 

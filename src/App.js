@@ -21,7 +21,7 @@ import LoginPage from './components/pages/LoginPage';
 import OffersPage from './components/pages/OffersPage';
 import BrandsPage from './components/pages/BrandsPage';
 import PushNotificationsPage from './components/pages/notifications/PushNotificationsPage';
-import SurveyPage from './components/pages/SurveyPage';
+import SurveyPage from './components/survey/SurveyPage';
 import PageNotFound from './components/pages/PageNotFound';
 import './App.css';
 

@@ -18,7 +18,9 @@ import {
     CREATE_BRAND, 
     UPDATE_BRAND, 
     DELETE_BRAND, 
-    CREATE_OFFER} from '../types';
+    CREATE_OFFER,
+    DELETE_DISPENSARIES
+} from '../types';
 
     const initialState = {
         users: [],
@@ -27,10 +29,10 @@ import {
         dispensaries: [],
         dispensary: {},
         items: [],
-        offers: [],
-        offer: {},
         brands: [],
         brand: {},
+        offers: [],
+        offer: {},
         loading: false
     }
 
@@ -143,6 +145,12 @@ import {
                     ...state,
                     loading: false,
                     offers: newOffers
+                }
+
+            case DELETE_DISPENSARIES:
+                return {
+                    ...state,
+                    loading: false
                 }
 
             // Brands

@@ -48,9 +48,9 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', order:'desc', numeric: false, disablePadding: false, label: 'Name' },
-  { id: 'license', numeric: false, disablePadding: false, label: 'License' },
-  { id: 'id', numeric: false, disablePadding: false, label: 'Firebase ID' },
+  { id: 'title', order:'desc', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'question_count', numeric: false, disablePadding: false, label: '# of questions' },
+  { id: 'surveyId', numeric: false, disablePadding: false, label: 'Survey ID' },
 ];
 
 function EnhancedTableHead({classes, order, orderBy, onRequestSort}) {
@@ -177,7 +177,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
+const SurveyTable = ({items, onSelectItem, onCreateItem}) => {
 
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
@@ -224,7 +224,7 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
     } else {
       const searchTerm = query.toLowerCase();
       const newItems = searchItems.filter(item => {
-        const name = item.name.toLowerCase();
+        const name = item.title.toLowerCase();
         if (name.includes(searchTerm)) {
           return item;
         }
@@ -274,10 +274,10 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
                     >
 
                       <TableCell id='name' scope="name"  align='left' padding='default'>
-                        <span> {item.name}</span>
+                        <span> {item.title}</span>
                       </TableCell>
-                      <TableCell align='left' padding='default' scope='license'>{item.license}</TableCell>
-                      <TableCell align='left' padding='default' scope='id'>{item.id}</TableCell>
+                      <TableCell align='left' padding='default' scope='license'>{item.question_count}</TableCell>
+                      <TableCell align='left' padding='default' scope='id'>{item.surveyId}</TableCell>
                      
                     </TableRow>
                   );
@@ -307,4 +307,4 @@ const BrandsTable = ({items, onSelectItem, onCreateItem}) => {
     </div>
   );
 }
- export default BrandsTable;
+ export default SurveyTable;

@@ -36,14 +36,14 @@ const useStyles = makeStyles((theme) => ({
 export default function EditDispensary({dispensary, open, onClose, onSave}) {
 
     const classes = useStyles();
-    
-    const [id] = useState(dispensary.dispensaryId);
+ 
     const [license, setLicense] = useState(dispensary.license);
     const [cmId, setCmid] = useState(dispensary.cmId);
     const [address, setAddress] = useState(dispensary.address);
     const [employees, setEmployees] = useState(dispensary.employees);
     const [detailsState, setDetailsState] = useState('view');
 
+   
     const handleClose = () => {
       setDetailsState('view')
       onClose()
@@ -53,7 +53,7 @@ export default function EditDispensary({dispensary, open, onClose, onSave}) {
       setDetailsState('edit');
     }
     const handleSave = () => {
-     
+      const id = dispensary.id;
       const newDispo = {
         id,
         license,
@@ -119,14 +119,14 @@ export default function EditDispensary({dispensary, open, onClose, onSave}) {
 
                 <List>
                     <ListItem>
-                        <ListItemText primary="Firebase ID" secondary={id} />
+                        <ListItemText primary="Firebase ID" secondary={dispensary.id} />
                     </ListItem>
                     <Divider />
                     <ListItem>
 
                       {
                         detailsState === 'view' ? (
-                          <ListItemText primary="License" secondary={license} />
+                          <ListItemText primary="License" secondary={dispensary.license} />
                         ) : (
                           <TextField 
                             name="license"
@@ -143,7 +143,7 @@ export default function EditDispensary({dispensary, open, onClose, onSave}) {
                     <ListItem>
                     {
                         detailsState === 'view' ? (
-                          <ListItemText primary="CMID" secondary={cmId} />
+                          <ListItemText primary="CMID" secondary={dispensary.cmId} />
                         ) : (
                           <TextField 
                             name="cmid"
@@ -159,7 +159,7 @@ export default function EditDispensary({dispensary, open, onClose, onSave}) {
                     <ListItem button>
                     {
                         detailsState === 'view' ? (
-                          <ListItemText primary="Address" secondary={address} />
+                          <ListItemText primary="Address" secondary={dispensary.address} />
                         ) : (
                           <TextField 
                             name="address"

@@ -5,22 +5,13 @@ import {setUsers, getUserData, filterUsers} from '../../redux/actions/userAction
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import Link from '@material-ui/core/Link';
 
-// const styles = {
-// 	paper: {
-// 		position: 'relative',
-// 		display: 'flex',
-// 		marginLeft: 20,
-// 		marginRight: 20,
-// 		marginBottom: 20
-// 	}
-// };
 class UserSubNav extends Component {
 	render() {
-        const { users, filterUsers } = this.props;
+        const { users, filterUsers, onFilter } = this.props;
 
-       
         const clearFilter = () => {
             filterUsers(users);
+            onFilter(users);
         }
 
         const filterApproved = () => {
@@ -28,6 +19,7 @@ class UserSubNav extends Component {
                 return user.badgeState === "approved";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterInReview = () => {
@@ -35,6 +27,7 @@ class UserSubNav extends Component {
                 return user.badgeState === "inReview";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
 
@@ -43,6 +36,7 @@ class UserSubNav extends Component {
                 return user.platform === "ios";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterAndroid = () => {
@@ -50,6 +44,7 @@ class UserSubNav extends Component {
                 return user.platform === "android";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterBrand = () => {
@@ -57,12 +52,14 @@ class UserSubNav extends Component {
                 return user.role === "brand";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         };
         const filterBudtender = () => {
             const newUsers = users.filter(function(user) {
                 return user.role === "budtender";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterManager = () => {
@@ -70,6 +67,7 @@ class UserSubNav extends Component {
                 return user.role === "manager";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterBuyer = () => {
@@ -77,6 +75,7 @@ class UserSubNav extends Component {
                 return user.role === "buyer";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterFrontDesk = () => {
@@ -84,6 +83,7 @@ class UserSubNav extends Component {
                 return user.role === "frontdesk";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
 
         const filterSecurity = () => {
@@ -91,6 +91,7 @@ class UserSubNav extends Component {
                 return user.role === "security";
             })
             filterUsers(newUsers);
+            onFilter(newUsers);
         }
     
 		const totalUsers = (ary) => {
@@ -98,19 +99,17 @@ class UserSubNav extends Component {
 		};
 
 		const approvedUsers = () => {
-			if (users !== null) {
-				const numApproved = users.filter(function(user) {
-					return user.badgeState === 'approved';
-				});
-				return numApproved.length;
-			}
+			const newUsers = users.filter(function(user) {
+				return user.badgeState === 'approved';
+			});
+            return newUsers.length;
 		};
 
 		const inReviewUsers = (ary) => {
 			if (ary !== null) {
 				const numApproved = ary.filter(function(user) {
 					return user.badgeState === 'inReview';
-				});
+                });
 				return numApproved.length;
 			}
 		};

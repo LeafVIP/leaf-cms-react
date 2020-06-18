@@ -260,7 +260,7 @@ const DispensariesTable = ({
 
   const classes = useStyles();
   const [order, setOrder] = useState('asc');
-  const [orderBy, setOrderBy] = useState('firstName');
+  const [orderBy, setOrderBy] = useState('displayName');
   const [page, setPage] = useState(0);
   const [dense, setDense] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -294,11 +294,8 @@ const DispensariesTable = ({
         selected.slice(selectedIndex + 1),
       );
     }
-
     setSelected(newSelected);
-    console.log('newSelected = ' +newSelected);
     onCheckItem(newSelected);
-
   }
   const handleSelectItem = (dispensary) => {
     onSelectItem(dispensary);

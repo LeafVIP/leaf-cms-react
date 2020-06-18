@@ -1,11 +1,14 @@
 import {
 LOADING_DATA,
 SET_SURVEYS,
-CREATE_SURVEY
+CREATE_SURVEY,
+SET_SURVEY
 } from '../types';
 
 const initialState = {
     surveyData: [],
+    surveyDetails: {},
+    suurveyResults: [],
     loading: false
 };
 
@@ -24,6 +27,11 @@ export default function(state = initialState, action) {
                 surveyData: action.payload
             }
         
+        case SET_SURVEY:
+            return {
+                ...state,
+                surveyDetails: action.payload
+            }
         case CREATE_SURVEY: 
             return {
                 ...state,

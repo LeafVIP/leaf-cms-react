@@ -125,7 +125,6 @@ export const getBrands = () => (dispatch) => {
         });  
 };
 
-
 export const createOffer = (newOffer) => (dispatch) => {
     dispatch({
         type: LOADING_DATA
@@ -227,6 +226,23 @@ export const uploadOfferImage = (offerId, formData) => (dispatch) => {
         .catch(err => {
             console.log(err);
         })
+}
+
+export const deleteDispensaries = (offerId) => (dispatch) => {
+    dispatch({
+        type: LOADING_UI
+    });
+
+    axios.post('/clearDispensaryFilter', {
+        offerId
+    })
+    .then(res => {
+        dispatch({type: CLEAR_ERRORS});
+        dispatch(updateOffer(offerId, {dispensaries: [], dispensaryObjects:[]}))
+    })
+    .catch(err => {
+        dispatch({type: SET_ERRORS, payload: err});
+    })
 }
 
 export const notifyAll = (title, message) => (dispatch) => {

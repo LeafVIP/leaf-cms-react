@@ -51,6 +51,7 @@ export default function EditUser({user, open, onClose, onBadgeClick, onUploadBad
         const formData = new FormData();
         formData.append('image', image, image.name);
         formData.append('Access-Control-Allow-Origin', '*')
+        console.log('upload badge image for userId: ' +user.authUid +' data ' +formData);
         onUploadBadgeImage(user.authUid, formData);
       };
       
