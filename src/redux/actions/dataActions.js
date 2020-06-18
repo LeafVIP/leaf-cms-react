@@ -186,6 +186,22 @@ export const deleteOffer = (offerId) => (dispatch) => {
 
 }
 
+export const getOfferUsers = (offerId) => (dispatch) => {
+    dispatch({type: LOADING_UI});
+    axios
+        .post('/getOfferUsers', {offerId} )
+        .then(res => {
+            dispatch({type: CLEAR_ERRORS});
+            dispatch({
+                type: SET_USERS,
+                payload: res.data
+            })
+        })
+        .catch(err => {
+            dispatch({type: SET_ERRORS, payload: err});
+        })
+}
+
 export const getOffers = () => (dispatch) => {
     dispatch({
         type: LOADING_DATA

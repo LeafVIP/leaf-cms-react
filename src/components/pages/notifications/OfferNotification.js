@@ -50,9 +50,11 @@ const styles = (theme) => ({
             data:{
                 loading,
                 offers,
-                offer
+                offer,
+                users
             },
-            UI
+            UI,
+            onSelectOffer
         } = this.props;
 
         const state = {
@@ -70,6 +72,7 @@ const styles = (theme) => ({
         const handleOfferChange = (event) => {
             state[event.target.name] = event.target.value;
             this.props.setOffer(getOffer(state.offer));
+            onSelectOffer(state.offer);
         }
 
         const getOffer = (id) => {
@@ -222,7 +225,7 @@ const styles = (theme) => ({
                                 </div>
                                
                         
-            </Grid> 
+            </Grid>
                     
              <br />
                 </div>
@@ -242,8 +245,7 @@ const styles = (theme) => ({
       notifyAll: PropTypes.func.isRequired,
       notifyOffer: PropTypes.func.isRequired,
       getOffers: PropTypes.func.isRequired,
-      setOffer: PropTypes.func.isRequired
-
+      setOffer: PropTypes.func.isRequired,
   };
 
   const mapStateToProps = (state) => ({
