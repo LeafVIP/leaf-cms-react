@@ -28,8 +28,8 @@ import SimpleSelect from '../../util/SimpleSelect';
 
 const headCells = [
   { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
+  { id: 'address', numeric: false, disablePadding: false, label: 'Address' },
   { id: 'license', numeric: false, disablePadding: false, label: 'License' },
-  { id: 'cmId', numeric: false, disablePadding: false, label: 'CMID' },
   { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
   { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
   { id: 'saturation', numeric: true, disablePadding: false, label: '% Saturation' },
@@ -330,8 +330,14 @@ const DispensariesTable = ({
     } else {
       const searchTerm = query.toLowerCase();
       const newItems = searchItems.filter(item => {
+      
         const name = item.displayName.toLowerCase();
         if (name.includes(searchTerm)) {
+          return item;
+        }
+
+        const address = item.address.toLowerCase();
+        if(address.includes(searchTerm)) {
           return item;
         }
         return null;
@@ -410,8 +416,8 @@ const DispensariesTable = ({
                           onClick={(event) => handleSelectItem(dispensary)}>
                               <span> {dispensary.displayName}</span>
                         </TableCell>
+                        <TableCell align='left' padding='default' scope='address'>{dispensary.address}</TableCell>
                         <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
-                        <TableCell align='left' padding='default' scope='cmId'>{dispensary.cmId}</TableCell>
                         <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
                         <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
                         <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
