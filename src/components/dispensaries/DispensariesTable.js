@@ -34,7 +34,7 @@ const headCells = [
   { id: 'license', numeric: false, disablePadding: false, label: 'License' },
   { id: 'users', numeric: true, disablePadding: false, label: 'Leaf Users' },
   { id: 'employees', numeric: true, disablePadding: false, label: 'Potential Users' },
-  { id: 'saturation', numeric: true, disablePadding: false, label: '% Saturation' },
+  { id: 'saturation', numeric: true, disablePadding: false, label: 'Saturation' },
 ];
 
 function descendingComparator(a, b, orderBy) {
@@ -402,7 +402,7 @@ const DispensariesTable = ({
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, dispensaries.length - page * rowsPerPage);
 
   function saturationRate(users, employees) {
-    if (users === 0 || employees === 0) {
+    if (users <= 0 || employees <= 0) {
       return 0;
     }
 
@@ -475,7 +475,7 @@ const DispensariesTable = ({
                         <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
                         <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
                         <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
-                        <TableCell align='right' padding='default' scope='role'>{saturationRate(dispensary.users.length, dispensary.employees)}</TableCell>
+                        <TableCell align='right' padding='default' scope='saturation'>{saturationRate(dispensary.users.length, dispensary.employees)}%</TableCell>
                      
                     </TableRow>
                   );

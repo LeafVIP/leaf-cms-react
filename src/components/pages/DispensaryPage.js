@@ -44,7 +44,6 @@ class DispensaryPage extends Component {
         const { dispensaries, dispensary, dispensary_lists, offers, loading } = this.props.data;
        
         const showDispensaryDetails = (dispo) => {
-            // this.props.selectDispensary(dispo);
             this.setState({open: true, add: false, create: false, dispensary: dispo});
           };
 
@@ -53,21 +52,18 @@ class DispensaryPage extends Component {
         }
         
         const saveDispensary = (newDispensary) => {
-          this.props.updateDispensary(dispensary.id, newDispensary);
+          this.props.updateDispensary(newDispensary);
           this.setState({open: false});
         }
 
         const onFilterDispensaries = (dispensaries) => {
-          console.log('onFilterDispensaries: ' +dispensaries);
           this.props.getDispensaries(dispensaries);
         }
         const addNewDispensaryClicked = () => {
-          console.log('addNewDispensaryClicked');
           this.setState({create: true, open: false});
         }
 
         const saveNewDispensary = (newDispensary) => {
-          console.log('save new dispensary: ' +newDispensary.displayName);
           this.props.createDispensary(newDispensary);
           this.setState({create: false, dispensary});
         }

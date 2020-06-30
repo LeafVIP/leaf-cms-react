@@ -10,7 +10,8 @@ import {
     CLEAR_ERRORS,
     LOADING_USER,
     LOADING_UI,
-    GET_DISPENSARY_LISTS
+    GET_DISPENSARY_LISTS,
+    UPDATE_DISPENSARY
 } from '../types';
 
 export const setDispensaries = (dispensaries) => (dispatch) => {
@@ -35,7 +36,7 @@ export const getDispensaryUsers = (userIds) => (dispatch) => {
         });
 };
 
-export const updateDispensary = (dispensaryId, data) => (dispatch) => {
+export const updateDispensary = (data) => (dispatch) => {
     console.log('in update dispensary');
     dispatch({
         type: LOADING_DATA
@@ -43,12 +44,13 @@ export const updateDispensary = (dispensaryId, data) => (dispatch) => {
 
     axios
         .post('/updateDispensary', {
-             dispensaryId,
-             data
+             dispensaryId: data.id,
+             data: data
         })
-        .then(res => {
-         dispatch(getDispensaries())
-        
+        .then(() => {
+            dispatch({type: CLEAR_ERRORS});
+            // dispatch({type: UPDATE_DISPENSARY, payload: data})  
+            dispatch(getAllDispensaries());
         })
         .catch(err => {
             console.error(err);
