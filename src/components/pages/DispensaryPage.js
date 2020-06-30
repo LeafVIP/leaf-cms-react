@@ -1,13 +1,12 @@
 import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { getDispensaryUsers, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary } from '../../redux/actions/dispensaryActions';
+import {setDispensaries, getDispensaryUsers, getAllDispensaries, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary, createList, getDispensaryLists } from '../../redux/actions/dispensaryActions';
 import { getOffers, updateOffer } from '../../redux/actions/dataActions';
 import Grid from '@material-ui/core/Grid';
 import EditDispensary from '../dispensaries/EditDispensary';
 import CreateDispensary from '../dispensaries/CreateDispensary';
 import DispensariesTable from '../dispensaries/DispensariesTable';
-import DispensariesMetrics from '../dispensaries/DispensariesMetrics';
 
 class DispensaryPage extends Component {
 
@@ -21,7 +20,6 @@ class DispensaryPage extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    
    if(prevProps.data.dispensaries !== this.props.data.dispensaries && this.props.data.dispensaries.length > 0) {
        this.props.getOffers();
    }
@@ -29,7 +27,11 @@ class DispensaryPage extends Component {
 
     componentDidMount() {
       if(this.props.data.dispensaries.length === 0) {
-        this.props.getDispensaries();
+        this.props.getAllDispensaries();
+      }
+
+      if (this.props.data.dispensary_lists.length === 0) {
+        this.props.getDispensaryLists();
       }
     }
 
@@ -39,7 +41,7 @@ class DispensaryPage extends Component {
    
     render() {
 
-        const { dispensaries, dispensary, offers, loading } = this.props.data;
+        const { dispensaries, dispensary, dispensary_lists, offers, loading } = this.props.data;
        
         const showDispensaryDetails = (dispo) => {
             // this.props.selectDispensary(dispo);
@@ -55,6 +57,10 @@ class DispensaryPage extends Component {
           this.setState({open: false});
         }
 
+        const onFilterDispensaries = (dispensaries) => {
+          console.log('onFilterDispensaries: ' +dispensaries);
+          this.props.getDispensaries(dispensaries);
+        }
         const addNewDispensaryClicked = () => {
           console.log('addNewDispensaryClicked');
           this.setState({create: true, open: false});
@@ -68,7 +74,6 @@ class DispensaryPage extends Component {
 
 
         const onDispensaryChecked = (dispensaries) => {
-    
           let currentDispensaries = this.state.selectedDispensaries;
           currentDispensaries.push()
           this.setState({selectedDispensaries: dispensaries})
@@ -87,40 +92,37 @@ class DispensaryPage extends Component {
           });
         }
 
-        const onAllDispensaries = () => {
-          this.props.getDispensaries();
+        const onCreateList = (name) => {
+          const ids = this.state.selectedDispensaries.map(dispo => {
+            return dispo.id;
+          })
+          this.props.createList(name, ids);
         }
 
-        const onTop50 = () => {
-          this.props.getTop50();
+        const handleSelectItems = (dispensaries) => {
+          this.setState({selectedDispensaries: dispensaries});
         }
+
           return (
               <Fragment>  
                 <Grid container spacing={3}>
-                <Grid item sm={12} xs={3}> 
-                {
-                  !loading && dispensaries !== null ? (
-           
-                    <DispensariesMetrics dispensaries={dispensaries} />
-     
-                  ) : (<></>)
-                }
-               
-                  </Grid>
+              
                 <Grid item sm={12} xs={3}> 
                     <Grid container spacing={3}>           
                             {
-                              !loading && dispensaries !== null ? (
+                              !loading && dispensaries !== null  && dispensary_lists !== null ? (
                                 <DispensariesTable 
                                   dispensaries={dispensaries}
+                                  dispensary_lists = {dispensary_lists}
                                   offers={offers}
                                   onClose={closeModal}
                                   onSelectItem={showDispensaryDetails}
                                   onCreateItem={addNewDispensaryClicked} 
+                                  onCreateNewList={onCreateList}
+                                  onSelectItems={handleSelectItems}
                                   onCheckItem={onDispensaryChecked}
                                   onAddClicked={onAddToOffer}
-                                  onAll={onAllDispensaries}
-                                  onTop50={onTop50}/> 
+                                  onFilterDispensaries={onFilterDispensaries}/> 
                               ) : (
                                 <div>Loading...</div>
                               )
@@ -158,11 +160,15 @@ class DispensaryPage extends Component {
 
 DispensaryPage.propTypes = {
     getOffers: PropTypes.func.isRequired,
+    setDispensaries: PropTypes.func.isRequired,
     getDispensaries: PropTypes.func.isRequired,
+    getAllDispensaries: PropTypes.func.isRequired,
     selectDispensary: PropTypes.func.isRequired,
     getDispensaryUsers: PropTypes.func.isRequired,
     updateDispensary: PropTypes.func.isRequired,
     createDispensary: PropTypes.func.isRequired,
+    getDispensaryLists: PropTypes.func.isRequired,
+    createList: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     updateOffer: PropTypes.func.isRequired,
     data: PropTypes.object.isRequired,
@@ -175,14 +181,18 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = {
+   getAllDispensaries,
    getDispensaries,
+   setDispensaries,
    getDispensaryUsers,
    selectDispensary,
    getTop50,
    updateDispensary,
    createDispensary,
    getOffers,
-   updateOffer
+   updateOffer,
+   createList,
+   getDispensaryLists
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DispensaryPage);

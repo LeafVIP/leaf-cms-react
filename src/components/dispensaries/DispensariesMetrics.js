@@ -25,8 +25,12 @@ class DispensariesMetrics extends Component {
 
         const totalUsers = () => {
             let count = 0;
+        
             dispensaries.forEach(dispo => {
-                count += dispo.users.length;
+                if(dispo.users !== null) {
+                    count += dispo.users.length;
+                }
+               
             });
             return count;
         }

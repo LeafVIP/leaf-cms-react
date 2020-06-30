@@ -19,7 +19,9 @@ import {
     UPDATE_BRAND, 
     DELETE_BRAND, 
     CREATE_OFFER,
-    DELETE_DISPENSARIES
+    DELETE_DISPENSARIES,
+    CREATE_DISPENSARY_LIST,
+    GET_DISPENSARY_LISTS
 } from '../types';
 
     const initialState = {
@@ -27,6 +29,7 @@ import {
         dispensaryUsers: [],
         user: {},
         dispensaries: [],
+        dispensary_lists: [],
         dispensary: {},
         items: [],
         brands: [],
@@ -98,8 +101,8 @@ import {
                     return {
                         ...state,
                         loading: false,
-                        dispensaries: action.payload,
-                        dispensary: action.payload[0],
+                        dispensaries: action.payload
+                  
                     }
                 case SELECT_DISPENSARY:
                     return {
@@ -185,6 +188,21 @@ import {
                 ...state,
                 loading: false,
                 brands: deletedBrands
+            }
+
+
+        case CREATE_DISPENSARY_LIST:
+            return {
+                ...state,
+                loading: false,
+                dispensaries: state.dispensaries
+            }
+    
+        case GET_DISPENSARY_LISTS:
+            return {
+                ...state,
+                loading: false,
+                dispensary_lists: action.payload
             }
 
             default:

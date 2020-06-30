@@ -19,12 +19,14 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import AddCircleOutlinedIcon from '@material-ui/icons/AddCircleOutlined';
-import Chip from '@material-ui/core/Chip';
+// import Chip from '@material-ui/core/Chip';
 import { Button } from '@material-ui/core';
 import Search from '../../util/Search';
 import Checkbox from '@material-ui/core/Checkbox';
 import MyButton from '../../util/MyButton';
 import SimpleSelect from '../../util/SimpleSelect';
+import CreateDispensaryList from './CreateDispensaryList';
+import DispensaryFilter from './DispensaryFilter';
 
 const headCells = [
   { id: 'displayName', numeric: false, disablePadding: false, label: 'Name' },
@@ -131,12 +133,30 @@ const useToolbarStyles = makeStyles((theme) => ({
   title: {
     flex: '1 1 100%',
   },
+  filter: {
+    margin: 10
+  }
 }));
 
-const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offers, allDispensaries, top50}) => {
+const EnhancedTableToolbar = (
+  {
+    dispensaries, 
+    dispensary_lists, 
+    onCreateItem, 
+    onCreateList, 
+    onSearch, 
+    onFilterDispensaries, 
+    onAdd, 
+    offers
+  }) => {
   const classes = useToolbarStyles();
 
   const [currentOffer, setCurrentOffer] = React.useState({});
+
+  const handleSaveDispensaryList = (name) => {
+    console.log('handleSaveDispensaryList: ' +name);
+    onCreateList(name);
+  }
 
   const changeOffer = (offer) => {
     setCurrentOffer(offer);
@@ -146,26 +166,31 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offer
     onAdd(currentOffer);
   }
 
+  const filterDispensaries = (dispensaries) => {
+    onFilterDispensaries(dispensaries);
+  }
+
   return (
     <Toolbar
       className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
+        [classes.highlight]: dispensaries.length > 0,
       })}
     >
-      <Grid container spacing={3}>
+      <Grid container spacing={12}>
         <Grid item sm={12} xs={3}>
           <Search className={classes.root} onSearchUpdate={onSearch} />
         </Grid>
 
-        <Grid item sm={12} xs={3}>
-        {numSelected > 0 ? (
+        <Grid item sm={12} xs={6}>
+        {dispensaries.length > 0 ? (
           <>
-          <Grid item xs={6}>
+          <Grid item sm={3}>
                <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-                  {numSelected} selected
+                  {dispensaries.length} selected
                 </Typography>
           </Grid>
-          <Grid item xs={6}>
+      
+          <Grid item sm={3}>
               {
                 offers.length > 0 ? (
                   <div>
@@ -179,33 +204,52 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offer
                           <AddCircleOutlinedIcon />
                         </MyButton>
                       </Grid>
-                    
                 </div>
                 ) : (
                   <div></div>
-                )
-              
+                )   
               }
-           
+
+                {
+               
+          
+                }
+
+         
+
+            </Grid>
+            <Grid item sm={6} xs={3}>
+           { dispensaries.length > 0 ? (
+                   <CreateDispensaryList 
+                      onSave={handleSaveDispensaryList}/>
+                  ) : (
+                    <div></div>
+                  ) }
             </Grid>
           </>
      
       ) : (
-        <div>
-          <Button>
-              <Chip onClick={allDispensaries} label="All Dispensaries"/>
-          </Button>
 
-          <Button>
-              <Chip onClick={top50} label="Top50"/>
-          </Button>
+
+        <div>
+
+          {dispensary_lists !== null ? (
+            dispensary_lists.map(list => {
+              return (
+                <div className={classes.filter}>
+                <DispensaryFilter name={list.name} dispensaries={list.dispensaries} onFilter={filterDispensaries} />
+                </div>
+              )
           
+            })
+          ) : (<div></div>)}
+  
         </div>
         
       )}
         </Grid>
       </Grid>
-      {numSelected > 0 ? (
+      {dispensaries.length > 0 ? (
         <div></div>
       ) : (
         <Tooltip title='new dispensary'>
@@ -220,6 +264,7 @@ const EnhancedTableToolbar = ({numSelected, onCreateItem, onSearch, onAdd, offer
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
+  onCreateList: PropTypes.func.isRequired
 
 };
 
@@ -249,13 +294,15 @@ const useStyles = makeStyles((theme) => ({
 
 const DispensariesTable = ({
   dispensaries, 
+  dispensary_lists,
   offers,
   onSelectItem, 
+  onSelectItems,
   onCreateItem, 
   onAddClicked,
   onCheckItem,
-  onAll,
-  onTop50
+  onCreateNewList,
+  onFilterDispensaries
 }) => {
 
   const classes = useStyles();
@@ -306,8 +353,9 @@ const DispensariesTable = ({
       setSelected([]);
       return;
     }
-
-    setSelected(searchItems);
+    console.log('handleSelectAll: ' +dispensaries.length);
+    setSelected(dispensaries);
+    onSelectItems(dispensaries);
   };
 
 
@@ -345,6 +393,11 @@ const DispensariesTable = ({
       setSearchItems(newItems);
     }
   }
+
+
+  const handleFilterDispensaries = (dispos) => {
+    onFilterDispensaries(dispos);
+  }
   const isSelected = (name) => selected.indexOf(name) !== -1;
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, dispensaries.length - page * rowsPerPage);
 
@@ -360,13 +413,15 @@ const DispensariesTable = ({
     <div className={classes.root}>
       <Paper className={classes.paper}>
         <EnhancedTableToolbar 
-          numSelected={selected.length} 
+          dispensaries={selected}
+          dispensary_lists= {dispensary_lists}
+          onCreateList={onCreateNewList}
           onCreateItem={onCreateItem} 
           onSearch={handleSearchQuery} 
+          onFilterDispensaries={handleFilterDispensaries}
           onAdd={onAddClicked} 
-          offers={offers}
-          allDispensaries={onAll}
-          top50={onTop50}/>
+          offers={offers}/>
+
         <TableContainer>
           <Table
             className={classes.table}
@@ -452,7 +507,8 @@ const DispensariesTable = ({
 }
 
 DispensariesTable.propTypes = {
-  offers: PropTypes.array.isRequired
+  offers: PropTypes.array.isRequired,
+  dispensaries: PropTypes.array.isRequired
 }
 
 export default DispensariesTable;
