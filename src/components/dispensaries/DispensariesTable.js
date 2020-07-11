@@ -144,6 +144,7 @@ const EnhancedTableToolbar = (
     dispensary_lists, 
     onCreateItem, 
     onCreateList, 
+    onDeleteList,
     onSearch, 
     onFilterDispensaries, 
     onAdd, 
@@ -164,6 +165,11 @@ const EnhancedTableToolbar = (
 
   const handleAdd = () => {
     onAdd(currentOffer);
+  }
+
+  const handleDelete = (id) => {
+    console.log('handleDelete: id = ' +id);
+    onDeleteList(id);
   }
 
   const filterDispensaries = (dispensaries) => {
@@ -231,21 +237,22 @@ const EnhancedTableToolbar = (
       ) : (
 
 
-        <div>
+        <div className={classes.filter}>
 
+        <Grid container spacing={1} >
           {dispensary_lists !== null ? (
             dispensary_lists.map(list => {
               return (
-                <div className={classes.filter}>
-                <DispensaryFilter name={list.name} dispensaries={list.dispensaries} onFilter={filterDispensaries} />
-                </div>
+                <Grid item>
+                <DispensaryFilter name={list.name} id={list.id} dispensaries={list.dispensaries} onDelete={handleDelete} onFilter={filterDispensaries} />
+                </Grid>
               )
           
             })
           ) : (<div></div>)}
   
+            </Grid>
         </div>
-        
       )}
         </Grid>
       </Grid>
@@ -264,7 +271,8 @@ const EnhancedTableToolbar = (
 
 EnhancedTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
-  onCreateList: PropTypes.func.isRequired
+  onCreateList: PropTypes.func.isRequired,
+  onDeleteList: PropTypes.func.isRequired
 
 };
 
@@ -302,7 +310,8 @@ const DispensariesTable = ({
   onAddClicked,
   onCheckItem,
   onCreateNewList,
-  onFilterDispensaries
+  onFilterDispensaries,
+  onDeleteList
 }) => {
 
   const classes = useStyles();
@@ -416,6 +425,7 @@ const DispensariesTable = ({
           dispensaries={selected}
           dispensary_lists= {dispensary_lists}
           onCreateList={onCreateNewList}
+          onDeleteList={onDeleteList}
           onCreateItem={onCreateItem} 
           onSearch={handleSearchQuery} 
           onFilterDispensaries={handleFilterDispensaries}

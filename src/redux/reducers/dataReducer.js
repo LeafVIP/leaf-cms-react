@@ -21,7 +21,8 @@ import {
     CREATE_OFFER,
     DELETE_DISPENSARIES,
     CREATE_DISPENSARY_LIST,
-    GET_DISPENSARY_LISTS
+    GET_DISPENSARY_LISTS,
+    LOADING_DISPENSARY_LIST
 } from '../types';
 
     const initialState = {
@@ -30,6 +31,7 @@ import {
         user: {},
         dispensaries: [],
         dispensary_lists: [],
+        loading_lists: false,
         dispensary: {},
         items: [],
         brands: [],
@@ -46,6 +48,12 @@ import {
                     ...state,
                     loading: true
                 };
+
+            case LOADING_DISPENSARY_LIST:
+                return {
+                    ...state,
+                    loading_lists: true
+                }
 
             case SET_USERS: 
                 return {
@@ -194,14 +202,14 @@ import {
         case CREATE_DISPENSARY_LIST:
             return {
                 ...state,
-                loading: false,
+                loading_lists: false,
                 dispensaries: state.dispensaries
             }
     
         case GET_DISPENSARY_LISTS:
             return {
                 ...state,
-                loading: false,
+                loading_lists: false,
                 dispensary_lists: action.payload
             }
 

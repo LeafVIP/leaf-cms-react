@@ -1,7 +1,7 @@
 import React, { Component, Fragment} from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import {setDispensaries, getDispensaryUsers, getAllDispensaries, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary, createList, getDispensaryLists } from '../../redux/actions/dispensaryActions';
+import {setDispensaries, getDispensaryUsers, getAllDispensaries, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary, createList, getDispensaryLists, deleteDispensaryList } from '../../redux/actions/dispensaryActions';
 import { getOffers, updateOffer } from '../../redux/actions/dataActions';
 import Grid from '@material-ui/core/Grid';
 import EditDispensary from '../dispensaries/EditDispensary';
@@ -95,6 +95,10 @@ class DispensaryPage extends Component {
           this.props.createList(name, ids);
         }
 
+        const handleDeleteList = (id) => {
+          this.props.deleteDispensaryList(id);
+        }
+
         const handleSelectItems = (dispensaries) => {
           this.setState({selectedDispensaries: dispensaries});
         }
@@ -115,6 +119,7 @@ class DispensaryPage extends Component {
                                   onSelectItem={showDispensaryDetails}
                                   onCreateItem={addNewDispensaryClicked} 
                                   onCreateNewList={onCreateList}
+                                  onDeleteList={handleDeleteList}
                                   onSelectItems={handleSelectItems}
                                   onCheckItem={onDispensaryChecked}
                                   onAddClicked={onAddToOffer}
@@ -164,6 +169,7 @@ DispensaryPage.propTypes = {
     updateDispensary: PropTypes.func.isRequired,
     createDispensary: PropTypes.func.isRequired,
     getDispensaryLists: PropTypes.func.isRequired,
+    deleteDispensaryList: PropTypes.func.isRequired,
     createList: PropTypes.func.isRequired,
     getTop50: PropTypes.func.isRequired,
     updateOffer: PropTypes.func.isRequired,
@@ -188,7 +194,8 @@ const mapDispatchToProps = {
    getOffers,
    updateOffer,
    createList,
-   getDispensaryLists
+   getDispensaryLists,
+   deleteDispensaryList
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(DispensaryPage);

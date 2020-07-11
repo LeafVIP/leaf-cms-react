@@ -11,7 +11,8 @@ import {
     LOADING_USER,
     LOADING_UI,
     GET_DISPENSARY_LISTS,
-    UPDATE_DISPENSARY
+    LOADING_DISPENSARY_LIST,
+    DELETE_DISPENSARY_LIST,
 } from '../types';
 
 export const setDispensaries = (dispensaries) => (dispatch) => {
@@ -155,7 +156,7 @@ export const selectDispensary = (dispensary) => (dispatch) => {
 };
 
 export const createList = (name, dispensaries) => (dispatch) => {
-    dispatch({ type: LOADING_DATA });
+    dispatch({ type: LOADING_DISPENSARY_LIST });
 
     axios
         .post('/createList', {
@@ -176,8 +177,23 @@ export const createList = (name, dispensaries) => (dispatch) => {
 
 }
 
+export const deleteDispensaryList = (id) => (dispatch) => {
+    dispatch({type: LOADING_DISPENSARY_LIST});
+    axios.post('/deleteDispensaryList', {
+        id
+    })
+    .then(() => {
+        dispatch(getDispensaryLists())
+    })
+    .catch(err => {
+        dispatch({type: SET_ERRORS, payload: err.data});
+    });
+
+};
+
+
 export const getDispensaryLists = () => (dispatch) => {
-    dispatch({type: LOADING_UI});
+    dispatch({type: LOADING_DISPENSARY_LIST});
     axios   
         .post("/getLists")
         .then(res => {
