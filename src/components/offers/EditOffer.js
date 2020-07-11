@@ -166,13 +166,13 @@ export default function EditOffer(
         const brandName = state.brandName;
         const brandLicense = state.brandLicense;
         const brandId = state.brandId;
-        const rewardAmount = state.rewardAmount;
-        const remainingQuantity = state.remainingQuantity;
+        const rewardAmount = parseInt(state.rewardAmount);
+        const remainingQuantity = parseInt(state.remainingQuantity);
         const dispensaries = state.dispensaries;
         const surveyCode = state.surveyCode;
         const surveyId = state.surveyId;
         const videoUrl = state.videoUrl;
-        const videoLength = state.videoLength;
+        const videoLength = parseInt(state.videoLength);
         const jobTypes = getJobTypes();
 
         const newOffer = {
@@ -556,7 +556,7 @@ export default function EditOffer(
                     <ListItem>
                         { 
                          
-                            state.dispensaries ? ( 
+                            state.dispensaries && state.dispensaries[0] !== '' ? ( 
                                 displayState === 'view' ? (
                                     <ListItemText 
                                         primary={`Dispensaries (${state.dispensaries.length})`} 

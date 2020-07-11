@@ -46,6 +46,7 @@ export default function CreateOffer({open, onClose, onSave}) {
         brandLicense: '',
         originalQuantity: 20,
         rewardAmount: 5,
+        videoLength: 0,
         productName: '',
         productDescription: '',
         surveyCode: '',
@@ -77,6 +78,7 @@ export default function CreateOffer({open, onClose, onSave}) {
         const surveyCode = state.surveyCode;
         const surveyId = state.surveyId;
         const videoUrl = state.videoUrl;
+        const videoLength = state.videoLength;
 
         const newOffer = {
             campaignName,
@@ -90,6 +92,7 @@ export default function CreateOffer({open, onClose, onSave}) {
             surveyCode,
             surveyId,
             videoUrl,
+            videoLength,
             dispensaries: [],
             jobTypes: []
         }
