@@ -9,10 +9,8 @@ import {
     SET_ERRORS, 
     CLEAR_ERRORS,
     LOADING_USER,
-    LOADING_UI,
     GET_DISPENSARY_LISTS,
     LOADING_DISPENSARY_LIST,
-    DELETE_DISPENSARY_LIST,
 } from '../types';
 
 export const setDispensaries = (dispensaries) => (dispatch) => {

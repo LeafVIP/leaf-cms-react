@@ -50,8 +50,7 @@ const styles = (theme) => ({
             data:{
                 loading,
                 offers,
-                offer,
-                users
+                offer
             },
             UI,
             onSelectOffer

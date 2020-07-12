@@ -16,9 +16,6 @@ class PushNotificationsPage extends Component {
         const {
             data:{
                 users
-            },
-            UI: {
-                loading
             }
         } = this.props;
         return (

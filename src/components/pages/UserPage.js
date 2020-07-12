@@ -13,7 +13,7 @@ import CreateUser from '../users/CreateUser';
 // const storageBucket = 'https://firebasestorage.googleapis.com/v0/b/leafvip-dev.appspot.com/o/offerImagesPath%2f';
 
 // PROD
-const storageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
+// const storageBucket ='https://firebasestorage.googleapis.com/v0/b/leafvip-c42db.appspot.com/o/offerImagesPath%2f';
 
 
 class UserPage extends Component {
@@ -29,9 +29,7 @@ class UserPage extends Component {
    
     render() {
         const  { users, user, loading } = this.props.data;
-        const { filteredUsers} = this.state;
-       
-
+        
         const showUserDetails = (user) => {
           console.log('showUserDetails: user.authUid: ' +user.authUid); 
           this.user = user;
@@ -59,19 +57,8 @@ class UserPage extends Component {
           this.props.updateUser(user.authUid, {badgeState: newBadgState})
         }
 
-        // const sanitizeUsers = () => {
-        //   if (users !== undefined) {
-        //     const newUsers = users.filter(user => {
-        //       return user.firstName !== undefined;
-        //     })
-
-        //     users = newUsers;
-        //   }
-        // }
-
         const uploadBadgeImage = (userId, data) => {
           console.log(`UserPage.upload badge image ${userId} - ${data}`);
-          // this.props.uploadBadgeImage(userId, data);
         }
 
           return (  

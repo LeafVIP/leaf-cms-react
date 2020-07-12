@@ -22,11 +22,9 @@ class OfferPage extends Component {
         const { offers, offer, loading } = this.props.data;
 
         const showOfferDetails = (offer) => {
-            console.log('show offer details: ' +offer.id);
             this.setState({edit: true, create: false, offer: offer});
         }
         const createOffer = () => {
-            console.log('create offer');
             this.setState({edit: false, create: true, offer: undefined});
         }
 

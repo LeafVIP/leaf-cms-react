@@ -94,7 +94,7 @@ export default function EditOffer(
     };
 
         // job types
-        const [budtender, setBudtender] = useState(state.jobTypes && state.jobTypes.indexOf('budtender') >= 0 ? true : false);
+        const [budtender, setBudtender] = useState(offer.jobTypes ? offer.jobTypes.indexOf('budtender') >= 0 : false);
         const [manager, setManager] = useState(offer.jobTypes ? offer.jobTypes.indexOf('manager') >= 0 : false);
         const [buyer, setBuyer] = useState(offer.jobTypes ? offer.jobTypes.indexOf('buyer') >= 0 : false);
         const [frontdesk, setFrontdesk] = useState(offer.jobTypes ? offer.jobTypes.indexOf('frontdesk') >= 0 : false);
@@ -135,30 +135,35 @@ export default function EditOffer(
 
       const getJobTypes = () => {
           const jobs = [];
-            if (budtender) {
-                jobs.push('budtender');
-            }
-            if(manager) {
-                jobs.push('manager');
-            }
+          if (!budtender && !manager && !buyer && !frontdesk && !security && !brand) {
+              return null;
+          } else {
+                if (budtender) {
+                    console.log('pushing budtender to job type')
+                    jobs.push('budtender');
+                } 
+                if(manager) 
+                {
+                    jobs.push('manager');
+                }
 
-            if(buyer) {
-                jobs.push('buyer');
-            }
+                if(buyer) {
+                    jobs.push('buyer');
+                }
 
-            if (frontdesk) {
-                jobs.push('frontdesk');
-            }
+                if (frontdesk) {
+                    jobs.push('frontdesk');
+                }
 
-            if (security) {
-                jobs.push('security');
-            }
+                if (security) {
+                    jobs.push('security');
+                }
 
-            if(brand) {
-                jobs.push('brand');
-            }
-
-            return jobs;
+                if(brand) {
+                    jobs.push('brand');
+                }
+          }
+          return jobs;
       }
     const handleSave = () => {
         const productName = state.productName;
@@ -183,16 +188,15 @@ export default function EditOffer(
             brandLicense,
             rewardAmount,
             remainingQuantity,
-            jobTypes,
             dispensaries,
             surveyCode,
             surveyId,
             isActive,
             videoLength,
-            videoUrl
+            videoUrl,
+            jobTypes
         }
 
-        console.log('save offer: active = ' +isActive);
         onSave(state.id, newOffer);
         setDisplayState('view');
     }
@@ -216,7 +220,9 @@ export default function EditOffer(
         onClearDispensaries(state.id);
     }
     const handleBudtender = (event) => {
+        console.log('handleBudtender: checked = ' +event.target.checked);
         setBudtender(event.target.checked);
+        console.log('budtender is now: ' +budtender);
     }
     const handleManager = (event) => {
         setManager(event.target.checked);
@@ -494,7 +500,7 @@ export default function EditOffer(
                                 <div>
                                     <ListItemText 
                                         primary="Job Types" 
-                                        secondary={state.jobTypes !== undefined || state.jobTypes == [] ? (state.jobTypes.map(job => { return job +", "})) : <div>none</div>} />
+                                        secondary={state.jobTypes !== undefined || state.jobTypes === [] ? (state.jobTypes.map(job => { return job +", "})) : <div>none</div>} />
                                 </div>
                             ) : (
                                 <div>
