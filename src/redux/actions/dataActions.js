@@ -189,7 +189,7 @@ export const deleteOffer = (offerId) => (dispatch) => {
 export const getOfferUsers = (offerId) => (dispatch) => {
     dispatch({type: LOADING_UI});
     axios
-        .post('/getOfferUsers', {offerId} )
+        .post('/offerUsers', {offerId} )
         .then(res => {
             dispatch({type: CLEAR_ERRORS});
             dispatch({
