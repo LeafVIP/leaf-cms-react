@@ -22,9 +22,9 @@ export default function OfferUsersTable( {items}) {
       <Table className={classes.table} aria-label="simple table">
         <TableBody>
           {items.map((row) => (
-            <TableRow key={row.name}>
+            <TableRow key={row.authId}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {row.firstName} {row.lastName}
               </TableCell>
               <TableCell align="right">{row.dispensary}</TableCell>
             </TableRow>
