@@ -413,7 +413,7 @@ const DispensariesTable = ({
       return 0;
     }
 
-    return (users / employees).toFixed(2) * 100;
+    return ((users / employees) * 100).toFixed(0);
   }
 
   return (
