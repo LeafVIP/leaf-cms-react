@@ -304,6 +304,7 @@ const DispensariesTable = ({
   offers,
   onSelectItem, 
   onSelectItems,
+  onSelectUsers,
   onCreateItem, 
   onAddClicked,
   onCheckItem,
@@ -353,6 +354,10 @@ const DispensariesTable = ({
   }
   const handleSelectItem = (dispensary) => {
     onSelectItem(dispensary);
+  }
+
+  const handleSelectUsers = (dispensary) => {
+    onSelectUsers(dispensary.id);
   }
 
   const handleSelectAll= (event) => {
@@ -479,9 +484,28 @@ const DispensariesTable = ({
                           onClick={(event) => handleSelectItem(dispensary)}>
                               <span> {dispensary.displayName}</span>
                         </TableCell>
-                        <TableCell align='left' padding='default' scope='address'>{dispensary.address}</TableCell>
-                        <TableCell align='left' padding='default' scope='license'>{dispensary.license}</TableCell>
-                        <TableCell align='right' padding='default' scope='users'>{dispensary.users.length}</TableCell>
+
+                        <TableCell 
+                          align='left' 
+                          padding='default' 
+                          scope='address'>
+                            {dispensary.address}
+                        </TableCell>
+
+                        <TableCell 
+                          align='left' 
+                          padding='default' 
+                          scope='license'>
+                            {dispensary.license}
+                        </TableCell>
+
+                        <TableCell 
+                          align='right' 
+                          padding='default' 
+                          scope='users'
+                          onClick={(event) => handleSelectUsers(dispensary)}>
+                            {dispensary.users.length}
+                          </TableCell>
                         <TableCell align='right' padding='default' scope='employees'>{dispensary.employees}</TableCell>
                         <TableCell align='right' padding='default' scope='saturation'>{saturationRate(dispensary.users.length, dispensary.employees)}%</TableCell>
                      

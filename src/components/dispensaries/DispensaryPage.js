@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import {setDispensaries, getDispensaryUsers, getAllDispensaries, getDispensaries, selectDispensary, getTop50, updateDispensary, createDispensary, createList, getDispensaryLists, deleteDispensaryList } from '../../redux/actions/dispensaryActions';
 import { getOffers, updateOffer } from '../../redux/actions/dataActions';
 import Grid from '@material-ui/core/Grid';
-import EditDispensary from '../dispensaries/EditDispensary';
-import CreateDispensary from '../dispensaries/CreateDispensary';
-import DispensariesTable from '../dispensaries/DispensariesTable';
+import EditDispensary from './EditDispensary';
+import CreateDispensary from './CreateDispensary';
+import DispensariesTable from './DispensariesTable';
+import CircularProgressIndeterminate from '../../util/CircularProgressIndeterminate';
 
 class DispensaryPage extends Component {
 
@@ -47,6 +48,9 @@ class DispensaryPage extends Component {
             this.setState({open: true, add: false, create: false, dispensary: dispo});
           };
 
+          const showDispensaryUsers = (id) => {
+            console.log('showDispensaryUsers: ' +id);
+          }
         const closeModal = () => {
           this.setState({open: false, add:false, create: false});
         }
@@ -67,7 +71,6 @@ class DispensaryPage extends Component {
           this.props.createDispensary(newDispensary);
           this.setState({create: false, dispensary});
         }
-
 
         const onDispensaryChecked = (dispensaries) => {
           let currentDispensaries = this.state.selectedDispensaries;
@@ -117,6 +120,7 @@ class DispensaryPage extends Component {
                                   offers={offers}
                                   onClose={closeModal}
                                   onSelectItem={showDispensaryDetails}
+                                  onSelectUsers={showDispensaryUsers}
                                   onCreateItem={addNewDispensaryClicked} 
                                   onCreateNewList={onCreateList}
                                   onDeleteList={handleDeleteList}
@@ -125,7 +129,7 @@ class DispensaryPage extends Component {
                                   onAddClicked={onAddToOffer}
                                   onFilterDispensaries={onFilterDispensaries}/> 
                               ) : (
-                                <div>Loading...</div>
+                                <CircularProgressIndeterminate />
                               )
                             }
                     </Grid>
