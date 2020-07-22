@@ -15,14 +15,14 @@ import { SET_AUTHENTICATED } from './redux/types';
 
 import themeFile from './util/theme';
 import NavBar from './util/NavBar';
-import UserPage from './components/pages/UserPage';
-import DispensaryPage from './components/pages/DispensaryPage';
-import LoginPage from './components/pages/LoginPage';
-import OffersPage from './components/pages/OffersPage';
-import BrandsPage from './components/pages/BrandsPage';
-import PushNotificationsPage from './components/pages/notifications/PushNotificationsPage';
+import UserPage from './components/users/UserPage';
+import DispensaryPage from './components/dispensaries/DispensaryPage';
+import LoginPage from './components/authentication/LoginPage';
+import OffersPage from './components/offers/OffersPage';
+import BrandsPage from './components/brands/BrandsPage';
+import PushNotificationsPage from './components/notifications/PushNotificationsPage';
 import SurveyPage from './components/survey/SurveyPage';
-import PageNotFound from './components/pages/PageNotFound';
+import PageNotFound from './components/PageNotFound';
 import './App.css';
 
 

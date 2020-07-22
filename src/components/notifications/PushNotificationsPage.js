@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import OfferNotification from './OfferNotification';
 import OfferUsersTable from './OfferUsersTable';
 import Typography from '@material-ui/core/Typography';
-import { getOfferUsers } from '../../../redux/actions/dataActions';
+import { getOfferUsers } from '../../redux/actions/dataActions';
 import { connect } from 'react-redux';
 
 class PushNotificationsPage extends Component {
